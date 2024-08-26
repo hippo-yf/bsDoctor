@@ -1,0 +1,33 @@
+{# #######################
+  head.html
+##########################
+
+This block contains the meta tags for the HTML head. Note, this isn't
+page contents, it's machine-readable tags for browsers and search engines.
+
+#}
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="description" content="bsDoctor: quality diagnosis of bisulfite-seq data">
+<meta name="author" content="Yance Feng">
+<title>{{ config.title + ': ' if config.title != None }}bsDoctor Report</title>
+
+<!-- JSON plot data -->
+<script type="text/plain" id="data">{{ data|tojson }}</script>
+<script type="text/plain" id="config">{{ config|tojson }}</script>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+data = JSON.parse(document.getElementById('data').innerHTML);
+config = JSON.parse(document.getElementById('config').innerHTML);
+</script>
+

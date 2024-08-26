@@ -1,0 +1,148 @@
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+object.img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+div.img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.accordion-button {
+  /* background-color:rgb(249, 249, 235); */
+  background-color: ghostwhite;
+  padding: 10px 10px;
+}
+a.nav-link {
+  color: black;
+  font-size: 1em !important;
+  padding: 0px;
+}
+#col-caption {
+  background-color: ghostwhite;
+}
+body {
+  padding: 0px 20px !important;
+}
+h2 {
+  font-family: Gadugi, sans-serif;
+  /* font-family: Lato, sans-serif; */
+  /* color: orangered; */
+  color:orangered;
+  font-size: 2em;
+  font-style: bold;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  /* border-left: 10px solid deepskyblue; */
+  padding: 5px;
+  background-color: beige;
+  border-radius: 6px;
+}
+h3 {
+  font-family: Gadugi, sans-serif;
+  /* font-family: Lato, sans-serif; */
+  color: orangered;
+  font-style: regular;
+  font-weight: 400;
+  font-size: 1.6em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+p,
+ul {
+  font-family: Gadugi, sans-serif;
+  /* font-family: Lato, sans-serif; */
+  font-size: 1em;
+}
+code {
+  font-family: consolas, monospace;
+  font-size: 1.15em;
+  color: dimgray;
+  background-color: ghostwhite;
+}
+.caption {
+  font-size: 0.8em;
+  color: dimgrey;
+}
+.title {
+  margin-left: 50px;
+}
+.question-marker, .question-marker0 {
+  font-weight: 800;
+  color: crimson;
+}
+.text-sample {
+  font-size: 1.5em;
+}
+.first-header {
+  border-top: 0px;
+}
+.good {
+  color: green;
+  margin-right: 2px;
+}
+.neutral {
+  color: burlywood;
+  margin-right: 2px;
+}
+.bad {
+  color: orangered;
+  margin-right: 2px;
+}
+.watson-marker {
+  font-weight: 800;
+  font-size: 1.2em;
+  color: #df5353;
+  margin-right: 5px;
+}
+.crick-marker {
+  font-weight: 800;
+  font-size: 1.2em;
+  color: #1b98e0;
+  margin-right: 5px;
+}
+p.label {
+  font-weight: 600;
+  font-size: 1.1em;
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+p.label-v {
+  margin-top: 0px;
+}
+.legend {
+  margin-top: 7px;
+}
+.bd-sidebar {
+  /* padding-right: 16px; */
+  overflow-y: scroll;
+}
+svg {
+  display: block;
+}
+.alert-warning {
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 3px;
+  border-left-color: #1b98e0;
+  background-color:blanchedalmond;
+  font-size: smaller;
+}
+
+.katex { font-size: 1.0em; }
