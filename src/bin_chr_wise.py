@@ -354,6 +354,5 @@ def plot_binning_depth():
         filename = f'{img_dir}/depth-bin-{strand}'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-
-    plt.close()
+        plt.close()
     

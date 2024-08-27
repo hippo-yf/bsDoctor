@@ -1,32 +1,10 @@
 #! /bin/env python
 
+import re
 import pickle
 import numpy as np
 
-rng = np.random.default_rng()
-# import scipy.stats
-
-from numpy.typing import NDArray
-# import pandas as pd
-
-import tqdm
-import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.rcParams["svg.fonttype"] = 'none'
 from jinja2 import PackageLoader,Environment,FileSystemLoader
-
-# import array
-import gzip
-import io
-import sys
-from argparse import ArgumentParser
-import re
-import random
-import json
-import itertools
-
-# import pdb
-
 
 #######
 
@@ -122,11 +100,9 @@ def config_params_further():
 #######################################
 
 def compute_and_plot():
-        
-    config_params_further()
 
     # DNA content
-    compt_DNA_content()
+    compt_plot_DNA_content()
 
     # base and read quality
     compt_quality()
@@ -219,20 +195,28 @@ def compute_and_plot():
 
 def write_report():
     
-    env = Environment(loader=FileSystemLoader('.'))
+    env = Environment(loader=FileSystemLoader('report/'))
     # env.globals["include_file"] = include_file
     # template = env.get_template('base.html')   
-    template = env.get_template('report/report-bootstrap.jinja-html')
+    template = env.get_template('report-bootstrap.jinja-html')
     temp_out = template.render(alldata=data)   
 
     with open('report/report-1.html', 'w', encoding='utf-8') as f:
         f.writelines(temp_out)
-        f.close()
 
 if __name__ == "__main__":
-    compute_and_plot()
-    with open('data.pickle', 'wb') as fd:
-        pickle.dump(data, fd)
-    write_report()
+    desc = "bsDoctor: Quality Diagnosis for Bisulfite-Seq Data"
+    parser = MyArgumentParser(description=desc)
+    options = parser.parse_args()
+    
+    config_params(options)      
+    config_params_further()
+
+    print(params)
+    
+    # compute_and_plot()
+    # with open('data.pickle', 'wb') as fd:
+    #     pickle.dump(data, fd)
+    # write_report()
     
     

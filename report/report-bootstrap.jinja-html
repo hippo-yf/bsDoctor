@@ -560,7 +560,7 @@
           <img src="../img/saturation-curve.png" alt="" width="500px" />
         </article>
 
-        <article id="DNA-template-lose">
+        <article id="DNA-template-loss">
           <h3>DNA template lose</h3>
           <p>
             The part of (nuclear) DNA that degraded during library
@@ -585,7 +585,13 @@
             <li>saturation: {{ alldata.saturaion }}% </li>
           </ul>
           
-          <img src="../img/pie-DNA-lost.png" alt="" width="500px" />
+          <img src="../img/pie-DNA-lost.png" alt="" height="200px" />
+        </article>
+
+        <article id="DNA-composition">
+          <h3>DNA composition</h3>
+          <p>The DNA content of nuclear, mitochondria, plastids, and spikied-in (lambda) DNA in the library is proportional to reads mapped to coorresponding chromosomes/contigs.</p>
+          <img src="../img/pie-DNA-content.png" alt="" height="200px" />
         </article>
       </section>
 

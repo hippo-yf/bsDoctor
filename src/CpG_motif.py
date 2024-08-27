@@ -56,19 +56,19 @@ def compt_CpG_motif():
 
     #### data for interactive plots
     cgkmer_2strands = {
-        'nW': list(signif(relative_freq_CpG_motif(dict_kmer['nW']))),
-        'nC': list(signif(relative_freq_CpG_motif(dict_kmer['nC']))),
-        'n': list(signif(relative_freq_CpG_motif(dict_kmer['n']))),
+        'nW': list(signif(relative_freq_CpG_motif(float(dict_kmer['nW'])))),
+        'nC': list(signif(relative_freq_CpG_motif(float(dict_kmer['nC'])))),
+        'n': list(signif(relative_freq_CpG_motif(float(dict_kmer['n'])))),
         'cgkmer': dict_kmer['kmer'],
-        'mean_dp': list(signif(dict_kmer['dp'], 2)),
-        'meWdp1': list(signif(dict_kmer['meW'][:,0])),
-        'meCdp1': list(signif(dict_kmer['meC'][:,0])),
-        'medp1': list(signif(dict_kmer['me'][:,0])),
-        'meW': list(signif(dict_kmer['meW'][:,0])),
-        'meC': list(signif(dict_kmer['meC'][:,0])),
+        'mean_dp': list(signif(float(dict_kmer['dp']), 2)),
+        'meWdp1': list(signif(float(dict_kmer['meW'][:,0]))),
+        'meCdp1': list(signif(float(dict_kmer['meC'][:,0]))),
+        'medp1': list(signif(float(dict_kmer['me'][:,0]))),
+        'meW': list(signif(float(dict_kmer['meW'][:,0]))),
+        'meC': list(signif(float(dict_kmer['meC'][:,0]))),
         'dp': list(range(1, maxdp + 1)),
-        'cov': [list(signif(x)) for x in dict_kmer['cov'][:,:maxdp]],
-        'me': [list(signif(x)) for x in dict_kmer['me'][:,:maxdp]]
+        'cov': [list(signif(float(x))) for x in dict_kmer['cov'][:,:maxdp]],
+        'me': [list(signif(float(x))) for x in dict_kmer['me'][:,:maxdp]]
     }
     data['cgkmer_2strands'] = cgkmer_2strands
 

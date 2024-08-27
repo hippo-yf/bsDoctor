@@ -2,10 +2,12 @@
 import math
 import os
 from typing import NamedTuple, List, Tuple, Dict, Any
+from argparse import ArgumentParser, Namespace
 
-from src.utils import myMakeDirs
-from src.utils import getBins
+from src.utils import myMakeDirs, as_bool
 
+import matplotlib
+matplotlib.rcParams["svg.fonttype"] = 'none'
 
 # class Parameters():
 #     fafile: str
@@ -58,8 +60,13 @@ from src.utils import getBins
 ##############################################
 
 # def config_params(args: NamedTuple):
-def config_params():
+def config_params(options: Namespace) -> None:
     
+    # copy args into "params"
+    for key, value in options.__dict__.items():
+        params[key] = value
+        # pass
+
     fafile = 'genome/hg38.fa'
     # fafile = 'genome/GCF_000001735.4_TAIR10.1_genomic.fna'
     bamfile = 'data/ENCFF873NOV.bam'
@@ -103,9 +110,6 @@ def config_params():
 
     # pangene meth
     PANGENE_SAMPLED = 100
-
-
-    params = dict()
     
     params['fafile'] = fafile
     params['bamfile'] = bamfile
@@ -149,11 +153,11 @@ def config_params():
     myMakeDirs(params['report_dir'])
     myMakeDirs(params['img_dir'])
 
-    return params
+    return None
 
 
 global params
-params = config_params()
+params = dict()
 
     # params = Parameters(
     #     fafile=fafile, 
@@ -200,4 +204,23 @@ params = config_params()
 global data
 data = {}
 
+class MyArgumentParser(ArgumentParser):
+    def __init__(self, **args) -> None:
+        super().__init__(**args)
 
+        self.add_argument('-i', '--atcg-file', dest='infile', help='an input .ATCGmap[.gz] file, default: read from stdin', type=str, required=False, default="-")
+        self.add_argument('-o', '--output-prefix', dest='outprefix', help='prefix of output files, a prefix.snv.gz and a prefix.vcf.gz will be returned, by default, same with input filename except suffix, for example, for input of path/sample.atcg.gz, the output is path/sample.snv.gz and path/sample.vcf.gz which is equivalent to setting -o path/sample', type=str)
+        self.add_argument('-m', '--mutation-rate', dest='mutation_rate', help='mutation rate a hyploid base', type=float, default=0.001)
+        self.add_argument('-e', '--error-rate', dest='error_rate', help='error rate a base is mis-detected due to sequencing or mapping', type=float, default=0.03)
+        self.add_argument('-c', '--methy-cg', dest='methy_cg', help='Cytosine methylation rate of CpG-context', type=float, default=0.6)
+        self.add_argument('-n', '--methy-ch', dest='methy_ncg', help='Cytosine methylation rate of non-CpG-context', type=float, default=0.01)
+        self.add_argument('-d', '--min-depth', dest='min_depth', help='sites with coverage depth less than this value will be skipped', type=int, default=10)
+        self.add_argument('-p', '--pvalue', dest='pvalue', help='p-value threshold', type=float, default=0.01)
+        self.add_argument('--shrink-depth', dest='shrink_depth', help='sites with coverage greater than this value will be shrinked by a square-root transform', type=int, default=60)
+        self.add_argument('--batch-size', dest='batch_size', help='a batch of sites will be processed at the same time', type=int, default=10000)
+        self.add_argument('-P', '--num-process', dest='num_process', help='number of processes in parallel', type=int, default=4)
+        self.add_argument('--pool-lower-num', dest='pool_lower_num', help='lower number of bacthes in memory pool per process', type=int, default=10)
+        self.add_argument('--pool-upper-num', dest='pool_upper_num', help='upper number of bacthes in memory pool per process', type=int, default=30)
+        self.add_argument('--keep-order', dest='keep_order', help='keep the results same order with input, true/false, or yes/no', type=as_bool, default=True)
+
+        
