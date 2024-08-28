@@ -6,7 +6,7 @@ from src.coverage import IntervalCoverage, CovLambda, KmerCov, BinCov
 from src.config import params
 
 
-def update_binning(intv: IntervalCoverage):
+def update_binning(intv: IntervalCoverage) -> None:
     dict_binning = params['dict_binning']
     MAXDEPTH = params['MAXDEPTH']
 
@@ -135,8 +135,9 @@ def update_binning(intv: IntervalCoverage):
             value.ATdp += depth
             # value.misbase += depth - max(max(intv.covW[:,i]), max(intv.covC[:,i]))
             value.misbase += depth - max(intv.covW[:,i] + intv.covC[:,i])
+    return None
 
-def update_cgkmer(intv: IntervalCoverage):
+def update_cgkmer(intv: IntervalCoverage) -> None:
     dict_cgkmer = params['dict_cgkmer']
     MAXDEPTH = params['MAXDEPTH']
     
@@ -167,8 +168,9 @@ def update_cgkmer(intv: IntervalCoverage):
             value.dpC += intv.covMeth[i]
             value.covC[:dp] += 1
             value.meC[:dp] += intv.meth[i]
+    return None
 
-def update_lambda(cov: CovLambda, intv: IntervalCoverage):
+def update_lambda(cov: CovLambda, intv: IntervalCoverage) -> None:
     for i in range(intv.length):
         if intv.base[i] == 'N': continue
 
@@ -192,3 +194,4 @@ def update_lambda(cov: CovLambda, intv: IntervalCoverage):
             if intv.covMeth[i] >= 1:
                 cov.covnC += 1
                 cov.meC += intv.meth[i]
+    return None

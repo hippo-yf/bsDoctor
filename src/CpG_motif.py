@@ -9,7 +9,7 @@ reload(src.utils)
 relative_freq_CpG_motif = src.utils.relative_freq_CpG_motif
 
 
-def compt_CpG_motif():
+def compt_CpG_motif() -> None:
     dict_cgkmer =  params['dict_cgkmer']
     maxdp = params['MAX_DP_CG_MOTIF']
 
@@ -55,24 +55,42 @@ def compt_CpG_motif():
     params['dict_kmer'] = dict_kmer # a summary
 
     #### data for interactive plots
+    
+    # cgkmer_2strands = {
+    #     'nW': list(signif(relative_freq_CpG_motif((dict_kmer['nW'])))),
+    #     'nC': list(signif(relative_freq_CpG_motif((dict_kmer['nC'])))),
+    #     'n': list(signif(relative_freq_CpG_motif((dict_kmer['n'])))),
+    #     'cgkmer': dict_kmer['kmer'],
+    #     'mean_dp': list(signif((dict_kmer['dp']), 2)),
+    #     'meWdp1': list(signif((dict_kmer['meW'][:,0]))),
+    #     'meCdp1': list(signif((dict_kmer['meC'][:,0]))),
+    #     'medp1': list(signif((dict_kmer['me'][:,0]))),
+    #     'meW': list(signif((dict_kmer['meW'][:,0]))),
+    #     'meC': list(signif((dict_kmer['meC'][:,0]))),
+    #     'dp': list(range(1, maxdp + 1)),
+    #     'cov': [list(signif((x))) for x in dict_kmer['cov'][:,:maxdp]],
+    #     'me': [list(signif((x))) for x in dict_kmer['me'][:,:maxdp]]
+    # }
     cgkmer_2strands = {
-        'nW': list(signif(relative_freq_CpG_motif(float(dict_kmer['nW'])))),
-        'nC': list(signif(relative_freq_CpG_motif(float(dict_kmer['nC'])))),
-        'n': list(signif(relative_freq_CpG_motif(float(dict_kmer['n'])))),
+        'nW': [float(signif(x)) for x in relative_freq_CpG_motif(dict_kmer['nW'])],
+        'nC': [float(signif(x))for x in relative_freq_CpG_motif(dict_kmer['nC'])],
+        'n': [float(signif(x)) for x in relative_freq_CpG_motif(dict_kmer['n'])],
         'cgkmer': dict_kmer['kmer'],
-        'mean_dp': list(signif(float(dict_kmer['dp']), 2)),
-        'meWdp1': list(signif(float(dict_kmer['meW'][:,0]))),
-        'meCdp1': list(signif(float(dict_kmer['meC'][:,0]))),
-        'medp1': list(signif(float(dict_kmer['me'][:,0]))),
-        'meW': list(signif(float(dict_kmer['meW'][:,0]))),
-        'meC': list(signif(float(dict_kmer['meC'][:,0]))),
-        'dp': list(range(1, maxdp + 1)),
-        'cov': [list(signif(float(x))) for x in dict_kmer['cov'][:,:maxdp]],
-        'me': [list(signif(float(x))) for x in dict_kmer['me'][:,:maxdp]]
+        'mean_dp': [float(signif(x)) for x in dict_kmer['dp']],
+        'meWdp1': [float(signif(x)) for x in dict_kmer['meW'][:,0]],
+        'meCdp1': [float(signif(x)) for x in dict_kmer['meC'][:,0]],
+        'medp1': [float(signif(x)) for x in dict_kmer['me'][:,0]],
+        # 'meW': list(signif((dict_kmer['meW'][:,0]))),
+        # 'meC': list(signif((dict_kmer['meC'][:,0]))),
+        # 'dp': list(range(1, maxdp + 1)),
+        # 'cov': [list(signif((x))) for x in dict_kmer['cov'][:,:maxdp]],
+        'cov': [[float(signif(y)) for y in x if not np.isnan(y)] for x in dict_kmer['cov'][:,:maxdp]],
+        'me': [[float(signif(y)) for y in x if not np.isnan(y)] for x in dict_kmer['me'][:,:maxdp]],
     }
     data['cgkmer_2strands'] = cgkmer_2strands
+    return None
 
-def plot_hist_CpG_motif_freq():
+def plot_hist_CpG_motif_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
 
@@ -86,8 +104,9 @@ def plot_hist_CpG_motif_freq():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_freq_watson_vs_crick():
+def plot_CpG_motif_freq_watson_vs_crick() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
 
@@ -101,8 +120,9 @@ def plot_CpG_motif_freq_watson_vs_crick():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_me_watson_vs_crick():
+def plot_CpG_motif_me_watson_vs_crick() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
 
@@ -116,8 +136,9 @@ def plot_CpG_motif_me_watson_vs_crick():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_depth_vs_freq():
+def plot_CpG_motif_depth_vs_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
 
@@ -131,8 +152,9 @@ def plot_CpG_motif_depth_vs_freq():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_me_vs_freq():
+def plot_CpG_motif_me_vs_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
         
@@ -147,8 +169,9 @@ def plot_CpG_motif_me_vs_freq():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_covrate_vs_depth():
+def plot_CpG_motif_covrate_vs_depth() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
     maxdp = params['MAX_DP_CG_MOTIF']
@@ -164,8 +187,9 @@ def plot_CpG_motif_covrate_vs_depth():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_CpG_motif_me_vs_depth():
+def plot_CpG_motif_me_vs_depth() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
     maxdp = params['MAX_DP_CG_MOTIF']
@@ -181,4 +205,5 @@ def plot_CpG_motif_me_vs_depth():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 

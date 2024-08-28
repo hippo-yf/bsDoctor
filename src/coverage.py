@@ -27,11 +27,13 @@ class Quality():
         # self.nbases: int = 0
         self.ncigars: NDArray = np.zeros((10,), dtype=np.int64)
         self.map_quality = list() # quality itself
+        return None
     
-    def regularization(self):
+    def regularization(self) -> None:
         self.base_quality = np.hstack(self.base_quality, dtype=np.uint8)
         self.map_quality = np.hstack(self.map_quality, dtype=int)
         self.read_length = np.array(self.read_length, dtype=int)
+        return None
 
 
 ################################################
@@ -70,7 +72,7 @@ class MyFastaFile(pysam.FastaFile):
         return bases
 
 ################################################
-## genome samping
+## genome sampling
 ################################################
 
 ## samplimg for coverage
@@ -87,11 +89,13 @@ class GenomicIntervalGenerator:
         
         self.chrs = fa.references
         self.lens = fa.lengths
-        if chrs == "all":
-            self.chrs_selected = list(self.chrs)
-        else:
-            self.chrs_selected = chrs.split(',')
-        
+        # if chrs == "all":
+        #     self.chrs_selected = list(self.chrs)
+        # else:
+        #     self.chrs_selected = chrs.split(',')
+        # self.chrs_selected = params['chrs_valid']
+        self.chrs_selected = chrs
+
         self.start = start
         self.end = end
         self.step = step
@@ -100,6 +104,7 @@ class GenomicIntervalGenerator:
         assert(step > 0 and start < end)
         assert(len(self.chrs) > 0 and len(self.chrs) == len(self.lens))
         assert(isinstance(spacing, int) and spacing >= 0)
+        return None
     
     def __iter__(self):
         for (chr, len) in zip(self.chrs, self.lens):
@@ -173,6 +178,7 @@ class Gene():
         else:
             bins = -np.arange(-(gene_breaks*3-1), 1)
         self.bins = bins
+        return None
 
 
 # parse gtf file
@@ -195,18 +201,21 @@ def genesGenerator(file: str):
 
 ## coverage of pangene
 class CovPanGene():
-    def __init__(self, bins=params['gene_breaks']*3) -> None:
+    def __init__(self, bins: int) -> None:
+        # bins = params['gene_breaks']*3
+        
         self.nCG = np.zeros((bins,), dtype=np.int64)
         self.meCG = np.zeros((bins,), dtype=np.float64)
         self.nCGW = np.zeros((bins,), dtype=np.int64)
         self.meCGW = np.zeros((bins,), dtype=np.float64)
         self.nCGC = np.zeros((bins,), dtype=np.int64)
         self.meCGC = np.zeros((bins,), dtype=np.float64)
+        return None
         
 # cov_pangene = CovPanGene()
 
 class KmerCov():
-    def __init__(self):
+    def __init__(self) -> None:
         MAXDEPTH = params['MAXDEPTH']
 
         self.n: int = 0
@@ -224,6 +233,7 @@ class KmerCov():
         self.me: NDArray[np.float64] = init2.copy()
         self.meW: NDArray[np.float64] = init2.copy()
         self.meC: NDArray[np.float64] = init2.copy()
+        return None
     
 class BinCov():
     def __init__(self) -> None:  
@@ -304,6 +314,7 @@ class BinCov():
         self.nCGMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
         self.nCHGMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
         self.nCHHMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
+        return None
 
 # not for each bin
 class CovLambda():
@@ -329,6 +340,7 @@ class CovLambda():
         # mistake bases, different with ref base
         self.dp20: NDArray = init.copy() # nbases with DP>=20
         self.misbase: NDArray = init2.copy()
+        return None
 
 ##############################################
 ## bam methods
@@ -359,10 +371,10 @@ class IntervalCoverage(NamedTuple):
     covMeth: NDArray[np.int32]
     meth: NDArray[np.float32]
 
-    def printInterval(self):
+    def printInterval(self) -> None:
         for i in range(self.length):
             print(f'{self.chr}\t{self.start+i}\t{self.bin[i]}\t{self.base[i]}\t{self.cgContext[i]}\t{self.cgkmer[i]}\t{self.covWsum[i]}\t{self.covCsum[i]}\t{self.covMeth[i]}\t{self.meth[i]:.2f}')
-
+        return None
 
 
 class MyAlignmentFile(pysam.AlignmentFile):
@@ -563,7 +575,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
             meth=meth
             )
 
-    def update_pangene(self, cov_pangene: CovPanGene, g: Gene):
+    def update_pangene(self, cov_pangene: CovPanGene, g: Gene) -> None:
         # context size
         consize = params['context_size']
         fa = params['fa']
@@ -608,9 +620,11 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 else:
                     cov_pangene.nCGC[kbin] += 1
                     cov_pangene.meCGC[kbin] += meth_ratio
+        return None
+
 
     # for reads and bases sampling
-    def sample_reads(self, quality: Quality, gi: GenomicInterval):
+    def sample_reads(self, quality: Quality, gi: GenomicInterval) -> None:
         max_reads_per_batch = params['max_reads_per_batch']
 
         reads = self.fetch(contig=gi.chr, start=gi.start, stop=gi.end)
@@ -634,4 +648,4 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 for c in cigar:
                     if c[0] < 10:
                         quality.ncigars[c[0]] += c[1]
-
+        return None

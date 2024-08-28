@@ -9,13 +9,13 @@ from src.updateBinning import update_cgkmer, update_binning
 def nuclear_sampling():
     fa = params['fa']
     bam = params['bam']
-    testchrs = params['testchrs']
+    chrs_valid = params['chrs_valid']
     step = params['nuclear_sampling_step']
     spacing = params['nuclear_sampling_spacing']
 
     intervals = iter(GenomicIntervalGenerator(
         fa, 
-        chrs= testchrs,
+        chrs= chrs_valid,
         # chrs='all',
         start = 0,    
         end = params['MAX_COORDINATE'],

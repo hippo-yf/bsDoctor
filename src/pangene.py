@@ -4,7 +4,7 @@ from src.utils import *
 from src.config import *
 from src.coverage import genesGenerator, CovPanGene
 
-def pangene_sampling():
+def pangene_sampling() -> None:
     gtffile = params['gtffile']
     PANGENE_SAMPLED = params['PANGENE_SAMPLED']
 
@@ -34,8 +34,9 @@ def pangene_sampling():
     data['ngene_lnc'] = fi(len(genes_lnc))
     data['ngene_noncoding'] = fi(len(genes_non))
     data['PANGENE_SAMPLED'] = fi(PANGENE_SAMPLED)
+    return None
 
-def _plot_pangene_meth(meth: CovPanGene, name: str):
+def _plot_pangene_meth(meth: CovPanGene, name: str) -> None:
     gene_breaks = params['gene_breaks']
     img_dir = params['img_dir']
 
@@ -52,28 +53,30 @@ def _plot_pangene_meth(meth: CovPanGene, name: str):
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def pangene_compt_plot_meth():
+def pangene_compt_plot_meth() -> None:
     genes_coding_sampling = params['genes_coding_sampling']
     genes_lnc_sampling = params['genes_lnc_sampling']
     genes_non_sampling = params['genes_non_sampling']
     bam = params['bam']
+    bins = params['gene_breaks']*3
 
     # coding
-    cov_pangene_coding = CovPanGene()
+    cov_pangene_coding = CovPanGene(bins)
     for i in tqdm.trange(len(genes_coding_sampling)):
         bam.update_pangene(cov_pangene_coding, genes_coding_sampling[i])
     _plot_pangene_meth(cov_pangene_coding, 'pan-gene-meth-coding')
 
     # lncRNA
-    cov_pangene_lnc = CovPanGene()
+    cov_pangene_lnc = CovPanGene(bins)
     for i in tqdm.trange(len(genes_lnc_sampling)):
         bam.update_pangene(cov_pangene_lnc, genes_lnc_sampling[i])
     _plot_pangene_meth(cov_pangene_lnc, 'pan-gene-meth-lncRNA')
 
     # other noncoding
-    cov_pangene_non = CovPanGene()
+    cov_pangene_non = CovPanGene(bins)
     for i in tqdm.trange(len(genes_non_sampling)):
         bam.update_pangene(cov_pangene_non, genes_non_sampling[i])
     _plot_pangene_meth(cov_pangene_non, 'pan-gene-meth-other-noncoding')
-
+    return None

@@ -1,9 +1,8 @@
 
-import tqdm
 from src.utils import *
 from src.config import params, data
 
-def compt_plot_DNA_composition():
+def compt_plot_DNA_composition() -> None:
     binning_covW = params['binning_covW']
     binning_covC = params['binning_covC']
     length = params['length']
@@ -58,8 +57,9 @@ def compt_plot_DNA_composition():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def _saturation_curve_binning(sampled_bases: int, cov: NDArray):
+def _saturation_curve_binning(sampled_bases: int, cov: NDArray) -> NDArray:
 
     maxdp = len(cov) - np.argmax(cov[::-1] > 0)
     depths = np.repeat(np.arange(1, maxdp+1), cov[:maxdp])
@@ -70,7 +70,7 @@ def _saturation_curve_binning(sampled_bases: int, cov: NDArray):
 
     return np.array([np.sum(sampling>=1), np.sum(sampling>=3), np.sum(sampling>=5), np.sum(sampling>=10)])
 
-def _saturation_curve(breaks=30):
+def _saturation_curve(breaks=30) -> NDArray:
     """
     single-stranded saturation curve
     """
@@ -123,7 +123,7 @@ def _saturation_curve(breaks=30):
         (sampled_basesW+sampled_basesC).reshape((-1,1))/length.sum()/2
         ])
 
-def plot_saturation_curve():
+def plot_saturation_curve() -> None:
     DNA_lost = params['DNA_lost']
     img_dir = params['img_dir']
 
@@ -149,4 +149,5 @@ def plot_saturation_curve():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
     

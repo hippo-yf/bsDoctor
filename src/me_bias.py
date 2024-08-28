@@ -5,7 +5,7 @@ from src.utils import *
 
 
 # DNAme (DP>=k) vs depth
-def plot_me_vs_depth_eq_k():
+def plot_me_vs_depth_eq_k() -> None:
     dict_genome_me = params['dict_genome_me']
     dict_genome_covnC = params['dict_genome_covnC']
     DP = params['MAXDP_IN_FIG']
@@ -28,9 +28,10 @@ def plot_me_vs_depth_eq_k():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
 
 # DNAme (DP=k) vs depth
-def plot_me_vs_depth_ge_k():
+def plot_me_vs_depth_ge_k() -> None:
     dict_genome_me = params['dict_genome_me']
     dict_genome_covnC = params['dict_genome_covnC']
     DP = params['MAXDP_IN_FIG']
@@ -59,8 +60,9 @@ def plot_me_vs_depth_ge_k():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
 
-def plot_me_vs_missing():
+def plot_me_vs_missing() -> None:
     dict_genome_me = params['dict_genome_me']
     dict_genome_covnC = params['dict_genome_covnC']
     dict_Cs = params['dict_Cs']
@@ -87,8 +89,9 @@ def plot_me_vs_missing():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
 
-def plot_me_and_covrate_vs_cytosine_density():
+def plot_me_and_covrate_vs_cytosine_density() -> None:
     dict_binning = params['dict_binning']
     img_dir = params['img_dir']
 
@@ -177,3 +180,4 @@ def plot_me_and_covrate_vs_cytosine_density():
                 plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
                 plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
                 plt.close()
+    return None

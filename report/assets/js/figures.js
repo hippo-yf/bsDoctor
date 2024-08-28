@@ -7,6 +7,11 @@ var COL_gray = "#666666";
 
 var data = alldata.cgkmer_2strands;
 
+// sequence from 1
+function seq_with(x){
+    return Array.from(x, (val, i) => i + 1);
+}
+
 let minlim = Math.min(Math.min(...data.nW), Math.min(...data.nC));
 let maxlim = Math.max(Math.max(...data.nW), Math.max(...data.nC));
 // console.log(minlim, maxlim);
@@ -15,7 +20,7 @@ var layout_freq_on_two_strands = {
     // scattermode: "group",
     // title: "Grouped by Country",
     xaxis: {
-        title: "relative frequency on Watson strand",
+        title: "relative freq on Watson strand",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -24,7 +29,7 @@ var layout_freq_on_two_strands = {
         tickwidth: 2,
     },
     yaxis: {
-        title: "relative frequency on Crick strand",
+        title: "relative freq on Crick strand",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -72,7 +77,7 @@ let maxlim_medp1 = Math.max(Math.max(...data.meWdp1), Math.max(...data.meCdp1));
 
 var layout_me_on_two_strands = {
     xaxis: {
-        title: "mean methylation on Watson strand",
+        title: "mean DNAme on Watson strand",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -81,7 +86,7 @@ var layout_me_on_two_strands = {
         tickwidth: 2,
     },
     yaxis: {
-        title: "mean methylation  on Crick strand",
+        title: "mean DNAme on Crick strand",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -126,7 +131,7 @@ var layout_depth_vs_freq = {
     // scattermode: "group",
     // title: "Grouped by Country",
     xaxis: {
-        title: "relative frequency on two strands",
+        title: "relative freq on two strands",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -178,7 +183,7 @@ let max_me = Math.max(...data.medp1);
 let min_me = Math.min(...data.medp1);
 let layout_me_vs_freq = {
     xaxis: {
-        title: "relative frequency on two strands",
+        title: "relative freq on two strands",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -187,7 +192,7 @@ let layout_me_vs_freq = {
         tickwidth: 2,
     },
     yaxis: {
-        title: "mean methylation level",
+        title: "mean DNAme level",
         showgrid: false,
         showline: true,
         linewidth: 2,
@@ -282,7 +287,8 @@ function hover_off(id) {
 let data_plot_cov_vs_depth = [];
 for (i = 0; i < data.cov.length; i++) {
     let trace = {
-        x: data.dp,
+        // x: data.dp,
+        x: seq_with(data.cov[i]),
         y: data.cov[i],
         name: "",
         text: data.cgkmer[i],
@@ -335,7 +341,8 @@ console.log(data.me.length);
 
 for (i = 0; i < data.me.length; i++) {
     let trace = {
-        x: data.dp,
+        // x: data.dp,
+        x: seq_with(data.me[i]),
         y: data.me[i],
         name: "",
         text: data.cgkmer[i],
@@ -349,6 +356,6 @@ for (i = 0; i < data.me.length; i++) {
 
 var myPlot = document.getElementById("plot-me-vs-depth");
 
-Plotly.newPlot("plot-me-vs-depth", data_plot_me_vs_depth, set_layout(xlabel = "depth threshold", ylabel = "mean methylation level"), config);
+Plotly.newPlot("plot-me-vs-depth", data_plot_me_vs_depth, set_layout(xlabel = "depth threshold", ylabel = "mean DNAme level"), config);
 myPlot.on("plotly_hover", hover_on("plot-me-vs-depth"));
 myPlot.on("plotly_unhover", hover_off("plot-me-vs-depth"));

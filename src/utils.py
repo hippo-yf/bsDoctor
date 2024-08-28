@@ -9,7 +9,6 @@ import random
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pysam
 from numpy.typing import NDArray
 from typing import NamedTuple, List, Tuple, Dict, Any
 
@@ -24,12 +23,12 @@ STRANDS = ['double', 'W', 'C']
 BASES = ['A', 'T', 'C', 'G']
 
 
-def axlimit(x):
+def axlimit(x) -> int:
     k = int(np.log10(x))
     if x < 1: k -= 1
     return (int(x * 10**(1-k))+1) * 10**(k-1)
 
-def prefixBpSize(x):
+def prefixBpSize(x) -> Tuple:
     M = np.max(x)
     if M >= 1e9: 
         x = x/1e9
@@ -44,20 +43,21 @@ def prefixBpSize(x):
     return x, prefix
 
 # divide keeping nan's
-def nandivide(x, y):
+def nandivide(x: NDArray, y: NDArray) -> NDArray:
     i = (y != 0)
     q = np.zeros(np.shape(x), dtype=float)
     q[i] = x[i]/y[i]
-    q[~i] = math.nan
+    q[~i] = np.nan
     return q
 
 # trim values larger than quantile 0.99
-def trimQuantile(x, q=0.99):
+def trimQuantile(x: NDArray, q=0.99) -> NDArray:
     return np.fmin(x, np.quantile(x, q))
 
-def depthDiff(x: NDArray):
+def depthDiff(x: NDArray) -> NDArray:
     return -np.diff(np.hstack([x, 0]))
-def depthCulSum(x: NDArray):
+
+def depthCulSum(x: NDArray) -> NDArray:
     return np.cumsum(x[::-1])[::-1]
 
 def signif(x, digit=3):
@@ -127,7 +127,6 @@ def myMakeDirs(dir: str):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
-
 def getBins(length, bins):
     size = math.ceil(length/bins)
     if size > 10: size = math.ceil(size/10)*10
@@ -149,11 +148,10 @@ def relative_freq_CpG_motif (x, df=4):
     return x/np.sum(x) * 4**df
 
 ## utils for figures
-def abline(intercept, slope, **kw):
+def abline(intercept, slope, **kw) -> None:
     """Plot a line from slope and intercept"""
     axes = plt.gca()
     x_vals = np.array(axes.get_xlim())
     y_vals = intercept + slope * x_vals
     plt.plot(x_vals, y_vals, '--', **kw)
-
-
+    return None

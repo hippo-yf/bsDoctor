@@ -1,11 +1,9 @@
 
-from matplotlib.pyplot import plot
 from src.config import params, data
 from src.utils import *
 
 
-
-def plot_heatmap_stranded_CpG_depth():
+def plot_heatmap_stranded_CpG_depth() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
 
@@ -27,8 +25,9 @@ def plot_heatmap_stranded_CpG_depth():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_bar_CpG_depth_difference():
+def plot_bar_CpG_depth_difference() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
@@ -64,8 +63,9 @@ def plot_bar_CpG_depth_difference():
     params['sd_cpg_depth_diff'] = sda
     params['mean_abscpg_depth_diff'] = b
     params['sd_abs_cpg_depth_diff'] = sdb
+    return None
 
-def plot_bar_double_srtanded_cpg():
+def plot_bar_double_srtanded_cpg() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
@@ -86,8 +86,9 @@ def plot_bar_double_srtanded_cpg():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_heatmap_stranded_CpG_meth():
+def plot_heatmap_stranded_CpG_meth() -> None:
     stranded_CG_meth = params['stranded_CG_meth']
     img_dir = params['img_dir']
 
@@ -117,8 +118,9 @@ def plot_heatmap_stranded_CpG_meth():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_heatmap_stranded_meth_diff():
+def plot_heatmap_stranded_meth_diff() -> None:
     CGmeth_diff_by_depth = params['CGmeth_diff_by_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
@@ -153,4 +155,5 @@ def plot_heatmap_stranded_meth_diff():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 

@@ -5,7 +5,7 @@ from src.utils import *
 from src.config import params, data
 
 
-def compt_RRBS():
+def compt_RRBS() -> None:
     dict_cgkmer = params['dict_cgkmer']
     dict_rrbs = {
         'ccgg': {'kmer':[], 'n': 0, 'nW': 0, 'nC': 0, 'dp': 0, 'dpW': 0, 'dpC': 0, 'me': 0., 'meW': 0., 'meC': 0., 'cov': 0},
@@ -31,8 +31,9 @@ def compt_RRBS():
     params['dict_rrbs'] = dict_rrbs
     params['MAX_DP_RRBS'] = 30
     # maxdp = 30
+    return None
 
-def plot_RRBS_CpG_motifs():
+def plot_RRBS_CpG_motifs() -> None:
     dict_rrbs = params['dict_rrbs']
     maxdp = params['MAX_DP_RRBS']
     img_dir = params['img_dir']
@@ -84,3 +85,4 @@ def plot_RRBS_CpG_motifs():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None

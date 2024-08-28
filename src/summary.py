@@ -5,7 +5,7 @@ from src.utils import *
 
 #### without sampling
 
-def compt_plot_DNA_content():
+def compt_plot_DNA_content() -> None:
     bam = params['bam']
     chr_MT = params['chr_MT']
     chr_lambda = params['chr_lambda']
@@ -49,3 +49,4 @@ def compt_plot_DNA_content():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None

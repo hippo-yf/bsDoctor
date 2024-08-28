@@ -4,7 +4,7 @@ import re
 import pickle
 import numpy as np
 
-from jinja2 import PackageLoader,Environment,FileSystemLoader
+from jinja2 import Environment,FileSystemLoader
 
 #######
 
@@ -37,6 +37,7 @@ def config_params_further():
     SAMPLE = re.search(r'/?([^/\.]+)\.?[^/]*$', params['bamfile']).groups()[0]
     # print(SAMPLE)
     data['SAMPLE'] = SAMPLE
+    params['SAMPLE'] = SAMPLE
     data['title'] = f'bsDoctor Report of Sample: {SAMPLE}'
 
     # nuclear bin size 
@@ -53,8 +54,18 @@ def config_params_further():
     reference_length = fa.get_reference_length
     params['reference_length'] = reference_length
 
-    # chrs to sample and compt
-    chrs_valid = params['testchrs'].split(',')
+    # chrs to sample
+    # chrs_valid = chrs.split(',')
+    chrs = params['testchrs']
+    if chrs != 'all':
+        chrs_valid = chrs.split(',')
+    else:
+        chrs_valid = [
+            chr for chr in fa.references
+            if not chr.endswith(('_random', '_alt')) and not chr.startswith('chrUn_') and chr not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
+        ]
+    print(chrs_valid)
+
     # lengths of chrs
     lens_valid = [reference_length(chr) for chr in chrs_valid]
     params['chrs_valid'] = chrs_valid
@@ -201,7 +212,7 @@ def write_report():
     template = env.get_template('report-bootstrap.jinja-html')
     temp_out = template.render(alldata=data)   
 
-    with open('report/report-1.html', 'w', encoding='utf-8') as f:
+    with open(f'report/report-{params['SAMPLE']}.html', 'w', encoding='utf-8') as f:
         f.writelines(temp_out)
 
 if __name__ == "__main__":
@@ -211,12 +222,12 @@ if __name__ == "__main__":
     
     config_params(options)      
     config_params_further()
+    # print(params)
+    compute_and_plot()
 
-    print(params)
-    
-    # compute_and_plot()
-    # with open('data.pickle', 'wb') as fd:
-    #     pickle.dump(data, fd)
-    # write_report()
+    with open('data.pickle', 'wb') as fd:
+        pickle.dump(data, fd)
+
+    write_report()
     
     

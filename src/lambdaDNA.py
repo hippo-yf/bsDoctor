@@ -5,7 +5,7 @@ from src.config import params, data
 from src.coverage import CovLambda, GenomicIntervalGenerator
 from src.updateBinning import update_lambda
 
-def compt_lambda():
+def compt_lambda() -> None:
     chr_lambda = params['chr_lambda']
     fa = params['fa']
     bam = params['bam']
@@ -63,8 +63,9 @@ def compt_lambda():
             error_rate_lambda = np.mean(dict_lambda.misbase[i]/dict_lambda.dp20[i])
             data['err_rate_lambda'] = fp(error_rate_lambda)
         data['err_rate_lambda']
+    return None
 
-def plot_lambda_depth_binning():
+def plot_lambda_depth_binning() -> None:
     dict_lambda = params['dict_lambda']
     binsContig = params['binsContig']
     binSizeContig = params['binSizeContig']
@@ -107,8 +108,9 @@ def plot_lambda_depth_binning():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_lambda_base_error_rate():
+def plot_lambda_base_error_rate() -> None:
     dict_lambda = params['dict_lambda']
     img_dir = params['img_dir']
     
@@ -122,4 +124,5 @@ def plot_lambda_base_error_rate():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
     

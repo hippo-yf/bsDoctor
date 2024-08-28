@@ -1,15 +1,11 @@
 
-import numpy as np
-from numpy.typing import NDArray
-
 from src.config import params, data
 from src.utils import *
 from src.coverage import randomGenomicRegion
 # from src.sampling import *
 
-
 ## summary
-def compt_quality():
+def compt_quality() -> None:
     bam = params['bam']
     fa = params['fa']
     reads_sample_window = params['reads_sample_window']
@@ -31,13 +27,14 @@ def compt_quality():
     data['quality_nreads'] = fi(quality.nreads)
     data['quality_nbases'] = fi(len(quality.base_quality))
     data['quality_nloci'] = fi(isampled)
+    return None
 
 
 ########################
 #### figures
 ########################
 
-def plot_read_length():
+def plot_read_length() -> None:
     quality = params['quality']
 
     fig, ax = plt.subplots(figsize=(4,2))
@@ -50,8 +47,9 @@ def plot_read_length():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_base_quality():
+def plot_base_quality() -> None:
     quality = params['quality']
 
     fig, ax = plt.subplots(figsize=(4,2))
@@ -63,8 +61,9 @@ def plot_base_quality():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_read_map_quality():
+def plot_read_map_quality() -> None:
     quality = params['quality']
 
     fig, ax = plt.subplots(figsize=(4,2))
@@ -76,8 +75,9 @@ def plot_read_map_quality():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_bar_base_cigar():
+def plot_bar_base_cigar() -> None:
     quality = params['quality']
     prop = quality.ncigars/quality.ncigars.sum()
     x = range(len(prop))
@@ -93,4 +93,5 @@ def plot_bar_base_cigar():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
     

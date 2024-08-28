@@ -5,7 +5,7 @@ from src.config import params, data
 from src.coverage import CovLambda, GenomicIntervalGenerator
 from src.updateBinning import update_lambda
 
-def compt_plastid():
+def compt_plastid() -> None:
     chr_plastid = params['chr_plastid']
     fa = params['fa']
     bam = params['bam']
@@ -65,8 +65,9 @@ def compt_plastid():
             error_rate_plastid = np.mean(dict_plastid.misbase[i]/dict_plastid.dp20[i])
             data['err_rate_plastid'] = fp(error_rate_plastid)
         data['err_rate_plastid']
+    return None
 
-def plot_plastid_depth_binning():
+def plot_plastid_depth_binning() -> None:
     dict_plastid = params['dict_plastid']
     binsContig = params['binsContig']
     binSizeContig = params['binSizeContig']
@@ -109,8 +110,9 @@ def plot_plastid_depth_binning():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_plastid_base_error_rate():
+def plot_plastid_base_error_rate() -> None:
     dict_plastid = params['dict_plastid']
     img_dir = params['img_dir']
     
@@ -124,4 +126,4 @@ def plot_plastid_base_error_rate():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
-        
+    return None

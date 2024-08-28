@@ -9,6 +9,14 @@ from src.utils import myMakeDirs, as_bool
 import matplotlib
 matplotlib.rcParams["svg.fonttype"] = 'none'
 
+# data in python
+global params
+params = dict()
+
+# data exported to Jinja template
+global data
+data = {}
+
 # class Parameters():
 #     fafile: str
 #     fa: MyFastaFile
@@ -60,7 +68,7 @@ matplotlib.rcParams["svg.fonttype"] = 'none'
 ##############################################
 
 # def config_params(args: NamedTuple):
-def config_params(options: Namespace) -> None:
+def config_params(options: Namespace = Namespace()) -> None:
     
     # copy args into "params"
     for key, value in options.__dict__.items():
@@ -86,7 +94,8 @@ def config_params(options: Namespace) -> None:
 
     # testchrs = 'all'
     # testchrs = 'chr21,chr22'
-    testchrs = 'chr1,chr2,chr3,chr18,chr19,chr20,chr21,chr22,chrX'
+    testchrs = 'chr22'
+    # testchrs = 'chr1,chr2,chr3,chr18,chr19,chr20,chr21,chr22,chrX'
     # testchrs = 'NC_003070.9,NC_003071.7,NC_003074.8,NC_003075.7,NC_003076.8'
     # testchrs = 'NC_003075.7,NC_003076.8'
 
@@ -120,7 +129,7 @@ def config_params(options: Namespace) -> None:
     params['step'] = 2000
     params['quality_threshold'] = 0
     params['read_quality'] = 0
-    params['nuclear_sampling_step'] = 100
+    params['nuclear_sampling_step'] = 1000
     params['nuclear_sampling_spacing'] = 10_000
     params['context_size'] = 3
     params['cgkmerSize'] = 6
@@ -155,9 +164,6 @@ def config_params(options: Namespace) -> None:
 
     return None
 
-
-global params
-params = dict()
 
     # params = Parameters(
     #     fafile=fafile, 
@@ -200,9 +206,6 @@ params = dict()
     #     )
 
 
-# data exported to Jinja
-global data
-data = {}
 
 class MyArgumentParser(ArgumentParser):
     def __init__(self, **args) -> None:

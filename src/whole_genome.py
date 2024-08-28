@@ -1,12 +1,11 @@
 
 from numpy import float64, int64
-import tqdm
 from src.utils import *
 from src.config import params, data
 
 from src.utils import adjust_me
 
-def compt_whole_genome():
+def compt_whole_genome() -> None:
     dict_binning = params['dict_binning']
     MAXDEPTH = params['MAXDEPTH']
 
@@ -246,8 +245,9 @@ def compt_whole_genome():
     err_rate_AT = np.mean(err_AT)
     data['err_rate_AT'] = fp(err_rate_AT)
     params['err_AT'] = err_AT
+    return None
 
-def plot_base_error_rate_by_AT():
+def plot_base_error_rate_by_AT() -> None:
     err_AT = params['err_AT']
     img_dir = params['img_dir']
 
@@ -261,8 +261,9 @@ def plot_base_error_rate_by_AT():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
 
-def plot_theroretical_me_bias():
+def plot_theroretical_me_bias() -> None:
     # DNAme bias
     bsrate = np.linspace(0.8, 1, 200)
     meth = np.linspace(0, 1, 200)
@@ -294,9 +295,10 @@ def plot_theroretical_me_bias():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
 # count/desity of Cs by meth level binning
-def plot_hist_me():
+def plot_hist_me() -> None:
     methDist = params['methDist']
     img_dir = params['img_dir']
 
@@ -321,3 +323,4 @@ def plot_hist_me():
             plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
             plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
+    return None

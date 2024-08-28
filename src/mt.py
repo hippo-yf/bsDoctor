@@ -5,7 +5,7 @@ from src.config import params, data
 from src.coverage import CovLambda, GenomicIntervalGenerator
 from src.updateBinning import update_lambda
 
-def compt_MT():
+def compt_MT() -> None:
     chr_MT = params['chr_MT']
     fa = params['fa']
     bam = params['bam']
@@ -63,8 +63,9 @@ def compt_MT():
         error_rate_MT = np.mean(dict_MT.misbase[i]/dict_MT.dp20[i])
         data['err_rate_mt'] = fp(error_rate_MT)
     data['err_rate_mt']
+    return None
 
-def plot_mt_depth_binning():
+def plot_mt_depth_binning() -> None:
     dict_MT = params['dict_MT']
     binsContig = params['binsContig']
     binSizeContig = params['binSizeContig']
@@ -110,8 +111,9 @@ def plot_mt_depth_binning():
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    return None
 
-def plot_mt_base_error_rate():
+def plot_mt_base_error_rate() -> None:
     dict_MT = params['dict_MT']
     img_dir = params['img_dir']
 
@@ -125,4 +127,4 @@ def plot_mt_base_error_rate():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
-
+    return None
