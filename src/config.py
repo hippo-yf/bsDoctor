@@ -119,9 +119,9 @@ def config_params(options: Namespace = Namespace()) -> None:
     myMakeDirs(params['img_dir'])
 
     # to analyse or not
-    params['include_mt'] = False if options.chr_MT == '-' else True
-    params['include_plastid'] = False if options.chr_plastid == '-' else True
-    params['include_lambda'] = False if options.chr_lambda == '-' else True
+    params['include_mt'] = options.chr_MT != '-'
+    params['include_plastid'] = options.chr_plastid != '-'
+    params['include_lambda'] = options.chr_lambda != '-'
 
     #### copy/substitue args
     for key, value in options.__dict__.items():
