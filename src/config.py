@@ -112,11 +112,7 @@ def config_params(options: Namespace = Namespace()) -> None:
     params['work_dir'] = '.'
     # params['report_dir'] = os.path.join(params['work_dir'], 'report')
     params['report_dir'] = params['work_dir']
-    params['img_dir'] = os.path.join(params['report_dir'], 'img2')
-    
-    myMakeDirs(params['work_dir'])
-    myMakeDirs(params['report_dir'])
-    myMakeDirs(params['img_dir'])
+    # params['img_dir'] = os.path.join(params['report_dir'], 'img2')
 
     # to analyse or not
     params['include_mt'] = options.chr_MT != '-'
@@ -127,6 +123,11 @@ def config_params(options: Namespace = Namespace()) -> None:
     for key, value in options.__dict__.items():
         params[key] = value
         # pass
+    
+    params['img_dir'] = os.path.join(params['report_dir'], 'img')
+    myMakeDirs(params['work_dir'])
+    myMakeDirs(params['report_dir'])
+    myMakeDirs(params['img_dir'])
 
     return None
 
@@ -142,10 +143,14 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--mt', dest='chr_MT', help='name of mitochondrial DNA', type=str, required=False, default='-')
         self.add_argument('--plastid', dest='chr_plastid', help='name of plastid DNA', type=str, required=False, default='-')
         self.add_argument('--control-DNA', dest='chr_lambda', help='name of spiked-in DNA, usually lambda DNA', type=str, required=False, default='-')
+        self.add_argument('--diag-quality', dest='include_quality', help='diagnose sequencing and mapping quality or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-pangene', dest='include_pangene', help='diagnose pangene methylation or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-motif', dest='include_motif', help='diagnose CpG-motif-related patterns or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-saturation', dest='include_saturation', help='diagnose sequencing saturation or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
         self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
         self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
         self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, 100kbp by defaults', type=int, default=100_000)
-        self.add_argument('--bins-control', dest='bins_lambda, 1000 bins by defaults', help='bins of spkied-in control DNA', type=int, default=1000)
+        self.add_argument('--bins-control', dest='bins_lambda', help='bins of spkied-in control DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-mt', dest='bins_MT', help='bins of mitochondrial DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-plastid', dest='bins_plastid', help='bins of plastid DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--base-quality', dest='quality_threshold', help='base quality threshold', type=int, required=False, default=0)
@@ -153,12 +158,12 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--max-depth', dest='MAXDEPTH', help='depth larger than max depth will be truncated, 200 by defaults', type=int, default=200)
         self.add_argument('--reads-for-quality', dest='reads_to_sample', help='reads to sample for quality statstics, 10K reads by defaults', type=int, default=10_000)
         self.add_argument('--num-pangene', dest='PANGENE_SAMPLED', help='genes to sample for pangene methylaion level, 1000 by defaults', type=int, default=1_000)
-        self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 30 by defaults', type=int, default=30)
+        self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 30 by defaults', type=int, default=20)
         self.add_argument('--max-depth-motig', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
         self.add_argument('--coordinate-base', dest='coordinate_base', help='0/1-based coordinate of output', type=int, default=1)
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
-        self.add_argument('--report-dir', dest='report_dir', help='report directory, the current directory by defaults', type=str, default='.')
-        self.add_argument('--figure-dir', dest='img_dir', help='figure subdirectory', type=str, default='img')
+        self.add_argument('--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
+        # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
         ## todo
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')
 

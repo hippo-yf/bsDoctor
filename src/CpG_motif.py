@@ -100,7 +100,7 @@ def plot_hist_CpG_motif_freq() -> None:
     plt.xlabel('relative freq (fold over 1/256)')
     plt.ylabel('#CpG-motif')
 
-    filename = f'{img_dir}/kmer-frequency-dist'
+    filename = f'{img_dir}/CpG-motif-frequency-dist'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -116,7 +116,7 @@ def plot_CpG_motif_freq_watson_vs_crick() -> None:
     plt.xlabel('relative freq on Watson strand')
     plt.ylabel('relative freq on Crick strand')
 
-    filename = f'img/{img_dir}-stranded-frequency'
+    filename = f'{img_dir}/CpG-motif-stranded-frequency'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -132,7 +132,7 @@ def plot_CpG_motif_me_watson_vs_crick() -> None:
     plt.xlabel('mean DNAme level on Watson strand')
     plt.ylabel('mean DNAme level on Crick strand')
 
-    filename = f'{img_dir}/kmer-stranded-me-dp1'
+    filename = f'{img_dir}/CpG-motif-stranded-me-dp1'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -148,7 +148,7 @@ def plot_CpG_motif_depth_vs_freq() -> None:
     plt.ylabel("mean read depth")
     plt.vlines(1, ax.get_ylim()[0], ax.get_ylim()[1], colors=COL_gray, linestyles='dashed')
 
-    filename = f'{img_dir}/kmer-mean-depth-vs-freq'
+    filename = f'{img_dir}/CpG-motif-mean-depth-vs-freq'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -165,7 +165,7 @@ def plot_CpG_motif_me_vs_freq() -> None:
     plt.ylabel("mean DNAme level")
     plt.vlines(1, ax.get_ylim()[0], ax.get_ylim()[1], colors=COL_gray, linestyles='dashed')
 
-    filename = f'{img_dir}/kmer-meth-vs-frequency'
+    filename = f'{img_dir}/CpG-motif-meth-vs-frequency'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -183,7 +183,7 @@ def plot_CpG_motif_covrate_vs_depth() -> None:
     plt.xlabel("depth threshold")
     plt.ylabel("coverage rate")
 
-    filename = f'{img_dir}/kmer-coverage-vs-depth'
+    filename = f'{img_dir}/CpG-motif-coverage-vs-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
@@ -201,7 +201,7 @@ def plot_CpG_motif_me_vs_depth() -> None:
     plt.xlabel("depth threshold")
     plt.ylabel("mean DNAme level")
 
-    filename = f'{img_dir}/kmer-meth-vs-depth'
+    filename = f'{img_dir}/CpG-motif-meth-vs-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()

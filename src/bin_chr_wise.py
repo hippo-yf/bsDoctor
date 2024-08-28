@@ -12,6 +12,7 @@ def nuclear_sampling():
     chrs_valid = params['chrs_valid']
     step = params['nuclear_sampling_step']
     spacing = params['nuclear_sampling_spacing']
+    include_motif = params['include_motif']
 
     intervals = iter(GenomicIntervalGenerator(
         fa, 
@@ -24,9 +25,9 @@ def nuclear_sampling():
         ))
 
     intervals_list = list(intervals)
-    for i in tqdm.trange(len(intervals_list)):
+    for i in tqdm.trange(len(intervals_list), desc='Sampling nuclear chr: '):
         detailedIntvl = bam.detailedCoverage(intervals_list[i])
-        update_cgkmer(detailedIntvl)
+        if include_motif: update_cgkmer(detailedIntvl)
         update_binning(detailedIntvl)
 
 def compt_chr_and_bin_wise():

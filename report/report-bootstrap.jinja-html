@@ -1280,7 +1280,7 @@
             The following figure shows the histogram of relative frequency of each
             CpG-motif as the fold of mean proportion of 1/256 ≈ 0.0039.
           </p>
-          <img src="../img/kmer-frequency-dist.png" alt="" height=250px" />
+          <img src="../img/CpG-motif-frequency-dist.png" alt="" height=250px" />
 
         </article>
         <article id="stranded-CpG-kmer-frequency">

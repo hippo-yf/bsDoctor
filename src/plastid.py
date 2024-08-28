@@ -25,7 +25,7 @@ def compt_plastid() -> None:
         ))
 
     intervals_list = list(intervals)
-    for i in tqdm.trange(len(intervals_list)):
+    for i in tqdm.trange(len(intervals_list), desc='Sampling plastid: '):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
         update_lambda(dict_plastid, detailedIntvl)
     

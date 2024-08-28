@@ -64,19 +64,19 @@ def pangene_compt_plot_meth() -> None:
 
     # coding
     cov_pangene_coding = CovPanGene(bins)
-    for i in tqdm.trange(len(genes_coding_sampling)):
+    for i in tqdm.trange(len(genes_coding_sampling), desc='Sampling coding genes: '):
         bam.update_pangene(cov_pangene_coding, genes_coding_sampling[i])
     _plot_pangene_meth(cov_pangene_coding, 'pan-gene-meth-coding')
 
     # lncRNA
     cov_pangene_lnc = CovPanGene(bins)
-    for i in tqdm.trange(len(genes_lnc_sampling)):
+    for i in tqdm.trange(len(genes_lnc_sampling), desc='Sampling long-noncoding genes: '):
         bam.update_pangene(cov_pangene_lnc, genes_lnc_sampling[i])
     _plot_pangene_meth(cov_pangene_lnc, 'pan-gene-meth-lncRNA')
 
     # other noncoding
     cov_pangene_non = CovPanGene(bins)
-    for i in tqdm.trange(len(genes_non_sampling)):
+    for i in tqdm.trange(len(genes_non_sampling), desc='Sampling other non-coding genes: '):
         bam.update_pangene(cov_pangene_non, genes_non_sampling[i])
     _plot_pangene_meth(cov_pangene_non, 'pan-gene-meth-other-noncoding')
     return None
