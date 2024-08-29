@@ -404,17 +404,17 @@
           <div class="row">
             <div class="col">
               <p class="text-center title">Base quality</p>
-              <img src="../img/hist-base-quality.png" alt="" width="400px" />
+              <img src="img/hist-base-quality.png" alt="" width="400px" />
             </div>
             <div class="col">
               <p class="text-center title">Read length</p>
-              <img src="../img/hist-read-length.png" alt="" width="400px" />
+              <img src="img/hist-read-length.png" alt="" width="400px" />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <p class="text-center title">Read mapping quality</p>
-              <img src="../img/hist-read-map-quality.png" alt="" width="400px" />
+              <img src="img/hist-read-map-quality.png" alt="" width="400px" />
             </div>
             <div class="col">
               <p id="cap-cigar" class="text-center title">
@@ -438,7 +438,7 @@
                   <li>B: backwards skip</li>
                 </ul>
               </div>
-              <img src="../img/bar-base-CIGAR.png" alt="" width="400px" />
+              <img src="img/bar-base-CIGAR.png" alt="" width="400px" />
             </div>
           </div>
 
@@ -483,7 +483,7 @@
           <h3>Adjust DNAme level</h3>
           <p>DNAme bias, i.e., observed DNAme level - real DNAme level, is dependent on (observed/unadjusted) DNAme
             level and bisulfite conversion rate. The theoretical relationsip is illustrated by the following figure.</p>
-          <img src="../img/DNAme-bias.png" alt="" width="450px" />
+          <img src="img/DNAme-bias.png" alt="" width="450px" />
           <p>
             Adjust (whole-genome) DNAme level according to incomplete bisulfite conversion. <sup
               class="question-marker">?</sup> The conversion rate of {{ alldata.bs_rate }}% is adopted.
@@ -538,7 +538,7 @@
           </ul>
 
           The error rate histogram of each {{alldata.bin_size}} binning window of nuclear chromosomes is
-          <img src="../img/base-error-rate-by-AT.png" alt="" width="400px" />
+          <img src="img/base-error-rate-by-AT.png" alt="" width="400px" />
         </article>
       </section>
 
@@ -557,7 +557,7 @@
             depth, y-axis represents single-stranded whole-genome coverage. The dashed line is the estimated asymptotic
             whole-genome coverage if this library is sequenced continuously.
           </p>
-          <img src="../img/saturation-curve.png" alt="" width="500px" />
+          <img src="img/saturation-curve.png" alt="" width="500px" />
         </article>
 
         <article id="DNA-template-loss">
@@ -585,13 +585,13 @@
             <li>saturation: {{ alldata.saturaion }}% </li>
           </ul>
           
-          <img src="../img/pie-DNA-lost.png" alt="" height="200px" />
+          <img src="img/pie-DNA-lost.png" alt="" height="200px" />
         </article>
 
         <article id="DNA-composition">
           <h3>DNA composition</h3>
           <p>The DNA content of nuclear, mitochondria, plastids, and spikied-in (lambda) DNA in the library is proportional to reads mapped to coorresponding chromosomes/contigs.</p>
-          <img src="../img/pie-DNA-content.png" alt="" height="200px" />
+          <img src="img/pie-DNA-content.png" alt="" height="200px" />
         </article>
       </section>
 
@@ -612,7 +612,7 @@
           <p>
             Mean read depth of {{ alldata.mt_bin_size }}bp binning windows for Watson strand (top), Crick strand (middle), and double strands (bottom).
           </p>
-          <img src="../img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
+          <img src="img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
           <div class="caption" link="#cap-15">
             Check the uniformness of read coverage.
           </div>
@@ -660,7 +660,7 @@
           <div class="caption" link="#cap-9">
             Mutation rate is much smaller than error rate in bisulfite-seq samples.
           </div>
-          <img src="../img/base-error-rate-dist-MT.png" alt="" width="400px" />
+          <img src="img/base-error-rate-dist-MT.png" alt="" width="400px" />
         </article>
       </section>
       {% endif %}
@@ -686,7 +686,7 @@
             <li>Read depth: {{alldata.lambda_mean_dp}}(mean), {{alldata.lambda_median_dp}}(median)</li>
           </ul>
           </p>
-          <img src="../img/depth-bin-lambda.png" alt="" width="600px" id="cap-10" />
+          <img src="img/depth-bin-lambda.png" alt="" width="600px" id="cap-10" />
           <div class="caption" link="#cap-10">
             Check the uniformness of coverage depth
           </div>
@@ -735,7 +735,7 @@
             The actual error rate estimate is the median of each bin which is
             robust.
           </div>
-          <img src="../img/base-error-rate-dist-lambda.png" alt="" width="400px" />
+          <img src="img/base-error-rate-dist-lambda.png" alt="" width="400px" />
         </article>
       </section>
       {% endif %}
@@ -769,7 +769,7 @@
           <div class="row">
             <div class="col-xl-12">
               <div class="col-auto">
-                <img src="../img/depth-bin-single.png" alt="" id="img-depth-bin" />
+                <img src="img/depth-bin-single.png" alt="" id="img-depth-bin" />
                 <div class="caption" link="#img-depth-bin">
                   Check the uniformness of coverage depth of each strand and
                   whole genome.
@@ -781,7 +781,7 @@
 
         <article id="depth-of-two-strands">
           <h3>Read depth of two strands</h3>
-          <img src="../img/depth-of-two-strands.png" alt="" width="400px">
+          <img src="img/depth-of-two-strands.png" alt="" width="400px">
         </article>
 
         <article id="depth-distribution">
@@ -789,11 +789,11 @@
           <div class="row">
             <div class="col-6 text-center">
               <p>Mapped read depth of whole genome</p>
-              <img src="../img/whole-genome-depth-distribution.png" alt="" width="400px" />
+              <img src="img/whole-genome-depth-distribution.png" alt="" width="400px" />
             </div>
             <div class="col-6 text-center">
               <p>Whole genome coverage rate</p>
-              <img src="../img/whole-genome-coverage-vs-depth.png" alt="" width="400px" />
+              <img src="img/whole-genome-coverage-vs-depth.png" alt="" width="400px" />
             </div>
           </div>
         </article>
@@ -811,11 +811,11 @@
           <div class="row">
             <div class="col text-center">
               <p>Methylation read depth</p>
-              <img src="../img/genome-CG-depth-distribution.png" alt="" width="400px" id="img-Cs-depth-dist" />
+              <img src="img/genome-CG-depth-distribution.png" alt="" width="400px" id="img-Cs-depth-dist" />
             </div>
             <div class="col text-center">
               <p>Cytosine coverage rate</p>
-              <img src="../img/genome-CG-coverage-vs-depth.png" alt="" width="400px" id="img-Cs-depth-coverage" />
+              <img src="img/genome-CG-coverage-vs-depth.png" alt="" width="400px" id="img-Cs-depth-coverage" />
             </div>
             <div class="col" style="margin-top: 35px">
               <p class="label">Cytosine context</p>
@@ -840,7 +840,7 @@
           <p>Available reads for methyaltion calculation is a subset of total reads.</p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/depth-vs-meth-depth-of-watson-strand.png" alt="" width="400px"
+              <img src="img/depth-vs-meth-depth-of-watson-strand.png" alt="" width="400px"
                 id="img-depth-vs-meth-depth" />
               <div class="caption" link="#img-depth-vs-meth-depth"></div>
             </div>
@@ -868,9 +868,9 @@
           </p>
           <div class="row">
             <div class="col-9">
-              <!-- <object type="image/svg+xml" data="../img/covrate-vs-CG-density-of-double-strand.svg" width="500"></object> -->
+              <!-- <object type="image/svg+xml" data="img/covrate-vs-CG-density-of-double-strand.svg" width="500"></object> -->
 
-              <img src="../img/covrate-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
+              <img src="img/covrate-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
                 id="img-cov-rate-vs-Cs-density" />
               <div class="caption" link="#img-cov-rate-vs-Cs-density"></div>
             </div>
@@ -919,7 +919,7 @@
             window with colour indicating the density of windows.</p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/depth-vs-CG-density-of-double-strand.png" alt="" width="400px"
+              <img src="img/depth-vs-CG-density-of-double-strand.png" alt="" width="400px"
                 id="img-depth-vs-Cs-density" />
               <div class="caption" link="#img-depth-vs-Cs-density"></div>
             </div>
@@ -968,7 +968,7 @@
           </p>
           <div class="row">
             <div class="col-8">
-              <img src="../img/meth-dist-genome-CG-dp1.svg" alt="" width="500px" id="img-meth-dist" />
+              <img src="img/meth-dist-genome-CG-dp1.svg" alt="" width="500px" id="img-meth-dist" />
             </div>
             <div class="col-4 legend">
               <p class="label">Depth ≥ <span id="label-1">1</span></p>
@@ -995,7 +995,7 @@
           <p>Mean methylation level of each chromosomes/contigs.</p>
           <div class="row">
             <div class="col-8">
-              <img src="../img/meth-chr-CG-double-dp1.svg" alt="" height="250px" id="img-meth-chr" />
+              <img src="img/meth-chr-CG-double-dp1.svg" alt="" height="250px" id="img-meth-chr" />
             </div>
             <div class="col-4 legend">
               <p class="label">Depth ≥ <span id="label-2">1</span></p>
@@ -1057,7 +1057,7 @@
           </div>
           <div class="row">
             <div class="col-xl-12">
-              <img src="../img/meth-bin-CG-single-dp1.png" alt="" id="img-meth-bin" />
+              <img src="img/meth-bin-CG-single-dp1.png" alt="" id="img-meth-bin" />
             </div>
           </div>
         </article>
@@ -1071,7 +1071,7 @@
           <p>For cytosines of read <strong>depth = k</strong> ≥ 1.</p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/meth-CG-at-dp-k.svg" alt="" width="400px" id="img-meth-at-dp" />
+              <img src="img/meth-CG-at-dp-k.svg" alt="" width="400px" id="img-meth-at-dp" />
               <div class="caption" link="#img-meth-at-dp">
                 Ideally, methylation level should be independent with depth.
               </div>
@@ -1099,7 +1099,7 @@
           <p>For cytosines with read <strong>depth ≥ k</strong> ≥ 1.</p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/meth-CG-vs-dp-threshold.svg" alt="" width="400px" id="img-cul-meth-by-dp" />
+              <img src="img/meth-CG-vs-dp-threshold.svg" alt="" width="400px" id="img-cul-meth-by-dp" />
               <div class="caption" link="#img-cul-meth-by-dp">
                 Ideally, methylation level should be independent with depth.
               </div>
@@ -1132,7 +1132,7 @@
           </p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/meth-CG-vs-missing-rate.svg" alt="" width="400px" id="img-meth-vs-missing-rate" />
+              <img src="img/meth-CG-vs-missing-rate.svg" alt="" width="400px" id="img-meth-vs-missing-rate" />
               <div class="caption" link="#img-meth-vs-missing-rate">
                 Ideally, methylation level should be independent with depth.
               </div>
@@ -1163,7 +1163,7 @@
           </p>
           <div class="row">
             <div class="col-9">
-              <img src="../img/meth-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
+              <img src="img/meth-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
                 id="img-meth-vs-Cs-density" />
               <div class="caption" link="#img-meth-vs-Cs-density"></div>
             </div>
@@ -1210,8 +1210,8 @@
             The depth is methylation depth, namely accounting for only C/T
             reads for Watson strand and G/A reads for Crick strand.
           </p>
-          {# <object class="img" data="../img/depth-of-low-high-meth-CGs.svg" type="image/svg+xml" width="500px"></object> #}
-          <img src="../img/depth-of-low-high-meth-CGs.png" alt="" width="450px" />
+          {# <object class="img" data="img/depth-of-low-high-meth-CGs.svg" type="image/svg+xml" width="500px"></object> #}
+          <img src="img/depth-of-low-high-meth-CGs.png" alt="" width="450px" />
         </article>
 
       </section>
@@ -1226,7 +1226,7 @@
             different Watson (row) and Crick (column) read depths. Uncovered
             CpGs with coordinate (0,0) is removed for better visualization.
           </p>
-          <img src="../img/heatmap-cg-stranded-depth.png" alt="" width="500px" />
+          <img src="img/heatmap-cg-stranded-depth.png" alt="" width="500px" />
         </article>
         <article id="CpG-depth-diff">
           <h3>Stranded depth difference</h3>
@@ -1236,7 +1236,7 @@
             <li>mean of absolute difference: , sd = </li>
           </ul>
           </p>
-          <img src="../img/cg-stranded-depth-difference.png" alt="" height="250px" />
+          <img src="img/cg-stranded-depth-difference.png" alt="" height="250px" />
         </article>
         <article id="CpG-double-stranded-coverage">
           <!-- <h3>CpGs with double-stranded coverage</h3> -->
@@ -1247,7 +1247,7 @@
             {\#\{ \text{CpGs with either Watson or Crick depths} \ge
             \text{DP}\}} $$
           </p>
-          <img src="../img/cg-prop-of-double-stranded-coverage.png" alt="" height="300px" />
+          <img src="img/cg-prop-of-double-stranded-coverage.png" alt="" height="300px" />
         </article>
         <article id="CpG-stranded-meth">
           <h3>CpG methylation strandness</h3>
@@ -1256,7 +1256,7 @@
             Crick strand methylation. All consensus CpGs with depth ≥ 1 are
             included.
           </p>
-          <img src="../img/heatmap-cg-stranded-meth.png" alt="" width="500px" />
+          <img src="img/heatmap-cg-stranded-meth.png" alt="" width="500px" />
         </article>
         <article id="CpG-stranded-meth-diff">
           <h3>CpG stranded methylation difference</h3>
@@ -1266,7 +1266,7 @@
             (x-axis), represented by $\min\{ \text{depth}_\text{Watson},
             \text{depth}_\text{Crick} \} $.
           </p>
-          <img src="../img/heatmap-cg-stranded-meth-diff.png" alt="" height="400px" />
+          <img src="img/heatmap-cg-stranded-meth-diff.png" alt="" height="400px" />
         </article>
       </section>
 
@@ -1280,25 +1280,25 @@
             The following figure shows the histogram of relative frequency of each
             CpG-motif as the fold of mean proportion of 1/256 ≈ 0.0039.
           </p>
-          <img src="../img/CpG-motif-frequency-dist.png" alt="" height=250px" />
+          <img src="img/CpG-motif-frequency-dist.png" alt="" height=250px" />
 
         </article>
         <article id="stranded-CpG-kmer-frequency">
           <h3>Stranded CpG-motif frequency</h3>
           <p>Relative frequency on two strands.</p>
-          <!-- <img src="../img/kmer-stranded-frequency.png" alt="" width="500px" /> -->
+          <!-- <img src="img/kmer-stranded-frequency.png" alt="" width="500px" /> -->
           <div class="img" id="plot-freq-on-two-strands" style="width: 450px; height: 350px"></div>
         </article>
         <article id="stranded-CpG-kmer-meth">
           <h3>Stranded CpG-motif methylation</h3>
           <p>Mean methyaltion level a CpG-motif on two strands (depth ≥ 1).</p>
           <div class="img" id="plot-kmer-meth-on-two-strands" style="width: 450px; height: 350px"></div>
-          <!-- <img src="../img/kmer-stranded-me-dp1.png" alt="" width="500px" /> -->
+          <!-- <img src="img/kmer-stranded-me-dp1.png" alt="" width="500px" /> -->
         </article>
         <article id="CpG-kmer-depth-vs-frequency">
           <h3>Mean depth vs frequency</h3>
           <div class="img" id="plot-depth-vs-freq" style="width: 450px; height: 350px"></div>
-          <!-- <img src="../img/kmer-mean-depth-vs-freq.png" alt="" width="500px" /> -->
+          <!-- <img src="img/kmer-mean-depth-vs-freq.png" alt="" width="500px" /> -->
         </article>
         <article id="CpG-kmer-meth-vs-frequency">
           <h3>Mean methylation vs frequency</h3>
@@ -1307,7 +1307,7 @@
             (NN<strong>C</strong>GNN).
           </p>
           <div class="img" id="plot-kmer-meth-vs-freq" style="width: 450px; height: 350px"></div>
-          <!-- <img src="../img/kmer-meth-vs-frequency.png" alt="" width="500px" /> -->
+          <!-- <img src="img/kmer-meth-vs-frequency.png" alt="" width="500px" /> -->
         </article>
         <article id="CpG-kmer-coverage-vs-depth">
           <h3>Coverage rate vs read depth</h3>
@@ -1317,7 +1317,7 @@
           </p>
           <div class="img" id="plot-cov-vs-depth" style="width: 500px; height: 400px"></div>
           <!-- <img
-              src="../img/cgmker-cul-coverage-vs-depth.png"
+              src="img/cgmker-cul-coverage-vs-depth.png"
               alt=""
               width="60%"
             /> -->
@@ -1329,7 +1329,7 @@
             with different thresholds of depth.
           </p>
           <div class="img" id="plot-me-vs-depth" style="width: 500px; height: 400px"></div>
-          <!-- <img src="../img/cgkmer-cul-meth-vs-depth.png" alt="" width="60%" /> -->
+          <!-- <img src="img/cgkmer-cul-meth-vs-depth.png" alt="" width="60%" /> -->
         </article>
       </section>
 
@@ -1344,7 +1344,7 @@
             mean single-stranded methylation read depth of CCGG-context CpGs is {{alldata.ccgg_mean_dp}} (leftbottom figure). The coverage
             rate and mean methyaltion level of CCGG- and non-CCGG-context CpGs with varing depth thresholds are shown in
             righttop and rightbottom figures, respectively.</p>
-          <img src="../img/rrbs-kmer-summary.png" alt="" width="500px">
+          <img src="img/rrbs-kmer-summary.png" alt="" width="500px">
         </article>
       </section>
 
@@ -1358,7 +1358,7 @@
         <article id="pan-gene-coding">
           <h3>Coding genes</h3>
           <p>Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_coding}}) coding genes.</p>
-          <img src="../img/pan-gene-meth-coding.png" alt="" width="450px" />
+          <img src="img/pan-gene-meth-coding.png" alt="" width="450px" />
         </article>
         <article id="pan-gene-lnc">
           <h3>Long non-coding genes</h3>
@@ -1366,7 +1366,7 @@
             Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_lnc}}) long non-coding RNA
             (lncRNA) genes.
           </p>
-          <img src="../img/pan-gene-meth-lncRNA.png" alt="" width="450px" />
+          <img src="img/pan-gene-meth-lncRNA.png" alt="" width="450px" />
         </article>
         <article id="pan-gene-other">
           <h3>Other non-coding genes</h3>
@@ -1374,7 +1374,7 @@
             Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_noncoding}}) other non-coding
             genes, namely genes except coding and lncRNA genes.
           </p>
-          <img src="../img/pan-gene-meth-other-noncoding.png" alt="" width="450px" />
+          <img src="img/pan-gene-meth-other-noncoding.png" alt="" width="450px" />
         </article>
       </section>
     </div>
