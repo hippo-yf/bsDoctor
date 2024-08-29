@@ -64,7 +64,7 @@ def config_params_further():
             chr for chr in fa.references
             if not chr.endswith(('_random', '_alt')) and not chr.startswith('chrUn_') and chr not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
         ]
-    print(chrs_valid)
+    # print(chrs_valid)
 
     # lengths of chrs
     lens_valid = [reference_length(chr) for chr in chrs_valid]
@@ -232,8 +232,7 @@ def write_report():
     
     env = Environment(loader=FileSystemLoader('report/'))
     env.globals["include_file"] = include_file
-    # template = env.get_template('base.html')   
-    template = env.get_template('report-bootstrap.jinja-html')
+    template = env.get_template('main.jinja-html')
     temp_out = template.render(alldata=data)   
 
     with open(f'{params['report_dir']}/report-{params['SAMPLE']}.html', 'w', encoding='utf-8') as f:
@@ -246,7 +245,7 @@ if __name__ == "__main__":
     
     config_params(options)      
     config_params_further()
-    print(params)
+    # print(params)
     compute_and_plot()
 
     with open(f'{params['report_dir']}/data.pickle', 'wb') as fd:
