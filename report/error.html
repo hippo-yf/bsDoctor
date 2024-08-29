@@ -1,0 +1,42 @@
+{# #######################
+error.html
+##########################
+
+diagnosis of base-level error.
+
+#}
+
+<section id="error">
+    <article>
+        <h2>Base-level error</h2>
+        <p>
+            The base-level error, assuming the reads are mapped to correct genomic positions, is estimated by the
+            proportion of inconsistent bases,
+            namely <sup class="question-marker" id="cap3-1">?</sup>
+        <div class="caption" link="#cap3-1">Only available when mutation rate is much less than error rate.</div>
+        {% raw %}
+        $$ \text {error rate} = \frac {\text {\#\{inconsistent
+        bases with reference\} }} {\#\text{\{total mapped bases\}}}. $$
+        {% endraw %}
+        </p>
+        <ul>
+            <li id="cap-4">
+                For nuclear genome, from bases mapped to A/T sites<sup class="question-marker">?</sup>: {{
+                alldata.err_rate_AT }}%;
+            </li>
+            <div class="caption" link="#cap-4">
+                Most single-nucleotide variations (SNVs) are C → T and
+                G → A.
+            </div>
+            {% if alldata.mt_is_covered == 1 %}
+            <li>For mitochondrial genome: {{ alldata.err_rate_mt }}% </li>
+            {% endif %}
+            {% if alldata.lambda_is_covered == 1 %}
+            <li>For spike-in unmethylated control DNA: {{ alldata.err_rate_lambda }}%</li>
+            {% endif %}
+        </ul>
+
+        The error rate histogram of each {{alldata.bin_size}} binning window of nuclear chromosomes is
+        <img src="img/base-error-rate-by-AT.png" alt="" width="400px" />
+    </article>
+</section>

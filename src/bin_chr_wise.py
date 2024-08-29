@@ -257,8 +257,10 @@ def plot_binning_meth():
             fig.subplots_adjust(hspace=0)
             
             plt.xlim(-2, prefixBpSize(np.array([maxbins * binSize]))[0]+2)
+            kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
             for i, chr in enumerate(chrs_plot):
-                if i + 1 == int((nchr+1) / 2):
+                if i == kylabel:
+                    axs[i].yaxis.set_label_position('left')
                     axs[i].set_ylabel('mean DNAme level')
                 shape = np.shape(me[chr])
                 x = np.arange(shape[0]) * binSize
@@ -279,8 +281,9 @@ def plot_binning_meth():
                     axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
                     axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
                     axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-                if i % 2 == nchr % 2: # ensure ylabel on the left always
-                    axs[i].yaxis.set_label_position('right')
+                # if i % 2 == nchr % 2: # ensure ylabel on the left always
+                if kylabel % 2 == 0:
+                    # axs[i].yaxis.set_label_position('right')
                     axs[i].yaxis.tick_right()
                 axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
             # if prefix == '':
@@ -323,8 +326,12 @@ def plot_binning_depth():
             maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs_plot]), 0.98)
         else:
             maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs_plot]), 0.98)
+            
+        kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
         for i, chr in enumerate(chrs_plot):
-            if i + 1 == int((nchr+1) / 2):
+            # if i + 1 == int((nchr+1) / 2):
+            if i == kylabel:
+                axs[i].yaxis.set_label_position('right')
                 axs[i].set_ylabel('mean read depth')
             shape = np.shape(dep[chr])
             x0 = np.arange(shape[0]) * binSize
@@ -343,8 +350,8 @@ def plot_binning_depth():
                 axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
                 axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
                 axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-            if i%2 == nchr%2: # ensure ylabel on the left always
-                axs[i].yaxis.set_label_position('right')
+            # if i%2 == nchr%2: # ensure ylabel on the left always
+            if kylabel % 2 == 0:
                 axs[i].yaxis.tick_right()
             axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
         # if prefix == '':

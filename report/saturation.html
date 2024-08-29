@@ -1,0 +1,62 @@
+{# #######################
+saturaion.html
+##########################
+
+diagnosis of sequencing saturaion and DNA lost.
+
+#}
+
+<section id="Saturation curve">
+    <h2>Saturation curve</h2>
+    <article id="sc-curve">
+        <h3>Single-stranded saturation curve</h3>
+        <p>
+            The strand difference is essential for bisulfite sequencing. As
+            the sequenced reads increase, the genome coverage increases. bsDoctor
+            simulates the process by sampling the mapped reads/bases
+            hypergeometrically.
+        </p>
+        <p>
+            In the following figure, x-axis represents single-stranded sequencing
+            depth, y-axis represents single-stranded whole-genome coverage. The dashed line is the estimated asymptotic
+            whole-genome coverage if this library is sequenced continuously.
+        </p>
+        <img src="img/saturation-curve.png" alt="" width="500px" />
+    </article>
+
+    <article id="DNA-template-loss">
+        <h3>DNA template lose</h3>
+        <p>
+            The part of (nuclear) DNA that degraded during library
+            construction and the part of undegraded but not sequenced DNA can
+            be estimated with empirical Bayes model<sup id="cap-5" class="question-marker">?</sup>.
+        </p>
+        <div class="caption" link="#cap-5">
+            Refer to
+            <a href="https://doi.org/10.1017/CBO9781316576533">Efron and Hastie (2016)</a>
+            Chapter 6 for more information of empirical Bayes model.
+        </div>
+        <ul>
+            <li>sequenced (depth ≥ 1): {{alldata.prop_cov_DP1}}% </li>
+            <li>undegraded but not sequenced: {{ alldata.prop_unsequenced }}% </li>
+            <li>
+                degenerated: {{ alldata.prop_lost }}% <sup id="cap-6" class="question-marker">?</sup>
+            </li>
+            <div class="caption" link="#cap-6">
+                For single-cell samples, it is usually a serious problem.
+            </div>
+            <li>ultimate coverage (by sequencing continuously): {{alldata.prop_cov_DP1}}% + {{ alldata.prop_unsequenced
+                }}% = {{ alldata.prop_asymptotic }}%</li>
+            <li>saturation: {{ alldata.saturaion }}% </li>
+        </ul>
+
+        <img src="img/pie-DNA-lost.png" alt="" height="200px" />
+    </article>
+
+    <article id="DNA-composition">
+        <h3>DNA composition</h3>
+        <p>The DNA content of nuclear, mitochondria, plastids, and spikied-in (lambda) DNA in the library is
+            proportional to reads mapped to coorresponding chromosomes/contigs.</p>
+        <img src="img/pie-DNA-content.png" alt="" height="200px" />
+    </article>
+</section>

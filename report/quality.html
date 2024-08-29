@@ -1,0 +1,61 @@
+{# #######################
+quality.html
+##########################
+
+diagnosis of sequencing and mapping quality
+
+#}
+
+<section id="base-read-quality">
+    <h2>Base and read quality</h2>
+    <p>
+        The statistics are based on {{alldata.quality_nreads}} reads containing {{ alldata.quality_nbases}} bases
+        sampled from {{alldata.quality_nloci}} random loci.
+    </p>
+
+    <article class="my-3" id="base-quality">
+        <div class="row">
+            <div class="col">
+                <p class="text-center title">Base quality</p>
+                <img src="img/hist-base-quality.png" alt="" width="400px" />
+            </div>
+            <div class="col">
+                <p class="text-center title">Read length</p>
+                <img src="img/hist-read-length.png" alt="" width="400px" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="text-center title">Read mapping quality</p>
+                <img src="img/hist-read-map-quality.png" alt="" width="400px" />
+            </div>
+            <div class="col">
+                <p id="cap-cigar" class="text-center title">
+                    Bases of each kind of CIGAR<sup class="question-marker">?</sup>
+                    status
+                </p>
+                <div class="caption" link="#cap-cigar">
+                    CIGAR(<strong>C</strong>ompact <strong>I</strong>diosyncratic
+                    <strong>G</strong>apped <strong>A</strong>lignment
+                    <strong>R</strong>eport) is reported by aligner,
+                    <ul>
+                        <li>M: alignment match</li>
+                        <li>I: insertion</li>
+                        <li>D: deletion</li>
+                        <li>N: skipped region</li>
+                        <li>S: soft clipping</li>
+                        <li>H: hard clipping</li>
+                        <li>P: padding</li>
+                        <li>=: sequence match</li>
+                        <li>X: sequence mismatch</li>
+                        <li>B: backwards skip</li>
+                    </ul>
+                </div>
+                <img src="img/bar-base-CIGAR.png" alt="" width="400px" />
+            </div>
+        </div>
+
+
+    </article>
+
+</section>

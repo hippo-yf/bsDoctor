@@ -231,7 +231,7 @@ def compute_and_plot():
 def write_report():
     
     env = Environment(loader=FileSystemLoader('report/'))
-    # env.globals["include_file"] = include_file
+    env.globals["include_file"] = include_file
     # template = env.get_template('base.html')   
     template = env.get_template('report-bootstrap.jinja-html')
     temp_out = template.render(alldata=data)   

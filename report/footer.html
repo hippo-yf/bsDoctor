@@ -2,25 +2,31 @@
   footer.html
 ##########################
 
-Content for the report footer.
+footer information.
 
 #}
 
-<p>
-    <a href="https://seqera.io/" target="_blank" class="pull-right seqera-logo">
-       <img src="data:image/png;base64,{{ include_file('assets/img/seqera_logo.png', b64=True) }}">
-    </a>
-    <strong>
-        <a href="http://multiqc.info" target="_blank">MultiQC v1</a>
-    </strong>
-    - Written by <a href="http://phil.ewels.co.uk" target="_blank">Phil Ewels</a>,
-    available on <a href="https://github.com/MultiQC/MultiQC" target="_blank">GitHub</a>.
-</p>
-<p>
-    This report uses <a href="http://www.highcharts.com/" target="_blank">HighCharts</a>,
-    <a href="https://jquery.com/" target="_blank">jQuery</a>,
-    <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>,
-    <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>,
-    <a href="https://github.com/eligrey/FileSaver.js" target="_blank">FileSaver.js</a> and
-    <a href="https://clipboardjs.com/" target="_blank">clipboard.js</a>.
-</p>
+<div class="text-center">
+    <p>
+        <a href="https://github.com/hippo-yf/bsDoctor" target="_blank"">
+       <img src=" data:image/png;base64,{{ include_file('assets/img/android-chrome-192x192.png', b64=True) }}" width="50px">
+        </a>
+        <strong>
+            <a href="https://github.com/hippo-yf/bsDoctor" target="_blank">bsDoctor</a>
+        </strong>
+        - developed by <a href="https://github.com/hippo-yf" target="_blank">Yance Feng</a>.
+    </p>
+    <p>
+        This report is built on the top of many excelent open-source works, including
+        <a href="https://jquery.com/" target="_blank">jQuery.js</a>,
+        <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>,
+        <a href="https://github.com/plotly/plotly.js" target="_blank">Plotly.js</a>,
+        <a href="https://katex.org/" target="_blank">KaTeX.js</a>,
+        <a href="https://jinja.palletsprojects.com/" target="_blank">Jinja2</a>,
+        <a href="https://github.com/pysam-developers/pysam" target="_blank">pysam</a>,
+        <a href="https://matplotlib.org/" target="_blank">Matplotlib</a>,
+        <a href="https://numpy.org/" target="_blank">NumPy</a>,
+        <a href="https://scipy.org/" target="_blank">SciPy</a>, and
+        <a href="https://tqdm.github.io/" target="_blank">tqdm</a>.
+    </p>
+</div>

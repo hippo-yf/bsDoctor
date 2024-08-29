@@ -1,0 +1,70 @@
+{# #######################
+conversion.html
+##########################
+
+diagnosis of bisulfite conversion.
+
+#}
+
+<section id="Bisulfite-conversion">
+    <h2>Bisulfite conversion</h2>
+
+    <article id="bs-conversion">
+        <h3>Conversion rate</h3>
+        <ul>
+            {% if alldata.lambda_is_covered == 1 %}
+            <li>
+                {{ alldata.bsrate_lambda }}%: from unmethylated control DNA (usually lambda DNA,
+                {{alldata.lambda_nCorG}} cytosines);
+            </li>
+            {% endif %}
+            {% if alldata.mt_is_covered == 1 %}
+            <li>
+                {{ alldata.bsrate_mt}}%: from mitochondrial DNA<sup class="question-marker">?</sup>
+                ({{alldata.mt_nCorG}} cytosines);
+            </li>
+            {% endif %}
+            <li id="cap-chh">
+                {{ alldata.bsrate_chh}}%: from nuclear CHHs<sup class="question-marker0">?</sup>
+                ({{alldata.nCHH}} cytosines sampled);
+            </li>
+            <div class="caption" link="#cap-chh">
+                These estimates are available only for samples that MT DNA/nuclear CHHs are of no/little methylation.
+            </div>
+        </ul>
+        {# alert of low conversion rate #}
+        {% if alldata.bsrate_warning == 1 %}
+        <div class="alert alert-warning" role="alert">
+            Warning! Too low conversion rate.
+        </div>
+        {% endif %}
+    </article>
+
+    <article id="adjust-meth">
+        <h3>Adjust DNAme level</h3>
+        <p>DNAme bias, i.e., observed DNAme level - real DNAme level, is dependent on (observed/unadjusted) DNAme
+            level and bisulfite conversion rate. The theoretical relationsip is illustrated by the following figure.</p>
+        <img src="img/DNAme-bias.png" alt="" width="450px" />
+        <p>
+            Adjust (whole-genome) DNAme level according to incomplete bisulfite conversion. <sup
+                class="question-marker">?</sup> The conversion rate of {{ alldata.bs_rate }}% is adopted.
+        <div class="caption" link="#cap-3">
+            Over-conversion is inestimable in usual samples and not modeled in bsDoctor.
+        </div>
+        </p>
+        <ul>
+            <li id="cap-3">
+                CGs (depth ≥ 1): observed: {{ alldata.me_CG }}%, adjusted: {{ alldata.me_CG_adj }}%;
+            </li>
+            <li>CHGs (depth ≥ 1): observed: {{ alldata.me_CHG }}%, adjusted: {{ alldata.me_CHG_adj }}%;</li>
+            <li>CHHs (depth ≥ 1): observed: {{ alldata.me_CHH }}%, adjusted: {{ alldata.me_CHH_adj }}%.</li>
+        </ul>
+        {# alert of low conversion rate #}
+        {% if alldata.bsrate_warning == 1 %}
+        <div class="alert alert-warning" role="alert">
+            Warning!
+            The adjustment may be problematic because of too low conversion rate.
+        </div>
+        {% endif %}
+    </article>
+</section>

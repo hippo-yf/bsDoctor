@@ -1,0 +1,113 @@
+{# #######################
+me-level.html
+##########################
+
+diagnosis of DNAme level of nuclear chromosomes.
+
+#}
+
+<section id="Methylation level">
+    <h2>Methylation level</h2>
+
+    <article id="meth-wholegenome">
+        <h3>Whole genome</h3>
+        <p>
+            Distribution of whole-genome methylation level with different
+            depth thresholds (depth ≥ k).
+        </p>
+        <div class="row">
+            <div class="col-8">
+                <img src="img/meth-dist-genome-CG-dp1.svg" alt="" width="500px" id="img-meth-dist" />
+            </div>
+            <div class="col-4 legend">
+                <p class="label">Depth ≥ <span id="label-1">1</span></p>
+                <input type="range" class="form-range" min="1" max="30" step="1" id="range-dp" value="1" />
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-1" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-1" value="CHG" />
+                    <label class="form-check-label">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-1" value="CHH" />
+                    <label class="form-check-label">CHH </label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="chr-methylation">
+        <h3>Whole chromosome/contig</h3>
+        <p>Mean methylation level of each chromosomes/contigs.</p>
+        <div class="row">
+            <div class="col-8">
+                <img src="img/meth-chr-CG-double-dp1.svg" alt="" height="250px" id="img-meth-chr" />
+            </div>
+            <div class="col-4 legend">
+                <p class="label">Depth ≥ <span id="label-2">1</span></p>
+                <input type="range" class="form-range" min="1" max="30" step="1" id="range-2" value="1" />
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-2" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-2" value="CHG" />
+                    <label class="form-check-label">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-2" value="CHH" />
+                    <label class="form-check-label">CHH </label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="binning-methylation">
+        <h3>Binning methylation level</h3>
+        <p>
+            Each point represents the average methylation level (genome
+            cytosine-wise average instead of read- or sequencing base-wise
+            average) of each 100k base binning window.
+        </p>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <p class="label label-v">Cytosine context</p>
+                <div class="form-check col">
+                    <input class="form-check-input" type="radio" name="radio-3" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-3" value="CHG" />
+                    <label class="form-check-label">CHG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-3" value="CHH" />
+                    <label class="form-check-label">CHH</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <p class="label label-v">Strand</p>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switch-3" checked />
+                    <label class="form-check-label" for="switch-3">Single-stranded</label>
+                </div>
+            </div>
+            <div class="col" id="legend-meth-bin">
+                <p class="label label-v">Color legend</p>
+                <span class="watson-marker">·</span>Watson strand <br />
+                <span class="crick-marker">·</span>Crick strand
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <img src="img/meth-bin-CG-single-dp1.png" alt="" id="img-meth-bin" />
+            </div>
+        </div>
+    </article>
+</section>

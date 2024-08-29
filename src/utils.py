@@ -6,6 +6,7 @@ import sys
 import gzip
 import io
 import random
+import base64
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -155,3 +156,19 @@ def abline(intercept, slope, **kw) -> None:
     y_vals = intercept + slope * x_vals
     plt.plot(x_vals, y_vals, '--', **kw)
     return None
+
+# Function to include css/js/font file in Jinja template
+def include_file(name, fdir = 'report/', b64=False):
+    try:
+        # if fdir is None:
+        #     fdir = ""
+        # fdir = 'assets/'
+        if b64:
+            with io.open(os.path.join(fdir, name), "rb") as f:
+                return base64.b64encode(f.read()).decode("utf-8")
+        else:
+            with io.open(os.path.join(fdir, name), "r", encoding="utf-8") as f:
+                return f.read()
+    except (OSError, IOError) as e:
+        # logger.error(f"Could not include file '{name}': {e}")
+        pass

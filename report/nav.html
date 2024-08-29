@@ -2,55 +2,315 @@
   nav.html
 ##########################
 
-The side navigation for the report.
+The side navigation
 
 #}
 
-<div class="side-nav-wrapper">
-  <div class="side-nav">
-    <h1>
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".mqc-nav, .mqc-toolbox">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="#">
-        <img src="data:image/png;base64,{{ include_file('assets/img/MultiQC_logo.png', b64=True) }}" title="MultiQC">
-        <br class="hidden-xs">
-        <small class="hidden-xs">v{{ config.version }}</small>
-      </a>
-    </h1>
-    {% if config.title is not none %}
-      <h1 class="side-nav-title"><a href="#">{{ config.title }}</a></h1>
-    {% endif %}
-    <p class="mqc_loading_warning">Loading report..</p>
-    <ul class="mqc-nav collapse navbar-collapse">
-      {% if not config.skip_generalstats %}
-      <li>
-        <a href="#general_stats" class="nav-l1">General Stats</a>
-      </li>
-      {% endif -%}
-      {% for m in report.modules_output %}
-      {% if m.sections | length > 0 %}
-      <li>
-        <a href="#{{ m.anchor }}" class="nav-l1">{{ m.name }}</a>
-        <ul>
-        {% if m.sections | length > 1 -%}
-          {% for s in m.sections -%}
-            {% if s['name'] is not none and s['name'] | length > 0 %}
-            <li>
-              <a href="#{{ s['anchor'] }}" class="nav-l2">{{ s['name']|striptags }}</a>
-            </li>
-            {% endif %}
-          {%- endfor %}
-        {% endif %}
-        </ul>
-      </li>
-      {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-  <!-- Nav Width Toggle Button -->
-  <div id="side-nav-handle"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></div>
+<div class="col-2">
+  <aside class="bd-sidebar">
+    <div class="accordion" id="accordionPanels">
+      <div class="accordion-item">
+        <!-- <div class="accordion-header"> -->
+        <button class="accordion-button collapsed" type="button">
+          <a class="nav-link" href="#Summary">Summary</a>
+        </button>
+
+        <!-- </div> -->
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panel-quality" aria-expanded="false" aria-controls="panel-quality">
+            Base and read quality
+          </button>
+        </div>
+        <div id="panel-quality" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#base-quality">base quality</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#read-length">read length</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#mapping-quality">read mapping quality</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#cigar">CIGAR distribution</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-Bisulfite-conversion" aria-expanded="false"
+            aria-controls="panelsStayOpen-Bisulfite-conversion">
+            Bisulfite conversion
+          </button>
+        </div>
+        <div id="panelsStayOpen-Bisulfite-conversion" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#Bisulfite-conversion">Bisulfite conversion rate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#adjust-meth">Adjust DNAme level</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button">
+            <a class="nav-link" href="#error">Base-level error</a>
+          </button>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panel-Saturation-curve" aria-expanded="false" aria-controls="panel-Saturation-curve">
+            Saturation curve
+          </button>
+        </div>
+        <div id="panel-Saturation-curve" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#sc-curve">Single-stranded saturation curve</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#DNA-template-lose">DNA template lose</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel-mt"
+            aria-expanded="false" aria-controls="panel-mt">
+            Mitochondrion
+          </button>
+        </div>
+        <div id="panel-mt" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#mt-coverage">Read depth</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#mt-dna-copy-number">DNA copy number</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#mt-conversion">Bisulfite conversion</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#mt-error">Error rate</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panel-lambda" aria-expanded="false" aria-controls="panel-lambda">
+            Unmethylated control DNA
+          </button>
+        </div>
+        <div id="panel-lambda" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#lambda-coverage">Read depth</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#lambda-dna-content">DNA content</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#lambda-conversion">Bisulfite conversion</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#lambda-error">Error rate</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-Genome-Coverage" aria-expanded="false"
+            aria-controls="panelsStayOpen-Genome-Coverage">
+            Genome Coverage
+          </button>
+        </div>
+        <div id="panelsStayOpen-Genome-Coverage" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#binning-coverage">Binning coverage</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#depth-distribution">Depth distribution</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#Genome-coverage">Genome coverage</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#cg-depth-distribution">CpG depth distribution</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#cg-coverage">CpG coverage rate</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-Methylation-level" aria-expanded="false"
+            aria-controls="panelsStayOpen-Methylation-level">
+            Methylation level
+          </button>
+        </div>
+        <div id="panelsStayOpen-Methylation-level" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#genome-feature-methylation">Methylation levels of genome features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#chr-methylation">Methylation levels of chromosomes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#binning-methylation">Binning methylation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#pan-gene-methylation">Pan-gene methylation</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-Bias" aria-expanded="false" aria-controls="panelsStayOpen-Bias">
+            Methylation bias
+          </button>
+        </div>
+        <div id="panelsStayOpen-Bias" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#meth-at-depth">DNAme for depth = k</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#cul-meth-depth">DNAme for depth >= k</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#meth-vs-missing-rate">DNAme vs missing rate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#meth-vs-cg-density">DNAme vs CpG density</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#depth-distribution-of-low-high-meth-cpg">Depth distribution of low/high
+                  DNAme sites</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panel-CpG-strandness" aria-expanded="false" aria-controls="panel-CpG-strandness">
+            CpG strandness
+          </button>
+        </div>
+        <div id="panel-CpG-strandness" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-stranded-depth">CpG depth strandness</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-depth-diff">Stranded depth difference</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-double-stranded-coverage">CpGs of double-stranded coverage</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-stranded-meth">CpG methylation strandness</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-stranded-meth-diff">CpG stranded methylation difference</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-CpG-kmer" aria-expanded="false" aria-controls="panelsStayOpen-CpG-kmer">
+            CpG-kmer
+          </button>
+        </div>
+        <div id="panelsStayOpen-CpG-kmer" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-frequency">CpG-kmer frequency</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#stranded-CpG-kmer-frequency">Stranded CpG-kmer frequency</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-meth-vs-frequency">CpG-kmer methylation vs frequency</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-coverage-vs-depth">CpG-kmer coverage vs depth</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-meth-vs-depth">CpG-kmer methylation vs depth</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panel-pan-gene" aria-expanded="false" aria-controls="panel-pan-gene">
+            Pan-gene methylation
+          </button>
+        </div>
+        <div id="panel-pan-gene" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <ul class="nav flex-column nav-underline">
+              <li class="nav-item">
+                <a class="nav-link" href="#pan-gene-coding">Coding genes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#pan-gene-lnc">lncRNA genes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#pan-gene-other">Other non-coding genes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 </div>

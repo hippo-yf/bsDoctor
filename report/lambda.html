@@ -1,0 +1,81 @@
+{# #######################
+lambda.html
+##########################
+
+diagnosis of reads mapped to lambda DNA.
+
+#}
+
+<section id="lambda">
+    <h2>Unmethylated control DNA</h2>
+
+    <article id="lambda-coverage">
+        <p>
+        <ul>
+            <li>{{ alldata.lambda_length }} non-N bps in total, whereas {{ alldata.lambda_cov_prop }}% are covered
+                ({{alldata.lambda_covn }} bps for depth ≥ 1);</li>
+            <li>{{ alldata.lambda_nCorG }} cytosines in total, whereas {{ alldata.lambda_covnCorG_prop }}% are covered
+                ({{
+                alldata.lambda_covnCorG }} cytosines for
+                depth ≥ 1).</li>
+        </ul>
+        </p>
+        <h3>Read depth</h3>
+        <p>
+        <ul>
+            <li>Binnng size: {{alldata.lambda_size}} bp</li>
+            <li>Read depth: {{alldata.lambda_mean_dp}}(mean), {{alldata.lambda_median_dp}}(median)</li>
+        </ul>
+        </p>
+        <img src="img/depth-bin-lambda.png" alt="" width="600px" id="cap-10" />
+        <div class="caption" link="#cap-10">
+            Check the uniformness of coverage depth
+        </div>
+    </article>
+    <article id="lambda-dna-content">
+        <h3>DNA content</h3>
+        <p>
+            The spike-in control DNA content
+            <sup id="cap-11" class="question-marker">?</sup> with respect with
+            MT DNA and nuclear DNA is $$ \frac{\text{lambda DNA}}{\text{MT
+            DNA}} = {{alldata.lambda_DNA_content_vs_MT}}\%, $$ $$ \frac{\text{lambda DNA}}{\text{nuclear
+            DNA}} = {{alldata.lambda_DNA_content_vs_nuclear}}\%. $$
+        </p>
+        <div class="caption" link="#cap-11">
+            Check whether the content of spike-in DNA is appropriate.
+        </div>
+    </article>
+    <article id="lambda-conversion">
+        <h3>Bisulfite conversion</h3>
+        <p>
+            From the 'methylation' of cytosines in control DNA, we can
+            estimate bisulfite conversion rate
+            <sup id="cap-12" class="question-marker">?</sup> as $$
+            \text{conversion rate} = 1-\text{control DNA methylation level} =
+            {{alldata.bsrate_lambda}}\%. $$
+        </p>
+        <div class="caption" link="#cap-12">
+            The actual estimate of 'methylation level' is the median of
+            methylation of each bin which is robust.
+        </div>
+    </article>
+    <article id="lambda-error">
+        <h3>Error rate</h3>
+        <p>
+            The error rate that a base is mis-detected during library
+            preparation, sequencing, and alignment, can be estimated from
+            inconsistent bases mapped to control DNA. From the error rate
+            distribution of 50-bp bins, the average error rate
+            <sup id="cap-13" class="question-marker">?</sup> is
+
+            $$ \text{error
+            rate} = \frac{\text{bases different with reference
+            base}}{\text{total bases}} = {{alldata.err_rate_lambda}}\%. $$
+        </p>
+        <div class="caption" link="#cap-13">
+            The actual error rate estimate is the median of each bin which is
+            robust.
+        </div>
+        <img src="img/base-error-rate-dist-lambda.png" alt="" width="400px" />
+    </article>
+</section>

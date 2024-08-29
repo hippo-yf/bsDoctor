@@ -1,0 +1,25 @@
+{# #######################
+RRBS-motif.html
+##########################
+
+diagnosis of sequencing coverage and DNAme level bias of RRBS-related CpG-motif.
+
+#}
+
+<section id="rrbs-kmer">
+    <h2>RRBS</h2>
+    <p>Reduced Representation Bisulfite Sequencing (RRBS) uses a methylation-insensitive restriction enzyme, usually
+        <code>MspI</code> with the cutting target <code>5'CCGG3'</code> sequences, to enrich CpG-rich sequences.
+    </p>
+
+    <article id="RRBS-summary">
+        <h3>RRBS CpGs summary</h3>
+        <p>The proportion of CCGG-context CpGs over all CpGs in the genome is {{alldata.ccgg_prop}}% (lefttop figure).
+            The
+            mean single-stranded methylation read depth of CCGG-context CpGs is {{alldata.ccgg_mean_dp}} (leftbottom
+            figure). The coverage
+            rate and mean methyaltion level of CCGG- and non-CCGG-context CpGs with varing depth thresholds are shown in
+            righttop and rightbottom figures, respectively.</p>
+        <img src="img/rrbs-kmer-summary.png" alt="" width="500px">
+    </article>
+</section>

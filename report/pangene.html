@@ -1,0 +1,37 @@
+{# #######################
+pangene.html
+##########################
+
+diagnosis of pan-gene DNAme level pattern.
+
+#}
+
+<section id="pan-gene">
+    <h2>Pan-gene methylation pattern</h2>
+    <p>
+        Average DNAme gene-related regions from TSS upstream 5kbp to TTS
+        downstream 5kbp.
+    </p>
+
+    <article id="pan-gene-coding">
+        <h3>Coding genes</h3>
+        <p>Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_coding}}) coding genes.</p>
+        <img src="img/pan-gene-meth-coding.png" alt="" width="450px" />
+    </article>
+    <article id="pan-gene-lnc">
+        <h3>Long non-coding genes</h3>
+        <p>
+            Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_lnc}}) long non-coding RNA
+            (lncRNA) genes.
+        </p>
+        <img src="img/pan-gene-meth-lncRNA.png" alt="" width="450px" />
+    </article>
+    <article id="pan-gene-other">
+        <h3>Other non-coding genes</h3>
+        <p>
+            Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_noncoding}}) other non-coding
+            genes, namely genes except coding and lncRNA genes.
+        </p>
+        <img src="img/pan-gene-meth-other-noncoding.png" alt="" width="450px" />
+    </article>
+</section>

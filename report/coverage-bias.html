@@ -1,0 +1,227 @@
+{# #######################
+coverage-bias.html
+##########################
+
+diagnosis of coverage bias of nuclear chromosomes.
+
+#}
+
+<section id="Genome-Coverage">
+    <h2>Genome Coverage</h2>
+
+    <article id="binning-coverage">
+        <h3>Binning coverage</h3>
+        <p>
+            Each point represents the mean coverage depth of each 100k bp
+            binning window. The outliers are truncated <em>y</em>-axis limit.
+        </p>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col">
+                <p class="label label-v">Strand</p>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switch-4" checked />
+                    <label class="form-check-label" for="switch-4">Single-stranded</label>
+                </div>
+            </div>
+            <div class="col" id="legend-depth-bin">
+                <p class="label label-v">Color legend</p>
+                <span class="watson-marker">·</span>Watson strand <br />
+                <span class="crick-marker">·</span>Crick strand
+            </div>
+            <div class="col-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-auto">
+                    <img src="img/depth-bin-single.png" alt="" id="img-depth-bin" />
+                    <div class="caption" link="#img-depth-bin">
+                        Check the uniformness of coverage depth of each strand and
+                        whole genome.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="depth-of-two-strands">
+        <h3>Read depth of two strands</h3>
+        <img src="img/depth-of-two-strands.png" alt="" width="400px">
+    </article>
+
+    <article id="depth-distribution">
+        <h3>Depth distribution and coverage</h3>
+        <div class="row">
+            <div class="col-6 text-center">
+                <p>Mapped read depth of whole genome</p>
+                <img src="img/whole-genome-depth-distribution.png" alt="" width="400px" />
+            </div>
+            <div class="col-6 text-center">
+                <p>Whole genome coverage rate</p>
+                <img src="img/whole-genome-coverage-vs-depth.png" alt="" width="400px" />
+            </div>
+        </div>
+    </article>
+
+    <article id="cg-depth-distribution">
+        <h3>Cytosine depth distribution and coverage</h3>
+        <p>
+            Only the reads contributing to the calculation of DNAme level are
+            included.<sup id="cap-16" class="question-marker">?</sup>
+        </p>
+        <div class="caption" link="#cap-16">
+            Namely C/T reads for Watson strand and G/A reads for Crick strand.
+        </div>
+
+        <div class="row">
+            <div class="col text-center">
+                <p>Methylation read depth</p>
+                <img src="img/genome-CG-depth-distribution.png" alt="" width="400px" id="img-Cs-depth-dist" />
+            </div>
+            <div class="col text-center">
+                <p>Cytosine coverage rate</p>
+                <img src="img/genome-CG-coverage-vs-depth.png" alt="" width="400px" id="img-Cs-depth-coverage" />
+            </div>
+            <div class="col" style="margin-top: 35px">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CHG" />
+                    <label class="form-check-label">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CHH" />
+                    <label class="form-check-label">CHH </label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="depth-vs-meth-depth">
+        <h3>Methylation depth vs total depth</h3>
+        <p>Available reads for methyaltion calculation is a subset of total reads.</p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/depth-vs-meth-depth-of-watson-strand.png" alt="" width="400px"
+                    id="img-depth-vs-meth-depth" />
+                <div class="caption" link="#img-depth-vs-meth-depth"></div>
+            </div>
+            <div class="col legend">
+                <p class="label">Strand</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth" value="watson"
+                        checked />
+                    <label class="form-check-label">Watson</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth" value="crick" />
+                    <label class="form-check-label">Crick</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="cov-rate-vs-cg-density">
+        <h3>Cytosine coverage vs cytosine densities</h3>
+        <p>
+            The <strong>cytosine density</strong> of a genomic region (binning windows) is defined as the number of
+            cytosines per
+            1Kbp. Cytosines on two strands are summed for double-stranded
+            plots.
+        </p>
+        <div class="row">
+            <div class="col-9">
+                <!-- <object type="image/svg+xml" data="img/covrate-vs-CG-density-of-double-strand.svg" width="500"></object> -->
+
+                <img src="img/covrate-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
+                    id="img-cov-rate-vs-Cs-density" />
+                <div class="caption" link="#img-cov-rate-vs-Cs-density"></div>
+            </div>
+            <div class="col legend">
+                <p class="label">
+                    Depth ≥ <span id="label-covrate-vs-Cs-density">1</span>
+                </p>
+                <input type="range" class="form-range" min="1" max="10" step="1" id="range-covrate-vs-Cs-density"
+                    value="1" />
+
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CG"
+                        checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CHG" />
+                    <label class="form-check-label">CHG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CHH" />
+                    <label class="form-check-label">CHH</label>
+                </div>
+
+                <p class="label">Strand</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="double"
+                        checked />
+                    <label class="form-check-label">Double</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="W" />
+                    <label class="form-check-label">Watson</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="C" />
+                    <label class="form-check-label">Crick</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="depth-vs-cg-density">
+        <h3>Mean depth vs cytosine density</h3>
+        <p>For each 100kbp binning window, mean read depth of all sites are plotted against cytosine density in this
+            window with colour indicating the density of windows.</p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/depth-vs-CG-density-of-double-strand.png" alt="" width="400px"
+                    id="img-depth-vs-Cs-density" />
+                <div class="caption" link="#img-depth-vs-Cs-density"></div>
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CHG" />
+                    <label class="form-check-label">CHG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CHH" />
+                    <label class="form-check-label">CHH</label>
+                </div>
+
+                <p class="label">Strand</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="double"
+                        checked />
+                    <label class="form-check-label">Double</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="W" />
+                    <label class="form-check-label">Watson</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="C" />
+                    <label class="form-check-label">Crick</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+</section>

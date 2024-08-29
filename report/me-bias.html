@@ -1,0 +1,161 @@
+{# #######################
+me-bias.html
+##########################
+
+diagnosis of DNAme level bias of nuclear chromosomes.
+
+#}
+
+<section id="Methylation bias">
+    <h2>Methylation bias</h2>
+
+    <article id="meth-at-depth">
+        <h3>Methylation level at different read depths</h3>
+        <p>For cytosines of read <strong>depth = k</strong> ≥ 1.</p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/meth-CG-at-dp-k.svg" alt="" width="400px" id="img-meth-at-dp" />
+                <div class="caption" link="#img-meth-at-dp">
+                    Ideally, methylation level should be independent with depth.
+                </div>
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-at-dp" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-at-dp" value="CHG" />
+                    <label class="form-check-label">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-at-dp" value="CHH" />
+                    <label class="form-check-label">CHH </label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="cul-meth-depth">
+        <h3>Methylation level with different thresholds of read depth</h3>
+        <p>For cytosines with read <strong>depth ≥ k</strong> ≥ 1.</p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/meth-CG-vs-dp-threshold.svg" alt="" width="400px" id="img-cul-meth-by-dp" />
+                <div class="caption" link="#img-cul-meth-by-dp">
+                    Ideally, methylation level should be independent with depth.
+                </div>
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-5" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-5" value="CHG" />
+                    <label class="form-check-label">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-5" value="CHH" />
+                    <label class="form-check-label">CHH </label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="meth-vs-missing-rate">
+        <h3>
+            Methylation level at different proportions of uncovered CpGs
+        </h3>
+        <p>
+            The proportion of uncovered cytosines increases as the read depth
+            threshold increases.
+        </p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/meth-CG-vs-missing-rate.svg" alt="" width="400px" id="img-meth-vs-missing-rate" />
+                <div class="caption" link="#img-meth-vs-missing-rate">
+                    Ideally, methylation level should be independent with depth.
+                </div>
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-vs-missing-rate" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-vs-missing-rate" value="CHG" />
+                    <label class="form-check-label">CHG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-meth-vs-missing-rate" value="CHH" />
+                    <label class="form-check-label">CHH</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="meth-vs-cg-density">
+        <h3>Mean methylation level vs cytosine density</h3>
+        <p>
+            For each binning window, <strong>cytosine density</strong> is defined as the number of cytosines per 1Kbp.
+            Cytosines on two strands are summed for double-stranded plots.
+        </p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/meth-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
+                    id="img-meth-vs-Cs-density" />
+                <div class="caption" link="#img-meth-vs-Cs-density"></div>
+            </div>
+            <div class="col legend">
+                <p class="label">
+                    Depth ≥ <span id="label-meth-vs-Cs-density">1</span>
+                </p>
+                <input type="range" class="form-range" min="1" max="10" step="1" id="range-meth-vs-Cs-density"
+                    value="1" />
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-meth-vs-Cs-density" value="CG" checked />
+                    <label class="form-check-label">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-meth-vs-Cs-density" value="CHG" />
+                    <label class="form-check-label">CHG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1-meth-vs-Cs-density" value="CHH" />
+                    <label class="form-check-label">CHH</label>
+                </div>
+
+                <p class="label">Strand</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-meth-vs-Cs-density" value="double"
+                        checked />
+                    <label class="form-check-label">Double</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-meth-vs-Cs-density" value="W" />
+                    <label class="form-check-label">Watson</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2-meth-vs-Cs-density" value="C" />
+                    <label class="form-check-label">Crick</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="depth-distribution-of-low-high-meth-cpg">
+        <h3>Depth distribution of hyper-/hypo-methylated cytosines</h3>
+        <p>
+            The depth is methylation depth, namely accounting for only C/T
+            reads for Watson strand and G/A reads for Crick strand.
+        </p>
+        {# <object class="img" data="img/depth-of-low-high-meth-CGs.svg" type="image/svg+xml" width="500px"></object> #}
+        <img src="img/depth-of-low-high-meth-CGs.png" alt="" width="450px" />
+    </article>
+
+</section>

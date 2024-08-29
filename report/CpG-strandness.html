@@ -1,0 +1,63 @@
+{# #######################
+CpG-strandness.html
+##########################
+
+diagnosis of CpG strandness of sequencing coverage and DNAme level.
+
+#}
+
+<section id="CpG strandness">
+    <h2>CpG strandness</h2>
+    <p>Summarise the reads mapped onto double strands of CpGs. </p>
+    <article id="CpG-stranded-depth">
+        <h3>CpG depth strandness</h3>
+        <p>
+            The heatmap shows the number of CpGs (instead if cytosines) with
+            different Watson (row) and Crick (column) read depths. Uncovered
+            CpGs with coordinate (0,0) is removed for better visualization.
+        </p>
+        <img src="img/heatmap-cg-stranded-depth.png" alt="" width="500px" />
+    </article>
+    <article id="CpG-depth-diff">
+        <h3>Stranded depth difference</h3>
+        <p>
+        <ul>
+            <li>CpG depth difference = Watson depth - Crick depth </li>
+            <li>mean of difference: , sd = </li>
+            <li>mean of absolute difference: , sd = </li>
+        </ul>
+        </p>
+        <img src="img/cg-stranded-depth-difference.png" alt="" height="250px" />
+    </article>
+    <article id="CpG-double-stranded-coverage">
+        <!-- <h3>CpGs with double-stranded coverage</h3> -->
+        <p>
+            Proportion of double-stranded covered CpGs at different depths.
+            $$ \text{proportion of CpGs of double-stranded coverage} = \frac{\#\{
+            \text{CpGs with Watson and Crick depths both} \ge \text{DP}\}}
+            {\#\{ \text{CpGs with either Watson or Crick depths} \ge
+            \text{DP}\}} $$
+        </p>
+        <img src="img/cg-prop-of-double-stranded-coverage.png" alt="" height="300px" />
+    </article>
+    <article id="CpG-stranded-meth">
+        <h3>CpG methylation strandness</h3>
+        <p>
+            The following heatmap shows the number of CpG of differ Watson and
+            Crick strand methylation. All consensus CpGs with depth ≥ 1 are
+            included.
+        </p>
+        <img src="img/heatmap-cg-stranded-meth.png" alt="" width="500px" />
+    </article>
+    <article id="CpG-stranded-meth-diff">
+        <h3>CpG stranded methylation difference</h3>
+        <p>
+            The following heatmap shows the number of CpGs with different
+            methylation difference (Watson - Crick, y-axis) at different depth
+            (x-axis), represented by $\min\{ \text{depth}_\text{Watson},
+            \text{depth}_\text{Crick} \} $.
+        </p>
+        <img src="img/heatmap-cg-stranded-meth-diff.png" alt="" height="400px" />
+    </article>
+</section>
+

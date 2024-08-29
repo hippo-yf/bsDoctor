@@ -1,0 +1,79 @@
+{# #######################
+saturaion.html
+##########################
+
+diagnosis of reads mapped to mitochondrial DNA.
+
+#}
+
+<section id="mt">
+    <h2>Mitochondrion</h2>
+
+    <article id="mt-coverage">
+        <ul>
+            <li>{{ alldata.mt_length }} non-N bps in total, whereas {{ alldata.mt_cov_prop }} are covered ({{
+                alldata.mt_covn }} bp
+                for depth ≥ 1);</li>
+            <li>{{ alldata.mt_nCorG }} cytosines in total, whereas {{ alldata.mt_covnCorG_prop }} are covered ({{
+                alldata.mt_covnCorG }} cytosines for
+                depth ≥ 1).</li>
+        </ul>
+        <h3>Read depth</h3>
+        <p>
+            Mean read depth of {{ alldata.mt_bin_size }}bp binning windows for Watson strand (top), Crick strand
+            (middle), and double strands (bottom).
+        </p>
+        <img src="img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
+        <div class="caption" link="#cap-15">
+            Check the uniformness of read coverage.
+        </div>
+    </article>
+
+    <article id="mt-dna-copy-number">
+        <h3>DNA copy number</h3>
+        <p>
+            Mitochondrion DNA copy number is estimated by the average depth of MTs over
+            that of nuclear chromosomes. <sup id="cap-7" class="question-marker">?</sup>
+        <div class="caption" link="#cap-7">
+            The estimate is less accurate for RRBS samples than WGBS samples due to selective enrichment of DNA
+            fragments. <br>
+            Change the coefficient accordingly if not diploidy.
+        </div>
+        {% raw %} $$ \text{MT DNA copy number} = \frac{ {% endraw %} {{ alldata.mt_mean_dp}} {% raw %} }{ {% endraw %}
+        {{
+        alldata.mean_dp }} {% raw %} } \times 2
+        (\text{diploidy}) = {% endraw %} {{ alldata.mt_copynum }} $$
+        </p>
+    </article>
+
+    <article id="mt-conversion">
+        <h3>Bisulfite conversion</h3>
+        <p>
+            From the 'methylation' of cytosines in MT genome
+            <sup id="cap-8" class="question-marker">?</sup>, we can estimate
+            bisulfite conversion rate as $$ \text{conversion rate} =
+            1-\text{MT methylation level} = 1 - {{ alldata.mt_me }} = {{ alldata.bsrate_mt }}\%. $$
+        </p>
+        <div class="caption" link="#cap-8">
+            According to the author's knowledge, no evidence suggests there is 5-Methylcytosine (5mC) modification on MT
+            DNA at least for mammals.
+        </div>
+    </article>
+
+    <article id="mt-error">
+        <h3>Error rate</h3>
+        <p>
+            The (base-level) error rate that a base is mis-detected during library
+            preparation, sequencing, and alignment, can be estimated
+            <sup id="cap-9" class="question-marker">?</sup> from inconsistent
+            bases mapped to MT genome. From the error rate distribution of
+            20-bp binning windows, the average error rate is $$ \text{error rate} =
+            \frac{\text{bases different with dominating base}}{\text{total read
+            bases}} = {{ alldata.err_rate_mt}} \%. $$
+        </p>
+        <div class="caption" link="#cap-9">
+            Mutation rate is much smaller than error rate in bisulfite-seq samples.
+        </div>
+        <img src="img/base-error-rate-dist-MT.png" alt="" width="400px" />
+    </article>
+</section>
