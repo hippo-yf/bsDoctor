@@ -9,6 +9,7 @@ from src.config import params
 def update_binning(intv: IntervalCoverage) -> None:
     dict_binning = params['dict_binning']
     MAXDEPTH = params['MAXDEPTH']
+    MAX_DP_BY_FIG = params['MAX_DP_BY_FIG']
 
     # init for stranded CGs 
     strand_CGcov = [0,0]
@@ -38,6 +39,8 @@ def update_binning(intv: IntervalCoverage) -> None:
         value.cov[:min(MAXDEPTH, intv.covWsum[i]+intv.covCsum[i])] += 1
         
         dp = min(MAXDEPTH, intv.covMeth[i])
+        DP_FIG = min(MAX_DP_BY_FIG, intv.covMeth[i])
+
         if intv.cgContext[i] == 'CG':
             value.nCG +=1
             value.dpCG += intv.covMeth[i]
@@ -79,7 +82,7 @@ def update_binning(intv: IntervalCoverage) -> None:
                 strand_CGcov = [0,0] # reset
 
             # dp distrbution of low/high meth CGs
-            # TO DO: optimize later
+            # TODO: optimize later
             if not math.isnan(intv.meth[i]):
                 if intv.meth[i] <= 0.3:
                     value.nCGLowMeth[dp - 1] += 1
@@ -87,7 +90,7 @@ def update_binning(intv: IntervalCoverage) -> None:
                     value.nCGHighMeth[dp - 1] += 1
                 # nCGMethBin
                 kbin = min(19, math.ceil(intv.meth[i] * 20))
-                value.nCGMethBin[kbin, min(dp, 30)-1] += 1
+                value.nCGMethBin[kbin, DP_FIG-1] += 1
 
         elif intv.cgContext[i] == 'CHG':
             value.nCHG +=1
@@ -108,7 +111,7 @@ def update_binning(intv: IntervalCoverage) -> None:
             # nCGMethBin
             if not math.isnan(intv.meth[i]):
                 kbin = min(19, math.ceil(intv.meth[i] * 20))
-                value.nCHGMethBin[kbin, min(dp, 30)-1] += 1
+                value.nCHGMethBin[kbin, DP_FIG-1] += 1
         elif intv.cgContext[i] == 'CHH':
             value.nCHH +=1
             value.dpCHH += intv.covMeth[i]
@@ -128,7 +131,7 @@ def update_binning(intv: IntervalCoverage) -> None:
             # nCGMethBin
             if not math.isnan(intv.meth[i]):
                 kbin = min(19, math.ceil(intv.meth[i] * 20))
-                value.nCHHMethBin[kbin, min(dp, 30)-1] += 1
+                value.nCHHMethBin[kbin, DP_FIG-1] += 1
 
         # error bases for A/T sites (DP>=5)
         elif depth >= 5:

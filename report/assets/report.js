@@ -18,8 +18,12 @@ $(function () {
     // set initial size of figs
     setWidth("#img-depth-bin");
     setWidth("#img-meth-bin");
-    setWidth("#cap-15", dpiratio = 300 / 110); // MT binning depth
-    setWidth("#cap-10", dpiratio=300/110); // lambda binning depth
+    if (alldata.include_mt == 1) {
+        setWidth("#cap-15", dpiratio = 300 / 110); // MT binning depth
+    }
+    if (alldata.include_lambda == 1) {
+        setWidth("#cap-10", dpiratio=300/110); // lambda binning depth
+    }
 
     // put the captions on the right panel
     placeCaptions();

@@ -238,6 +238,7 @@ class KmerCov():
 class BinCov():
     def __init__(self) -> None:  
         MAXDEPTH = params['MAXDEPTH']
+        MAX_DP_BY_FIG = params['MAX_DP_BY_FIG']
 
         init = np.array([0]*MAXDEPTH, dtype=np.int64)
         init2 = np.array([0]*MAXDEPTH, dtype=np.float64)
@@ -311,9 +312,9 @@ class BinCov():
         self.ATdp: int = 0 # total depths/bases of A/T
 
         # meth distribution, 20 meth bins of [0,1] X depth [1,30]
-        self.nCGMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
-        self.nCHGMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
-        self.nCHHMethBin: NDArray = np.zeros((20,30), dtype=np.int64)
+        self.nCGMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
+        self.nCHGMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
+        self.nCHHMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
         return None
 
 # not for each bin

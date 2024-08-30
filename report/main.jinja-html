@@ -30,19 +30,21 @@
 
     <div class="col-8" id="main-content">
       {% include 'summary.html' %}
-      {% include 'quality.html' %}
+      {% if alldata.include_quality == 1 %} {% include 'quality.html' %} {% endif %}
       {% include 'conversion.html' %}
       {% include 'error.html' %}
-      {% include 'saturation.html' %}
-      {% if alldata.mt_is_covered == 1 %} {% include 'mt.html' %} {% endif %}
-      {% if alldata.lambda_is_covered == 1 %} {% include 'lambda.html' %} {% endif %}
+      {% if alldata.include_saturation == 1 %} {% include 'saturation.html' %} {% endif %}
+      {% if alldata.include_mt == 1 %} {% include 'mt.html' %} {% endif %}
+      {% if alldata.include_lambda == 1 %} {% include 'lambda.html' %} {% endif %}
       {% include 'coverage-bias.html' %}
       {% include 'me-level.html' %}
       {% include 'me-bias.html' %}
       {% include 'CpG-strandness.html' %}
-      {% include 'CpG-motif.html' %}
-      {% include 'RRBS-motif.html' %}
-      {% include 'pangene.html' %}
+      {% if alldata.include_motif == 1 %}
+        {% include 'CpG-motif.html' %}
+        {% include 'RRBS-motif.html' %}
+      {% endif %}
+      {% if alldata.include_pangene == 1 %} {% include 'pangene.html' %} {% endif %}
     </div>
 
     <div class="col-2" id="col-caption">

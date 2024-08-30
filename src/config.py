@@ -114,16 +114,19 @@ def config_params(options: Namespace = Namespace()) -> None:
     params['report_dir'] = params['work_dir']
     # params['img_dir'] = os.path.join(params['report_dir'], 'img2')
 
-    # to analyse or not
-    params['include_mt'] = options.chr_MT != '-'
-    params['include_plastid'] = options.chr_plastid != '-'
-    params['include_lambda'] = options.chr_lambda != '-'
-
     #### copy/substitue args
     for key, value in options.__dict__.items():
         params[key] = value
-        # pass
+        if key.startswith('include_'):
+            data[key] = int(value)
+
+    # MUST FOLLOW COPYING VALUES FROM options
+    data['include_mt'] = int(options.chr_MT != '-' and options.include_mt) 
+    data['include_plastid'] = int(options.chr_plastid != '-' and options.include_plastid)
+    data['include_lambda'] = int(options.chr_lambda != '-' and options.include_lambda)
     
+    data['MAX_DP_BY_FIG'] = params['MAX_DP_BY_FIG']
+
     params['img_dir'] = os.path.join(params['report_dir'], 'img')
     myMakeDirs(params['work_dir'])
     myMakeDirs(params['report_dir'])
@@ -143,10 +146,15 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--mt', dest='chr_MT', help='name of mitochondrial DNA', type=str, required=False, default='-')
         self.add_argument('--plastid', dest='chr_plastid', help='name of plastid DNA', type=str, required=False, default='-')
         self.add_argument('--control-DNA', dest='chr_lambda', help='name of spiked-in DNA, usually lambda DNA', type=str, required=False, default='-')
+
         self.add_argument('--diag-quality', dest='include_quality', help='diagnose sequencing and mapping quality or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
         self.add_argument('--diag-pangene', dest='include_pangene', help='diagnose pangene methylation or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
         self.add_argument('--diag-motif', dest='include_motif', help='diagnose CpG-motif-related patterns or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
         self.add_argument('--diag-saturation', dest='include_saturation', help='diagnose sequencing saturation or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-mt', dest='include_mt', help='diagnose reads mapped to mitochondrial DNA or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-plastid', dest='include_plastid', help='diagnose reads mapped to plastid DNA or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+        self.add_argument('--diag-control', dest='include_lambda', help='diagnose reads mapped to spiked-in control DNA (usually lambda DNA) or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
+
         self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
         self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
         self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, 100kbp by defaults', type=int, default=100_000)
@@ -162,7 +170,7 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--max-depth-motig', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
         self.add_argument('--coordinate-base', dest='coordinate_base', help='0/1-based coordinate of output', type=int, default=1)
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
-        self.add_argument('--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
+        self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
         # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
         ## todo
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')

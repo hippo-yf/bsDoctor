@@ -6,18 +6,17 @@ from src.coverage import CovLambda, GenomicIntervalGenerator
 from src.updateBinning import update_cgkmer, update_binning
 
 
-def nuclear_sampling():
+def nuclear_sampling() -> None:
     fa = params['fa']
     bam = params['bam']
     chrs_valid = params['chrs_valid']
     step = params['nuclear_sampling_step']
     spacing = params['nuclear_sampling_spacing']
-    include_motif = params['include_motif']
+    include_motif = data['include_motif']
 
     intervals = iter(GenomicIntervalGenerator(
         fa, 
         chrs= chrs_valid,
-        # chrs='all',
         start = 0,    
         end = params['MAX_COORDINATE'],
         step=step, # 1_000
@@ -27,10 +26,12 @@ def nuclear_sampling():
     intervals_list = list(intervals)
     for i in tqdm.trange(len(intervals_list), desc='Sampling nuclear chr: '):
         detailedIntvl = bam.detailedCoverage(intervals_list[i])
-        if include_motif: update_cgkmer(detailedIntvl)
         update_binning(detailedIntvl)
+        if include_motif: 
+            update_cgkmer(detailedIntvl)
+    return None
 
-def compt_chr_and_bin_wise():
+def compt_chr_and_bin_wise() -> None:
     fa = params['fa']
     reference_length = params['reference_length']
     binSize = params['binSize']
@@ -56,7 +57,6 @@ def compt_chr_and_bin_wise():
     dict_bin_dpC = dict()
     # DP_valid = 30
     
-
     for i, chr in enumerate(chrs_valid):
         nbin = int(np.ceil(reference_length(chr)/binSize))
         dict_bin_meCG[chr] = np.zeros((nbin, DP_valid), dtype=float)
@@ -106,6 +106,7 @@ def compt_chr_and_bin_wise():
     ###########################################################
     #### traverse sampled intervals
     ###########################################################
+
     for key, value in dict_binning.items():
         chr, bin = key
         if chr not in chrs_valid: continue
@@ -200,8 +201,9 @@ def compt_chr_and_bin_wise():
     params['dict_chr_cov'] = dict_chr_cov
     params['dict_bin_me'] = dict_bin_me
     params['dict_bin_depth'] = dict_bin_depth
+    return None
 
-def plot_chr_wise_me():
+def plot_chr_wise_me() -> None:
     chrs_plot = params['chrs_valid']
     dict_chr_me = params['dict_chr_me']
     dict_chr_cov = params['dict_chr_cov']
@@ -219,17 +221,18 @@ def plot_chr_wise_me():
             ylim = max(ylim, max(me))
         ylim = axlimit(ylim)
         for dp in range(DP_valid):
-            fig, ax = plt.subplots(figsize = (figwidth,2))
+            fig, ax = plt.subplots(figsize = (figwidth, 2))
             ax.bar(chrs_plot, me_list[dp], color=COLS[0])
             ax.set_ylim(0, ylim)
             plt.xticks(rotation=45)
-            ax.set_ylabel('mean methylation')
+            ax.set_ylabel('mean DNAme level')
             filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp+1}'
-            plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
+            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
             plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
+    return None
 
-def plot_binning_meth():
+def plot_binning_meth() -> None:
     chrs_plot = params['chrs_valid']
     dict_bin_me = params['dict_bin_me']
     binSize = params['binSize']
@@ -254,6 +257,7 @@ def plot_binning_meth():
                 figwidth = maxbins/250 + 1.2 + add
 
             fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
+            if nchr == 1: axs = [axs]
             fig.subplots_adjust(hspace=0)
             
             plt.xlim(-2, prefixBpSize(np.array([maxbins * binSize]))[0]+2)
@@ -296,8 +300,9 @@ def plot_binning_meth():
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
             plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
+    return None
 
-def plot_binning_depth():
+def plot_binning_depth() -> None:
     chrs_plot = params['chrs_valid']
     dict_bin_depth = params['dict_bin_depth']
     binSize = params['binSize']
@@ -319,6 +324,7 @@ def plot_binning_depth():
             figwidth = maxbins/200 + 1.3 + add
 
         fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
+        if nchr == 1: axs = [axs]
         fig.subplots_adjust(hspace=0)
 
         # ylim
@@ -331,7 +337,7 @@ def plot_binning_depth():
         for i, chr in enumerate(chrs_plot):
             # if i + 1 == int((nchr+1) / 2):
             if i == kylabel:
-                axs[i].yaxis.set_label_position('right')
+                axs[i].yaxis.set_label_position('left')
                 axs[i].set_ylabel('mean read depth')
             shape = np.shape(dep[chr])
             x0 = np.arange(shape[0]) * binSize
@@ -363,4 +369,5 @@ def plot_binning_depth():
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
+    return None
     

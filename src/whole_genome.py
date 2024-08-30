@@ -199,9 +199,9 @@ def compt_whole_genome() -> None:
     #### adopted bs conversion rate
     # if 'bs_rate_lambda' in params and 'bs_rate_MT' in params:
 
-    if data['lambda_is_covered'] == 1:
+    if bool(data['include_lambda']) and bool(data['lambda_is_covered']):
         bs_rate = params['bs_rate_lambda']
-    elif data['MT_is_covered'] == 1:
+    elif bool(data['include_mt']) and bool(data['MT_is_covered']):
         bs_rate = params['bs_rate_MT']
     else:
         bs_rate = bs_rate_chh
@@ -288,7 +288,7 @@ def plot_theroretical_me_bias() -> None:
     plt.ylabel('Unadjusted DNAme level')
 
     cbar = ax.figure.colorbar(im, ax=ax)
-    cbar.ax.set_ylabel('DNAme bias', rotation=-90, va="bottom")
+    cbar.ax.set_ylabel('DNAme level bias', rotation=-90, va="bottom")
     
     filename = f'{params['img_dir']}/DNAme-bias'
     # filename = f'img/DNAme-bias'
@@ -305,7 +305,7 @@ def plot_hist_me() -> None:
     for key, value in methDist.items():
         count = np.cumsum(value[:,::-1], axis=1)[:,::-1]
         prop = count / np.sum(count, axis=0)
-        ylim = axlimit(np.max(prop))
+        # ylim = axlimit(np.max(prop))
         shape = np.shape(prop)
         x = np.arange(shape[0])
         x2 = np.arange(0,shape[0]+1, 4)
@@ -315,8 +315,8 @@ def plot_hist_me() -> None:
             fig, ax = plt.subplots(figsize=(5,2))
             ax.bar(x, prop[:,DP], width=1, align='edge', color='#1B98E0')
             ax.set_xticks(x2, xlabels)
-            ax.set_ylim(0, ylim)
-            ax.set_xlabel('methylation level')
+            # ax.set_ylim(0, ylim)
+            ax.set_xlabel('mean DNAme level')
             ax.set_ylabel('proportion')
 
             filename = f'{img_dir}/meth-dist-genome-{key}-dp{DP+1}'

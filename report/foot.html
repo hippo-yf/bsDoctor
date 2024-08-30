@@ -6,11 +6,10 @@ include files of customized scripts and styles.
 #}
 
   <!-- custom JS -->
-  {# <script src="assets/js/report.js"></script> #}
-  {# <script src="assets/js/figures.js"></script> #}
-
   <script type="text/javascript">{{ include_file('assets/report.js') }}</script>
-  <script type="text/javascript">{{ include_file('assets/figures.js') }}</script>
+  {% if alldata.include_motif == 1 %}
+    <script type="text/javascript">{{ include_file('assets/figures.js') }}</script>
+  {% endif %}
  
   <!-- custom CSS -->
   {# <link rel="stylesheet" href="assets/css/report.css" /> #}

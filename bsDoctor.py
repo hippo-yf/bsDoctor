@@ -83,17 +83,18 @@ def config_params_further():
 
     binSizeContig ={}
     binsContig = {}
-    if params['include_lambda']:
+    if data['include_lambda']:
         binSize_lambda = getBins(reference_length(chr_lambda), bins_lambda)
         binSizeContig[chr_lambda] = binSize_lambda[0]
         binsContig[chr_lambda] = binSize_lambda[1]
         params['binSize_lambda'] = binSize_lambda
-    if params['include_mt']:
+    if data['include_mt']:
         binSize_MT = getBins(reference_length(chr_MT), bins_mt)
         binSizeContig[chr_MT] = binSize_MT[0]
         binsContig[chr_MT] = binSize_MT[1]
         params['binSize_MT'] = binSize_MT
-    if params['include_plastid']:
+    print(data['include_plastid'])
+    if data['include_plastid']:
         binSize_plastid = getBins(reference_length(chr_plastid), bins_plastid)
         binSizeContig[chr_plastid] = binSize_plastid[0]
         binsContig[chr_plastid] = binSize_plastid[1]
@@ -134,7 +135,7 @@ def compute_and_plot():
     compt_plot_DNA_content()
 
     # base and read quality
-    if params['include_quality']:
+    if data['include_quality']:
         compt_quality()
         plot_read_length()
         plot_base_quality()
@@ -142,26 +143,26 @@ def compute_and_plot():
         plot_bar_base_cigar()
 
     # pangene
-    if params['include_pangene']:
+    if data['include_pangene']:
         pangene_sampling()
         pangene_compt_plot_meth()
 
     # MT
-    if params['include_mt']:
+    if data['include_mt']:
         compt_MT()
         if data['mt_is_covered'] == 1:
             plot_mt_depth_binning()
             plot_mt_base_error_rate()
 
     # lambda
-    if params['include_lambda']:
+    if data['include_lambda']:
         compt_lambda()
         if data['lambda_is_covered'] == 1:
             plot_lambda_depth_binning()
             plot_lambda_base_error_rate()
 
     # plastid
-    if params['include_plastid']:
+    if data['include_plastid']:
         compt_plastid()
         if data['plastid_is_covered'] == 1:
             plot_plastid_depth_binning()
@@ -206,7 +207,7 @@ def compute_and_plot():
     plot_depth_overall_vs_me()
 
     # CpG-motif
-    if params['include_motif']:
+    if data['include_motif']:
         compt_CpG_motif()
         plot_hist_CpG_motif_freq()
         plot_CpG_motif_freq_watson_vs_crick()
@@ -220,7 +221,7 @@ def compute_and_plot():
         plot_RRBS_CpG_motifs()
 
     # saturation curve and DNA lost
-    if params['include_saturation']:
+    if data['include_saturation']:
         compt_plot_DNA_composition()
         plot_saturation_curve()
 
@@ -245,7 +246,10 @@ if __name__ == "__main__":
     
     config_params(options)      
     config_params_further()
-    # print(params)
+    
+    print(params)
+    print(data)
+
     compute_and_plot()
 
     with open(f'{params['report_dir']}/data.pickle', 'wb') as fd:
