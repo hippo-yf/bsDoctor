@@ -108,7 +108,7 @@ def plot_plastid_depth_binning() -> None:
 
     filename = f'{img_dir}/depth-bin-lambda'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -124,6 +124,6 @@ def plot_plastid_base_error_rate() -> None:
 
         filename = f'{img_dir}/base-error-rate-dist-plastid'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None

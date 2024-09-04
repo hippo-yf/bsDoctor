@@ -237,6 +237,7 @@ def plot_binning_meth() -> None:
     dict_bin_me = params['dict_bin_me']
     binSize = params['binSize']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     dp = 0 # only plot depth >= 1
     nchr = len(chrs_plot)
@@ -298,7 +299,8 @@ def plot_binning_meth() -> None:
 
             filename = f'{img_dir}/meth-bin-{cg}-{strand}-dp{dp+1}'
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            if save_svg:
+                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
     return None
 
@@ -308,6 +310,7 @@ def plot_binning_depth() -> None:
     binSize = params['binSize']
     img_dir = params['img_dir']
     nchr = len(chrs_plot)
+    save_svg = params['save_svg']
 
     for strand in ['double', 'single']:
         if strand == 'double':
@@ -367,7 +370,8 @@ def plot_binning_depth() -> None:
 
         filename = f'{img_dir}/depth-bin-{strand}'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
     

@@ -51,7 +51,7 @@ def _plot_pangene_meth(meth: CovPanGene, name: str) -> None:
 
     filename = f'{img_dir}/{name}'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 

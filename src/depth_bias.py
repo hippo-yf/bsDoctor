@@ -5,9 +5,9 @@ from src.config import params
 from src.utils import *
 
 def plot_depth_vs_cytosine_density() -> None:
-
     dict_binning = params['dict_binning']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     gen = np.random.Generator(np.random.PCG64())
 
@@ -55,7 +55,8 @@ def plot_depth_vs_cytosine_density() -> None:
             
             filename = f'{img_dir}/depth-vs-{cg}-density-of-{strand}-strand'
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            if save_svg:
+                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
     return None
 
@@ -63,6 +64,7 @@ def plot_depth_dist_by_low_high_me() -> None:
     dict_binning = params['dict_binning']
     img_dir = params['img_dir']
     DP = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     x = 0
     y = 0
@@ -90,7 +92,8 @@ def plot_depth_dist_by_low_high_me() -> None:
 
     filename = f'{img_dir}/depth-of-low-high-meth-CGs'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -99,6 +102,7 @@ def plot_covrate_vs_depth_of_cytosine() -> None:
     dict_Cs = params['dict_Cs']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     for cg in CONTEXTS:
         x = np.arange(DP_xdepth) + 1
@@ -112,7 +116,8 @@ def plot_covrate_vs_depth_of_cytosine() -> None:
 
         filename = f'{img_dir}/genome-{cg}-coverage-vs-depth'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -120,6 +125,7 @@ def plot_depth_dist_of_cytosine() -> None:
     dict_genome_covnC = params['dict_genome_covnC']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     for cg in CONTEXTS:
         x = np.arange(DP_xdepth) + 1
@@ -133,7 +139,8 @@ def plot_depth_dist_of_cytosine() -> None:
 
         filename = f'{img_dir}/genome-{cg}-depth-distribution'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -144,6 +151,7 @@ def plot_covrate_vs_depth_of_whole_genome() -> None:
     length = params['length']
     DP_xdepth = params['MAXDP_IN_FIG']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     x = np.arange(DP_xdepth) + 1
     L = np.sum(length)
@@ -157,7 +165,8 @@ def plot_covrate_vs_depth_of_whole_genome() -> None:
 
     filename = f'{img_dir}/whole-genome-coverage-vs-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -167,6 +176,7 @@ def plot_depth_dist_of_whole_genome() -> None:
     genome_cov = params['genome_cov']
     DP_xdepth = params['MAXDP_IN_FIG']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     x = np.arange(DP_xdepth) + 1
     fig, ax = plt.subplots(figsize=(5, 3))
@@ -180,13 +190,15 @@ def plot_depth_dist_of_whole_genome() -> None:
 
     filename = f'{img_dir}/whole-genome-depth-distribution'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_depth_watson_vs_crick() -> None:
     dict_binning = params['dict_binning']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     depthW = []
     depthC = []
@@ -221,13 +233,15 @@ def plot_depth_watson_vs_crick() -> None:
 
     filename = f'{img_dir}/depth-of-two-strands'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_depth_overall_vs_me() -> None:
     dict_binning = params['dict_binning']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     depthW = []
     depthC = []
@@ -274,7 +288,8 @@ def plot_depth_overall_vs_me() -> None:
     
     filename = f'{img_dir}/depth-vs-meth-depth-of-watson-strand'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
 
     #### Crick
@@ -295,6 +310,7 @@ def plot_depth_overall_vs_me() -> None:
 
     filename = f'{img_dir}/depth-vs-meth-depth-of-crick-strand'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None

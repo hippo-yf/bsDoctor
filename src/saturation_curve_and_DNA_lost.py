@@ -55,7 +55,7 @@ def compt_plot_DNA_composition() -> None:
 
     filename = f'{img_dir}/pie-DNA-lost'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -147,7 +147,7 @@ def plot_saturation_curve() -> None:
 
     filename = f'{img_dir}/saturation-curve'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
     

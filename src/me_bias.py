@@ -10,6 +10,7 @@ def plot_me_vs_depth_eq_k() -> None:
     dict_genome_covnC = params['dict_genome_covnC']
     DP = params['MAXDP_IN_FIG']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     for cg in CONTEXTS:
         fig, ax = plt.subplots(figsize=(5, 3))
@@ -26,7 +27,8 @@ def plot_me_vs_depth_eq_k() -> None:
         ax.set_ylabel('methylation level')
         filename = f'{img_dir}/meth-{cg}-vs-dp-threshold'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -58,7 +60,8 @@ def plot_me_vs_depth_ge_k() -> None:
         ax.set_ylabel('methylation level')
         filename = f'{img_dir}/meth-{cg}-at-dp-k'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if params['save_svg']:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -87,7 +90,7 @@ def plot_me_vs_missing() -> None:
         ax.set_ylabel('methylation level')
         filename = f'{img_dir}/meth-{cg}-vs-missing-rate'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -155,7 +158,7 @@ def plot_me_and_covrate_vs_cytosine_density() -> None:
 
                 filename = f'{img_dir}/meth-vs-{cg}-density-of-{strand}-strand-dp-ge{dp+1}'
                 plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+                if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
                 plt.close()
 
                 ## cov vs density
@@ -178,6 +181,6 @@ def plot_me_and_covrate_vs_cytosine_density() -> None:
 
                 filename = f'{img_dir}/covrate-vs-{cg}-density-of-{strand}-strand-dp-ge{dp+1}'
                 plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+                if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
                 plt.close()
     return None

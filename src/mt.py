@@ -109,7 +109,7 @@ def plot_mt_depth_binning() -> None:
     filename = f'{img_dir}/depth-bin-MT'
     # filename = f'img/depth-bin-MT'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -125,6 +125,6 @@ def plot_mt_base_error_rate() -> None:
 
         filename = f'{img_dir}/base-error-rate-dist-MT'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None

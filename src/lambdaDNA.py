@@ -71,6 +71,7 @@ def plot_lambda_depth_binning() -> None:
     binSizeContig = params['binSizeContig']
     chr_lambda = params['chr_lambda']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     x = np.arange(binsContig[chr_lambda])*binSizeContig[chr_lambda]
     x, prefix = prefixBpSize(x)
@@ -106,13 +107,15 @@ def plot_lambda_depth_binning() -> None:
 
     filename = f'{img_dir}/depth-bin-lambda'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_lambda_base_error_rate() -> None:
     dict_lambda = params['dict_lambda']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
     
     fig, ax = plt.subplots(figsize=(5,3))
     if np.sum(dict_lambda.dp20 > 0) > 0:
@@ -122,7 +125,8 @@ def plot_lambda_base_error_rate() -> None:
 
         filename = f'{img_dir}/base-error-rate-dist-lambda'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
     

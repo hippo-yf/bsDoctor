@@ -6,6 +6,7 @@ from src.utils import *
 def plot_heatmap_stranded_CpG_depth() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     # n = stranded_CG_depth.shape[0]
     x = np.arange(5) *20
@@ -23,7 +24,8 @@ def plot_heatmap_stranded_CpG_depth() -> None:
 
     filename = f'{img_dir}/heatmap-cg-stranded-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -31,6 +33,7 @@ def plot_bar_CpG_depth_difference() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     cov_diff = np.zeros((199,), dtype=int)
     shape = np.shape(stranded_CG_depth)
@@ -50,7 +53,8 @@ def plot_bar_CpG_depth_difference() -> None:
 
     filename = f'{img_dir}/cg-stranded-depth-difference'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
 
     #### stats of |depth diff|
@@ -69,6 +73,7 @@ def plot_bar_double_srtanded_cpg() -> None:
     stranded_CG_depth = params['stranded_CG_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     prop_double_cov = np.zeros((DP_xdepth,))
     shape = np.shape(stranded_CG_depth)
@@ -84,13 +89,15 @@ def plot_bar_double_srtanded_cpg() -> None:
 
     filename = f'{img_dir}/cg-prop-of-double-stranded-coverage'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_heatmap_stranded_CpG_meth() -> None:
     stranded_CG_meth = params['stranded_CG_meth']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     # DP >= 1
     # n = stranded_CG_meth.shape[0]
@@ -116,7 +123,8 @@ def plot_heatmap_stranded_CpG_meth() -> None:
 
     filename = f'{img_dir}/heatmap-cg-stranded-meth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -124,6 +132,7 @@ def plot_heatmap_stranded_meth_diff() -> None:
     CGmeth_diff_by_depth = params['CGmeth_diff_by_depth']
     img_dir = params['img_dir']
     DP_xdepth = params['MAXDP_IN_FIG']
+    save_svg = params['save_svg']
 
     # n = stranded_CG_meth.shape[0]
     n = 20
@@ -153,7 +162,8 @@ def plot_heatmap_stranded_meth_diff() -> None:
 
     filename = f'{img_dir}/heatmap-cg-stranded-meth-diff'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 

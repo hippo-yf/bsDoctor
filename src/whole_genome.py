@@ -261,7 +261,7 @@ def plot_base_error_rate_by_AT() -> None:
         filename = f'{img_dir}/base-error-rate-by-AT'
         # filename = f'img/base-error-rate-by-AT'
         plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
         plt.close()
     return None
 
@@ -304,7 +304,7 @@ def plot_theroretical_me_bias() -> None:
     filename = f'{params['img_dir']}/DNAme-bias'
     # filename = f'img/DNAme-bias'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -332,6 +332,6 @@ def plot_hist_me() -> None:
 
             filename = f'{img_dir}/meth-dist-genome-{key}-dp{DP+1}'
             plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
-            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
     return None

@@ -3,10 +3,10 @@ import numpy as np
 from src.config import params, data
 from src.utils import *
 
-from importlib import reload
-import src.utils
-reload(src.utils)
-relative_freq_CpG_motif = src.utils.relative_freq_CpG_motif
+# from importlib import reload
+# import src.utils
+# reload(src.utils)
+# relative_freq_CpG_motif = src.utils.relative_freq_CpG_motif
 
 
 def compt_CpG_motif() -> None:
@@ -93,6 +93,7 @@ def compt_CpG_motif() -> None:
 def plot_hist_CpG_motif_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     fig, ax = plt.subplots(figsize=(5,3))
     ax.hist(relative_freq_CpG_motif(dict_kmer['n']), bins=21, color=COLS[0])
@@ -102,13 +103,15 @@ def plot_hist_CpG_motif_freq() -> None:
 
     filename = f'{img_dir}/CpG-motif-frequency-dist'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_CpG_motif_freq_watson_vs_crick() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     fig, ax = plt.subplots(figsize=(4, 3))
     ax.plot(relative_freq_CpG_motif(dict_kmer['nW']), relative_freq_CpG_motif(dict_kmer['nC']), 'o', c=COLS[0], markersize=2)
@@ -118,13 +121,15 @@ def plot_CpG_motif_freq_watson_vs_crick() -> None:
 
     filename = f'{img_dir}/CpG-motif-stranded-frequency'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_CpG_motif_me_watson_vs_crick() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     fig, ax = plt.subplots(figsize=(4, 3))
     ax.plot(dict_kmer['meW'][:,0], dict_kmer['meC'][:,0], 'o', c=COLS[0], markersize=2)
@@ -134,13 +139,15 @@ def plot_CpG_motif_me_watson_vs_crick() -> None:
 
     filename = f'{img_dir}/CpG-motif-stranded-me-dp1'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_CpG_motif_depth_vs_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
 
     fig, ax = plt.subplots(figsize=(4, 3))
     ax.plot(relative_freq_CpG_motif(dict_kmer['n']), dict_kmer['dp'], 'o', c=COLS[0], markersize=2)
@@ -150,13 +157,15 @@ def plot_CpG_motif_depth_vs_freq() -> None:
 
     filename = f'{img_dir}/CpG-motif-mean-depth-vs-freq'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
 def plot_CpG_motif_me_vs_freq() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
+    save_svg = params['save_svg']
         
     fig, ax = plt.subplots(figsize=(4, 3))
     ax.plot(relative_freq_CpG_motif(dict_kmer['n']), dict_kmer['me'][:,0], 'o', c=COLS[0], markersize=2)
@@ -167,7 +176,8 @@ def plot_CpG_motif_me_vs_freq() -> None:
 
     filename = f'{img_dir}/CpG-motif-meth-vs-frequency'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -175,6 +185,7 @@ def plot_CpG_motif_covrate_vs_depth() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
     maxdp = params['MAX_DP_CG_MOTIF']
+    save_svg = params['save_svg']
 
     fig, ax = plt.subplots(figsize=(5, 3))
     dp = np.arange(start=1, stop=maxdp+1)
@@ -185,7 +196,8 @@ def plot_CpG_motif_covrate_vs_depth() -> None:
 
     filename = f'{img_dir}/CpG-motif-coverage-vs-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -193,6 +205,7 @@ def plot_CpG_motif_me_vs_depth() -> None:
     dict_kmer = params['dict_kmer']
     img_dir = params['img_dir']
     maxdp = params['MAX_DP_CG_MOTIF']
+    save_svg = params['save_svg']
         
     fig, ax = plt.subplots(figsize=(5, 3))
     dp = np.arange(start=1, stop=maxdp+1)
@@ -203,7 +216,8 @@ def plot_CpG_motif_me_vs_depth() -> None:
 
     filename = f'{img_dir}/CpG-motif-meth-vs-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 

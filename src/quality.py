@@ -45,7 +45,7 @@ def plot_read_length() -> None:
     # filename = r'img/dist-read-length'
     filename = params['img_dir'] + r'/hist-read-length'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -59,7 +59,7 @@ def plot_base_quality() -> None:
 
     filename = params['img_dir'] + r'/hist-base-quality'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -73,7 +73,7 @@ def plot_read_map_quality() -> None:
 
     filename = params['img_dir'] + r'/hist-read-map-quality'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
 
@@ -91,7 +91,7 @@ def plot_bar_base_cigar() -> None:
 
     filename = params['img_dir'] + r'/bar-base-CIGAR'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
     return None
     
