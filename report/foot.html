@@ -7,8 +7,9 @@ include files of customized scripts and styles.
 
   <!-- custom JS -->
   <script type="text/javascript">{{ include_file('assets/report.js') }}</script>
+  <script type="text/javascript">{{ include_file('assets/figures.js') }}</script>
   {% if alldata.include_motif == 1 %}
-    <script type="text/javascript">{{ include_file('assets/figures.js') }}</script>
+    <script type="text/javascript">{{ include_file('assets/figures-motif.js') }}</script>
   {% endif %}
  
   <!-- custom CSS -->

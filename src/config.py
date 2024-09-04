@@ -9,6 +9,9 @@ from src.utils import myMakeDirs, as_bool
 import matplotlib
 matplotlib.rcParams["svg.fonttype"] = 'none'
 
+__version__ = '1.0.0'
+
+
 # data in python
 global params
 params = dict()
@@ -141,7 +144,7 @@ class MyArgumentParser(ArgumentParser):
 
         self.add_argument('-b', '--bam-file', dest='bamfile', help='a .bam file', type=str, required=True)
         self.add_argument('-f', '--fa-file', dest='fafile', help='a .fa[.gz] file of referece genome', type=str, required=True)
-        self.add_argument('-g', '--gtf-file', dest='gtffile', help='a .gtf[.gz] file', type=str, required=True)
+        self.add_argument('-g', '--gtf-file', dest='gtffile', help='a .gtf[.gz] file', type=str, required=False, default='-')
         self.add_argument('--chr', dest='testchrs', help='nuclear chromosomes to diagnose, seprated by comma(,), such as "chr1,chr2,chr3", all chromosomes by defaults', type=str, required=False, default='all')
         self.add_argument('--mt', dest='chr_MT', help='name of mitochondrial DNA', type=str, required=False, default='-')
         self.add_argument('--plastid', dest='chr_plastid', help='name of plastid DNA', type=str, required=False, default='-')
@@ -172,6 +175,15 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
         self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
         # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
+        self.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
+        
         ## todo
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')
+        return None
 
+def check_args(options) -> None:
+    # if options.include_pangene:
+    assert not options.include_pangene or options.gtffile != '-', 'Must specify "-g/--gtf-file" to diagnose pangene methylation.'
+
+    return None
+    

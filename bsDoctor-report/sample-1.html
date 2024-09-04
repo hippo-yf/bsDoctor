@@ -1313,7 +1313,7 @@ body {
   </script>
 
   <!-- json data for interactive/plotly figures -->
-  <script type="text/plain" id="alldata">{"MAX_DP_BY_FIG": 20, "SAMPLE": "ENCFF873NOV", "bin_size": "100 Kbp", "bs_rate": "98.96", "bsrate_chh": "98.96", "bsrate_warning": 0, "dict_reads": {"chrs": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM", "chrL"], "lens": [248956422, 242193529, 198295559, 190214555, 181538259, 170805979, 159345973, 145138636, 138394717, 133797422, 135086622, 133275309, 114364328, 107043718, 101991189, 90338345, 83257441, 80373285, 58617616, 64444167, 46709983, 50818468, 156040895, 57227415, 16569, 48502], "nreads": [66854410, 106747514, 61635942, 60943343, 52003515, 65196008, 43297414, 39560461, 32494057, 37695541, 34554069, 35915152, 30251220, 37098388, 20832687, 32931154, 23545670, 21700842, 10619470, 29545447, 12975906, 7782604, 21572724, 6667893, 5098632, 1937622]}, "err_rate_AT": "0.8746", "include_lambda": 0, "include_motif": 0, "include_mt": 0, "include_pangene": 0, "include_plastid": 0, "include_quality": 0, "include_saturation": 0, "lambda_DNA_content_vs_MT": "38", "lambda_DNA_content_vs_nuclear": "0.2145", "lambda_DNA_content_vs_plastid": "nan", "me_CG": "55.33", "me_CG_adj": "54.86", "me_CHG": "1.149", "me_CHG_adj": "0.1132", "me_CHH": "1.095", "me_CHH_adj": "0.05862", "mean_dp": "28.11", "median_dp": "26.41", "nCHH": "1,165,762", "title": "bsDoctor Report of Sample: ENCFF873NOV"}</script>
+  <script type="text/plain" id="alldata">{"MAX_DP_BY_FIG": 20, "SAMPLE": "ENCFF873NOV", "bin_size": "100 Kbp", "bs_rate": "98.95", "bsrate_chh": "98.95", "bsrate_warning": 0, "err_rate_AT": "0.8378", "include_lambda": 0, "include_motif": 0, "include_mt": 0, "include_pangene": 0, "include_plastid": 0, "include_quality": 0, "include_saturation": 0, "lambda_DNA_content_vs_MT": "38", "lambda_DNA_content_vs_nuclear": "0.2145", "me_CG": "55.21", "me_CG_adj": "54.73", "me_CHG": "1.134", "me_CHG_adj": "0.08716", "me_CHH": "1.108", "me_CHH_adj": "0.06038", "mean_dp": "29.16", "median_dp": "26.28", "nCHH": "1,171,983", "title": "bsDoctor Report of Sample: ENCFF873NOV"}</script>
   
 
   <script type="text/javascript">
@@ -1530,8 +1530,8 @@ body {
             
             
             <li id="cap-chh">
-                98.96%: from nuclear CHHs<sup class="question-marker0">?</sup>
-                (1,165,762 sampled cytosines);
+                98.95%: from nuclear CHHs<sup class="question-marker0">?</sup>
+                (1,171,983 sampled cytosines);
             </li>
             <div class="caption" link="#cap-chh">
                 These estimates are available only for samples that MT DNA/nuclear CHHs are of no/little methylation.
@@ -1548,17 +1548,17 @@ body {
         <img src="img/DNAme-bias.png" alt="" width="450px" />
         <p>
             Adjust (whole-genome) DNAme level according to incomplete bisulfite conversion. <sup
-                class="question-marker">?</sup> The conversion rate of 98.96% is adopted.
+                class="question-marker">?</sup> The conversion rate of 98.95% is adopted.
         <div class="caption" link="#cap-3">
             Over-conversion is inestimable in usual samples and not modeled in bsDoctor.
         </div>
         </p>
         <ul>
             <li id="cap-3">
-                CGs (depth ≥ 1): observed: 55.33%, adjusted: 54.86%;
+                CGs (depth ≥ 1): observed: 55.21%, adjusted: 54.73%;
             </li>
-            <li>CHGs (depth ≥ 1): observed: 1.149%, adjusted: 0.1132%;</li>
-            <li>CHHs (depth ≥ 1): observed: 1.095%, adjusted: 0.05862%.</li>
+            <li>CHGs (depth ≥ 1): observed: 1.134%, adjusted: 0.08716%;</li>
+            <li>CHHs (depth ≥ 1): observed: 1.108%, adjusted: 0.06038%.</li>
         </ul>
         
         
@@ -1581,7 +1581,7 @@ body {
         </p>
         <ul>
             <li id="cap-4">
-                For nuclear genome, from bases mapped to A/T sites<sup class="question-marker">?</sup>: 0.8746%;
+                For nuclear genome, from bases mapped to A/T sites<sup class="question-marker">?</sup>: 0.8378%;
             </li>
             <div class="caption" link="#cap-4">
                 Most single-nucleotide variations (SNVs) are C → T and
@@ -2364,88 +2364,88 @@ var COL_gray = "#666666";
 
 // freq on two strands
 
-var reads = alldata.dict_reads;
+// var reads = alldata.dict_reads;
 
-// var reads = {
-//     'chrs': ['chr1',
-//         'chr2',
-//         'chr3',
-//         'chr4',
-//         'chr5',
-//         'chr6',
-//         'chr7',
-//         'chr8',
-//         'chr9',
-//         'chr10',
-//         'chr11',
-//         'chr12',
-//         'chr13',
-//         'chr14',
-//         'chr15',
-//         'chr16',
-//         'chr17',
-//         'chr18',
-//         'chr19',
-//         'chr20',
-//         'chr21',
-//         'chr22',
-//         'chrX',
-//         'chrY',
-//         'chrM',
-//         'chrL'],
-//     'lens': [248956422,
-//         242193529,
-//         198295559,
-//         190214555,
-//         181538259,
-//         170805979,
-//         159345973,
-//         145138636,
-//         138394717,
-//         133797422,
-//         135086622,
-//         133275309,
-//         114364328,
-//         107043718,
-//         101991189,
-//         90338345,
-//         83257441,
-//         80373285,
-//         58617616,
-//         64444167,
-//         46709983,
-//         50818468,
-//         156040895,
-//         57227415,
-//         16569,
-//         48502],
-//     'nreads': [66854410,
-//         106747514,
-//         61635942,
-//         60943343,
-//         52003515,
-//         65196008,
-//         43297414,
-//         39560461,
-//         32494057,
-//         37695541,
-//         34554069,
-//         35915152,
-//         30251220,
-//         37098388,
-//         20832687,
-//         32931154,
-//         23545670,
-//         21700842,
-//         10619470,
-//         29545447,
-//         12975906,
-//         7782604,
-//         21572724,
-//         6667893,
-//         5098632,
-//         1937622]
-// }
+var reads = {
+    'chrs': ['chr1',
+        'chr2',
+        'chr3',
+        'chr4',
+        'chr5',
+        'chr6',
+        'chr7',
+        'chr8',
+        'chr9',
+        'chr10',
+        'chr11',
+        'chr12',
+        'chr13',
+        'chr14',
+        'chr15',
+        'chr16',
+        'chr17',
+        'chr18',
+        'chr19',
+        'chr20',
+        'chr21',
+        'chr22',
+        'chrX',
+        'chrY',
+        'chrM',
+        'chrL'],
+    'lens': [248956422,
+        242193529,
+        198295559,
+        190214555,
+        181538259,
+        170805979,
+        159345973,
+        145138636,
+        138394717,
+        133797422,
+        135086622,
+        133275309,
+        114364328,
+        107043718,
+        101991189,
+        90338345,
+        83257441,
+        80373285,
+        58617616,
+        64444167,
+        46709983,
+        50818468,
+        156040895,
+        57227415,
+        16569,
+        48502],
+    'nreads': [66854410,
+        106747514,
+        61635942,
+        60943343,
+        52003515,
+        65196008,
+        43297414,
+        39560461,
+        32494057,
+        37695541,
+        34554069,
+        35915152,
+        30251220,
+        37098388,
+        20832687,
+        32931154,
+        23545670,
+        21700842,
+        10619470,
+        29545447,
+        12975906,
+        7782604,
+        21572724,
+        6667893,
+        5098632,
+        1937622]
+}
 
 // sequence from 1
 function seq_with(x){

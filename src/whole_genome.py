@@ -195,6 +195,7 @@ def compt_whole_genome() -> None:
     mechh = np.sum(-np.diff(meCHH)*wdp)/w.sum()
     bs_rate_chh = 1 - mechh
     data['bsrate_chh'] = fp(bs_rate_chh)
+    params['bs_rate_chh'] = bs_rate_chh
 
     #### adopted bs conversion rate
     # if 'bs_rate_lambda' in params and 'bs_rate_MT' in params:
@@ -206,6 +207,7 @@ def compt_whole_genome() -> None:
     else:
         bs_rate = bs_rate_chh
 
+    params['bs_rate'] = bs_rate
     data['bs_rate'] = fp(bs_rate)
 
     #### adjust whole-genome DNAme
@@ -265,17 +267,26 @@ def plot_base_error_rate_by_AT() -> None:
 
 def plot_theroretical_me_bias() -> None:
     # DNAme bias
-    bsrate = np.linspace(0.8, 1, 200)
+    bs_rate = params['bs_rate']
+
+    rate = np.linspace(0.8, 1, 200)
     meth = np.linspace(0, 1, 200)
-    meth0 = 1 - np.outer(1-meth, 1/bsrate)
+    meth0 = 1 - np.outer(1-meth, 1/rate)
     meth_bias = np.outer(meth, np.ones(200)) - meth0
 
     # constrant: meth + bsrate >= 1
-    tmp = np.outer(meth, np.ones(200)) + np.outer(np.ones(200), bsrate)
+    tmp = np.outer(meth, np.ones(200)) + np.outer(np.ones(200), rate)
     meth_bias[tmp<1] = np.nan
 
     fig, ax = plt.subplots()
     im = ax.imshow(meth_bias, cmap='Spectral_r')
+
+    # vertical line of bsrate
+    if 0.8 < bs_rate < 1:
+        # y0 = np.linspace(1, 1-bsrate, num=10)
+        y0 = [int(max(5, (1-bs_rate)*200)), 195]
+        x0 = [int(bs_rate*200), int(bs_rate*200)]
+        plt.plot(x0, y0, color='gray', linestyle='dashed')
 
     ax.tick_params(top=False, bottom=True, labeltop=False, labelbottom=True)
     x = np.linspace(0, 200-1, 6)

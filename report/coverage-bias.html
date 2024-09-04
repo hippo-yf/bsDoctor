@@ -17,7 +17,7 @@ diagnosis of coverage bias of nuclear chromosomes.
         </p>
 
         <div class="row">
-            <div class="col-3"></div>
+            <div class="col-2"></div>
             <div class="col">
                 <p class="label label-v">Strand</p>
                 <div class="form-check form-switch">
@@ -27,10 +27,10 @@ diagnosis of coverage bias of nuclear chromosomes.
             </div>
             <div class="col" id="legend-depth-bin">
                 <p class="label label-v">Color legend</p>
-                <span class="watson-marker">·</span>Watson strand <br />
+                <span class="watson-marker">·</span>Watson strand; 
                 <span class="crick-marker">·</span>Crick strand
             </div>
-            <div class="col-3"></div>
+            <div class="col-2"></div>
         </div>
         <div class="row">
             <div class="col-xl-12">
@@ -86,16 +86,19 @@ diagnosis of coverage bias of nuclear chromosomes.
             <div class="col" style="margin-top: 35px">
                 <p class="label">Cytosine context</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CG" checked />
-                    <label class="form-check-label">CG</label>
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" id="radio-Cs-depth-dist-1"
+                        value="CG" checked />
+                    <label class="form-check-label" for="radio-Cs-depth-dist-1">CG</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CHG" />
-                    <label class="form-check-label">CHG </label>
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" id="radio-Cs-depth-dist-2"
+                        value="CHG" />
+                    <label class="form-check-label" for="radio-Cs-depth-dist-2">CHG </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" value="CHH" />
-                    <label class="form-check-label">CHH </label>
+                    <input class="form-check-input" type="radio" name="radio-Cs-depth-dist" id="radio-Cs-depth-dist-3"
+                        value="CHH" />
+                    <label class="form-check-label" for="radio-Cs-depth-dist-3">CHH </label>
                 </div>
             </div>
         </div>
@@ -106,25 +109,25 @@ diagnosis of coverage bias of nuclear chromosomes.
         <p>Available reads for methyaltion calculation is a subset of total reads.</p>
         <div class="row">
             <div class="col-9">
-                <img src="img/depth-vs-meth-depth-of-watson-strand.png" alt="" width="400px"
-                    id="img-depth-vs-meth-depth" />
+                <img src="img/depth-vs-meth-depth-of-watson-strand.png" alt="" width="400px" id="img-depth-vs-meth-depth" />
                 <div class="caption" link="#img-depth-vs-meth-depth"></div>
             </div>
             <div class="col legend">
                 <p class="label">Strand</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth" value="watson"
-                        checked />
-                    <label class="form-check-label">Watson</label>
+                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth"
+                        id="radio-depth-vs-meth-depth-1" value="watson" checked />
+                    <label class="form-check-label" for="radio-depth-vs-meth-depth-1">Watson</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth" value="crick" />
-                    <label class="form-check-label">Crick</label>
+                    <input class="form-check-input" type="radio" name="radio-depth-vs-meth-depth"
+                        id="radio-depth-vs-meth-depth-2" value="crick" />
+                    <label class="form-check-label" for="radio-depth-vs-meth-depth-2">Crick</label>
                 </div>
             </div>
         </div>
     </article>
-
+    
     <article id="cov-rate-vs-cg-density">
         <h3>Cytosine coverage vs cytosine densities</h3>
         <p>
@@ -136,7 +139,7 @@ diagnosis of coverage bias of nuclear chromosomes.
         <div class="row">
             <div class="col-9">
                 <!-- <object type="image/svg+xml" data="img/covrate-vs-CG-density-of-double-strand.svg" width="500"></object> -->
-
+    
                 <img src="img/covrate-vs-CG-density-of-double-strand-dp-ge1.png" alt="" width="400px"
                     id="img-cov-rate-vs-Cs-density" />
                 <div class="caption" link="#img-cov-rate-vs-Cs-density"></div>
@@ -147,35 +150,35 @@ diagnosis of coverage bias of nuclear chromosomes.
                 </p>
                 <input type="range" class="form-range" min="1" max="10" step="1" id="range-covrate-vs-Cs-density"
                     value="1" />
-
+    
                 <p class="label">Cytosine context</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CG"
-                        checked />
-                    <label class="form-check-label">CG</label>
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density"
+                        id="radio1-cov-rate-vs-Cs-density-1" value="CG" checked />
+                    <label class="form-check-label" for="radio1-cov-rate-vs-Cs-density-1">CG</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CHG" />
-                    <label class="form-check-label">CHG</label>
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density"
+                        id="radio1-cov-rate-vs-Cs-density-2" value="CHG" />
+                    <label class="form-check-label" for="radio1-cov-rate-vs-Cs-density-2">CHG</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" value="CHH" />
-                    <label class="form-check-label">CHH</label>
+                    <input class="form-check-input" type="radio" name="radio1-cov-rate-vs-Cs-density" id="radio1-cov-rate-vs-Cs-density-3" value="CHH" />
+                    <label class="form-check-label" for="radio1-cov-rate-vs-Cs-density-3">CHH</label>
                 </div>
-
+    
                 <p class="label">Strand</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="double"
-                        checked />
-                    <label class="form-check-label">Double</label>
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" id="radio2-cov-rate-vs-Cs-density-1" value="double" checked />
+                    <label class="form-check-label" for="radio2-cov-rate-vs-Cs-density-1">Double</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="W" />
-                    <label class="form-check-label">Watson</label>
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" id="radio2-cov-rate-vs-Cs-density-2" value="W" />
+                    <label class="form-check-label" for="radio2-cov-rate-vs-Cs-density-2">Watson</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" value="C" />
-                    <label class="form-check-label">Crick</label>
+                    <input class="form-check-input" type="radio" name="radio2-cov-rate-vs-Cs-density" id="radio2-cov-rate-vs-Cs-density-3" value="C" />
+                    <label class="form-check-label" for="radio2-cov-rate-vs-Cs-density-3">Crick</label>
                 </div>
             </div>
         </div>
@@ -187,38 +190,42 @@ diagnosis of coverage bias of nuclear chromosomes.
             window with colour indicating the density of windows.</p>
         <div class="row">
             <div class="col-9">
-                <img src="img/depth-vs-CG-density-of-double-strand.png" alt="" width="400px"
-                    id="img-depth-vs-Cs-density" />
+                <img src="img/depth-vs-CG-density-of-double-strand.png" alt="" width="400px" id="img-depth-vs-Cs-density" />
                 <div class="caption" link="#img-depth-vs-Cs-density"></div>
             </div>
             <div class="col legend">
                 <p class="label">Cytosine context</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CG" checked />
-                    <label class="form-check-label">CG</label>
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density"
+                        id="radio1-depth-vs-Cs-density-1" value="CG" checked />
+                    <label class="form-check-label" for="radio1-depth-vs-Cs-density-1">CG</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CHG" />
-                    <label class="form-check-label">CHG</label>
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density"
+                        id="radio1-depth-vs-Cs-density-2" value="CHG" />
+                    <label class="form-check-label" for="radio1-depth-vs-Cs-density-2">CHG</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density" value="CHH" />
-                    <label class="form-check-label">CHH</label>
+                    <input class="form-check-input" type="radio" name="radio1-depth-vs-Cs-density"
+                        id="radio1-depth-vs-Cs-density-3" value="CHH" />
+                    <label class="form-check-label" for="radio1-depth-vs-Cs-density-3">CHH</label>
                 </div>
 
                 <p class="label">Strand</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="double"
-                        checked />
-                    <label class="form-check-label">Double</label>
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density"
+                        id="radio2-depth-vs-Cs-density-1" value="double" checked />
+                    <label class="form-check-label" for="radio2-depth-vs-Cs-density-1">Double</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="W" />
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density"
+                        for="radio2-depth-vs-Cs-density-2" id="radio2-depth-vs-Cs-density-2" value="W" />
                     <label class="form-check-label">Watson</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density" value="C" />
-                    <label class="form-check-label">Crick</label>
+                    <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density"
+                        id="radio2-depth-vs-Cs-density-3" value="C" />
+                    <label class="form-check-label" for="radio2-depth-vs-Cs-density-3">Crick</label>
                 </div>
             </div>
         </div>

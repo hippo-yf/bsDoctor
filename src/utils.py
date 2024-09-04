@@ -45,10 +45,12 @@ def prefixBpSize(x) -> Tuple:
 
 # divide keeping nan's
 def nandivide(x: NDArray, y: NDArray) -> NDArray:
+    x = np.array(x)
+    y = np.array(y)
     i = (y != 0)
     q = np.zeros(np.shape(x), dtype=float)
     q[i] = x[i]/y[i]
-    q[~i] = np.nan
+    q[np.logical_not(i)] = np.nan
     return q
 
 # trim values larger than quantile 0.99
@@ -147,6 +149,14 @@ def adjust_me(me, bsrate):
 def relative_freq_CpG_motif (x, df=4):
     # df: number of free bases
     return x/np.sum(x) * 4**df
+
+# remove patch contigs
+def excludeContigs(contigs: List[str]) -> List[str]:
+    valid = [c for c in contigs if not c.endswith(('_random', '_alt')) and not c.startswith('chrUn_')]
+    return valid
+
+def contig_should_be_included(contig: str) -> bool:
+    return not contig.endswith(('_random', '_alt')) and not contig.startswith('chrUn_')
 
 ## utils for figures
 def abline(intercept, slope, **kw) -> None:

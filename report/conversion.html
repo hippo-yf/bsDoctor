@@ -26,7 +26,7 @@ diagnosis of bisulfite conversion.
             {% endif %}
             <li id="cap-chh">
                 {{ alldata.bsrate_chh}}%: from nuclear CHHs<sup class="question-marker0">?</sup>
-                ({{alldata.nCHH}} cytosines sampled);
+                ({{alldata.nCHH}} sampled cytosines);
             </li>
             <div class="caption" link="#cap-chh">
                 These estimates are available only for samples that MT DNA/nuclear CHHs are of no/little methylation.
@@ -43,7 +43,7 @@ diagnosis of bisulfite conversion.
     <article id="adjust-meth">
         <h3>Adjust DNAme level</h3>
         <p>DNAme bias, i.e., observed DNAme level - real DNAme level, is dependent on (observed/unadjusted) DNAme
-            level and bisulfite conversion rate. The theoretical relationsip is illustrated by the following figure.</p>
+            level and bisulfite conversion rate. The theoretical relationsip is illustrated by the following figure. The dashed line indicates the estimated conversion rate of this sample.</p>
         <img src="img/DNAme-bias.png" alt="" width="450px" />
         <p>
             Adjust (whole-genome) DNAme level according to incomplete bisulfite conversion. <sup

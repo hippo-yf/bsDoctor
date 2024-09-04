@@ -32,7 +32,7 @@ from src.saturation_curve_and_DNA_lost import *
 #### config parameters
 #############################
 
-def config_params_further():
+def config_params_further() -> None:
 
     SAMPLE = re.search(r'/?([^/\.]+)\.?[^/]*$', params['bamfile']).groups()[0]
     # print(SAMPLE)
@@ -93,7 +93,7 @@ def config_params_further():
         binSizeContig[chr_MT] = binSize_MT[0]
         binsContig[chr_MT] = binSize_MT[1]
         params['binSize_MT'] = binSize_MT
-    print(data['include_plastid'])
+        
     if data['include_plastid']:
         binSize_plastid = getBins(reference_length(chr_plastid), bins_plastid)
         binSizeContig[chr_plastid] = binSize_plastid[0]
@@ -123,6 +123,8 @@ def config_params_further():
     params['quality'] = quality
 
     params['reads_to_sample'] = min([params['reads_to_sample'], bam.mapped])
+    
+    return None
     
 
 #######################################
@@ -236,7 +238,7 @@ def write_report():
     template = env.get_template('main.jinja-html')
     temp_out = template.render(alldata=data)   
 
-    with open(f'{params['report_dir']}/report-{params['SAMPLE']}.html', 'w', encoding='utf-8') as f:
+    with open(f"{params['report_dir']}/report-{params['SAMPLE']}.html", 'w', encoding='utf-8') as f:
         f.writelines(temp_out)
 
 if __name__ == "__main__":
@@ -244,15 +246,16 @@ if __name__ == "__main__":
     parser = MyArgumentParser(description=desc)
     options = parser.parse_args()
     
+    check_args(options)
     config_params(options)      
     config_params_further()
     
-    print(params)
-    print(data)
+    # print(params)
+    # print(data)
 
     compute_and_plot()
 
-    with open(f'{params['report_dir']}/data.pickle', 'wb') as fd:
+    with open(f"{params['report_dir']}/data.pickle", 'wb') as fd:
         pickle.dump(data, fd)
 
     write_report()

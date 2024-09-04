@@ -263,9 +263,6 @@ def plot_binning_meth() -> None:
             plt.xlim(-2, prefixBpSize(np.array([maxbins * binSize]))[0]+2)
             kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
             for i, chr in enumerate(chrs_plot):
-                if i == kylabel:
-                    axs[i].yaxis.set_label_position('left')
-                    axs[i].set_ylabel('mean DNAme level')
                 shape = np.shape(me[chr])
                 x = np.arange(shape[0]) * binSize
                 x, prefix = prefixBpSize(x)
@@ -289,6 +286,9 @@ def plot_binning_meth() -> None:
                 if kylabel % 2 == 0:
                     # axs[i].yaxis.set_label_position('right')
                     axs[i].yaxis.tick_right()
+                if i == kylabel:
+                    axs[i].yaxis.set_label_position('left')
+                    axs[i].set_ylabel('mean DNAme level')
                 axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
             # if prefix == '':
             #     axs[i].set_xlabel('genome coordinate')
@@ -335,10 +335,6 @@ def plot_binning_depth() -> None:
             
         kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
         for i, chr in enumerate(chrs_plot):
-            # if i + 1 == int((nchr+1) / 2):
-            if i == kylabel:
-                axs[i].yaxis.set_label_position('left')
-                axs[i].set_ylabel('mean read depth')
             shape = np.shape(dep[chr])
             x0 = np.arange(shape[0]) * binSize
             x, prefix = prefixBpSize(x0)
@@ -359,6 +355,10 @@ def plot_binning_depth() -> None:
             # if i%2 == nchr%2: # ensure ylabel on the left always
             if kylabel % 2 == 0:
                 axs[i].yaxis.tick_right()
+            # if i + 1 == int((nchr+1) / 2):
+            if i == kylabel:
+                axs[i].yaxis.set_label_position('left')
+                axs[i].set_ylabel('mean read depth')
             axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
         # if prefix == '':
         #     axs[i].set_xlabel('genome coordinate')
