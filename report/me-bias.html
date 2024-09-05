@@ -7,16 +7,16 @@ diagnosis of DNAme level bias of nuclear chromosomes.
 #}
 
 <section id="Methylation bias">
-    <h2>Methylation bias</h2>
+    <h2>DNAme level bias</h2>
 
     <article id="meth-at-depth">
-        <h3>Methylation level at different read depths</h3>
+        <h3>DNAme level at different read depths</h3>
         <p>For cytosines of read <strong>depth = k</strong> ≥ 1.</p>
         <div class="row">
             <div class="col-9">
                 <img src="img/meth-CG-at-dp-k.svg" alt="" width="400px" id="img-meth-at-dp" />
                 <div class="caption" link="#img-meth-at-dp">
-                    Ideally, methylation level should be independent with depth.
+                    Ideally, DNAme level should be independent with depth.
                 </div>
             </div>
             <div class="col legend">
@@ -38,13 +38,13 @@ diagnosis of DNAme level bias of nuclear chromosomes.
     </article>
 
     <article id="cul-meth-depth">
-        <h3>Methylation level with different thresholds of read depth</h3>
+        <h3>DNAme level with different thresholds of read depth</h3>
         <p>For cytosines with read <strong>depth ≥ k</strong> ≥ 1.</p>
         <div class="row">
             <div class="col-9">
                 <img src="img/meth-CG-vs-dp-threshold.svg" alt="" width="400px" id="img-cul-meth-by-dp" />
                 <div class="caption" link="#img-cul-meth-by-dp">
-                    Ideally, methylation level should be independent with depth.
+                    Ideally, DNAme level should be independent with depth.
                 </div>
             </div>
             <div class="col legend">
@@ -67,17 +67,17 @@ diagnosis of DNAme level bias of nuclear chromosomes.
 
     <article id="meth-vs-missing-rate">
         <h3>
-            Methylation level at different proportions of uncovered CpGs
+            DNAme level at different proportions of uncovered CpGs
         </h3>
         <p>
-            The proportion of uncovered cytosines increases as the read depth
-            threshold increases.
+            The missing rate is proportion of uncovered cytosines depending on the read depth
+            threshold.
         </p>
         <div class="row">
             <div class="col-9">
                 <img src="img/meth-CG-vs-missing-rate.svg" alt="" width="400px" id="img-meth-vs-missing-rate" />
                 <div class="caption" link="#img-meth-vs-missing-rate">
-                    Ideally, methylation level should be independent with depth.
+                    Ideally, DNAme level should be independent with depth.
                 </div>
             </div>
             <div class="col legend">
@@ -99,7 +99,7 @@ diagnosis of DNAme level bias of nuclear chromosomes.
     </article>
 
     <article id="meth-vs-cg-density">
-        <h3>Mean methylation level vs cytosine density</h3>
+        <h3>Mean DNAme level vs cytosine density</h3>
         <p>
             For each binning window, <strong>cytosine density</strong> is defined as the number of cytosines per 1Kbp.
             Cytosines on two strands are summed for double-stranded plots.

@@ -6,73 +6,76 @@ include dependent files, icons, css, js in single html.
 
 #}
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,{{ include_file('assets/img/favicon-32x32.png', b64=True) }}">
-  <link rel="icon" type="image/png" sizes="96x96" href="data:image/png;base64,{{ include_file('assets/img/favicon-96x96.png', b64=True) }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,{{ include_file('assets/img/favicon-16x16.png', b64=True) }}">
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,{{ include_file('assets/img/favicon-32x32.png', b64=True) }}">
+<link rel="icon" type="image/png" sizes="96x96" href="data:image/png;base64,{{ include_file('assets/img/favicon-96x96.png', b64=True) }}">
+<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,{{ include_file('assets/img/favicon-16x16.png', b64=True) }}">
 
-  <!--  CSS -->
-  <style type="text/css">
-      {{ include_file('assets/bootstrap-5.3.3/css/bootstrap.min.css') }}
-      {{ include_file('assets/bootstrap-5.3.3/css/docs.css') }}
-      {{ include_file('assets/katex-0.16.11/katex.css') }}
-  </style>
+<!--  CSS -->
+<style type="text/css">
+    {{ include_file('assets/bootstrap-5.3.3/css/bootstrap.min.css') }}
+    {{ include_file('assets/bootstrap-5.3.3/css/docs.css') }}
+    {{ include_file('assets/katex-0.16.11/katex.css') }}
+</style>
 
-  <!--  KaTeX fonts -->
-  <style type="text/css">
-  @font-face {
-    font-family: "KaTeX_SansSerif";
-    src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.ttf', b64=True) }}) format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: "KaTeX_SansSerif";
-    src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.ttf', b64=True) }}) format("truetype");
-    font-weight: normal;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: "KaTeX_SansSerif";
-    src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.ttf', b64=True) }}) format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-  </style>
+<!--  KaTeX fonts -->
+<style type="text/css">
 
-  <!-- Javascript -->
-  <script type="text/javascript">{{ include_file('assets/jquery-3.7.1/jquery.min.js') }}</script>
-  <script type="text/javascript">{{ include_file('assets/bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}</script>
-  <!-- plotly.js -->
-  {# <script src="assets/js/plotly-basic.min.js"></script> #}
-  <script type="text/javascript">{{ include_file('assets/plotly-2.34.0/plotly-basic.min.js') }}</script>
+@font-face {
+  font-family: "KaTeX_SansSerif";
+  src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.ttf', b64=True) }}) format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
 
-  <!-- KaTeX -->
-  <script type="text/javascript">{{ include_file('assets/katex-0.16.11/katex.min.js') }}</script>
-  <script type="text/javascript">{{ include_file('assets/katex-0.16.11/contrib/auto-render.min.js') }}</script>
+@font-face {
+  font-family: "KaTeX_SansSerif";
+  src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Italic.ttf', b64=True) }}) format("truetype");
+  font-weight: normal;
+  font-style: italic;
+} 
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      renderMathInElement(document.body, {
-        // customized options
-        // • auto-render specific keys, e.g.:
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false },
-          { left: "\\(", right: "\\)", display: false },
-          { left: "\\[", right: "\\]", display: true },
-        ],
-        // • rendering keys, e.g.:
-        throwOnError: false,
-      });
+@font-face {
+  font-family: "KaTeX_SansSerif";
+  src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Regular.ttf', b64=True) }}) format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+</style>
+
+<!-- Javascript -->
+<script type="text/javascript">{{ include_file('assets/jquery-3.7.1/jquery.min.js') }}</script>
+<script type="text/javascript">{{ include_file('assets/bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}</script>
+<!-- plotly.js -->
+{# <script src="assets/js/plotly-basic.min.js"></script> #}
+<script type="text/javascript">{{ include_file('assets/plotly-2.34.0/plotly-basic.min.js') }}</script>
+
+<!-- KaTeX -->
+<script type="text/javascript">{{ include_file('assets/katex-0.16.11/katex.min.js') }}</script>
+<script type="text/javascript">{{ include_file('assets/katex-0.16.11/contrib/auto-render.min.js') }}</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      // customized options
+      // • auto-render specific keys, e.g.:
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true },
+      ],
+      // • rendering keys, e.g.:
+      throwOnError: false,
     });
-  </script>
+  });
+</script>
 
-  <!-- json data for interactive/plotly figures -->
-  <script type="text/plain" id="alldata">{{ alldata|tojson }}</script>
-  {# <script type="text/plain" id="config">{{ config|tojson }}</script> #}
+<!-- json data for interactive/plotly figures -->
+<script type="text/plain" id="alldata">{{ alldata|tojson }}</script>
+{# <script type="text/plain" id="config">{{ config|tojson }}</script> #}
 
-  <script type="text/javascript">
-    alldata = JSON.parse(document.getElementById('alldata').innerHTML);
-    // config = JSON.parse(document.getElementById('config').innerHTML);
-  </script>
+<script type="text/javascript">
+  alldata = JSON.parse(document.getElementById('alldata').innerHTML);
+  // config = JSON.parse(document.getElementById('config').innerHTML);
+</script>

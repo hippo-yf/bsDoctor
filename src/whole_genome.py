@@ -144,9 +144,9 @@ def compt_whole_genome() -> None:
     ATdp =  np.asarray(ATdp)
     misbase = np.asarray(misbase)
     
-    # define DP threshold
+    # define DP threshold in figs
     prop_CG = covnCG/covnCG[0]
-    DP_xdepth = min(MAXDEPTH, max(10, MAXDEPTH -1 - np.argmax(prop_CG[::-1] >= 0.03)))
+    DP_xdepth = min(MAXDEPTH, max(20, MAXDEPTH -1 - np.argmax(prop_CG[::-1] >= 0.03)))
     params['MAXDP_IN_FIG'] = DP_xdepth
 
     #### summary in dict

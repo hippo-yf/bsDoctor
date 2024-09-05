@@ -3,7 +3,7 @@ var COLS = ["#1B98E0", "#df5353", "#ff9c33", "#f9d839", "#32a896"];
 var COLS_AREA = ["#49afe9", "#e36969", "ffa84d"];
 var COL_gray = "#666666";
 
-// freq on two strands
+// nreads vs chr length
 
 var reads = alldata.dict_reads;
 
@@ -93,9 +93,31 @@ function seq_with(x){
     return Array.from(x, (val, i) => i + 1);
 }
 
-let xminlim = Math.min(reads.lens);
-let xmaxlim = Math.max(reads.lens);
-// console.log(minlim, maxlim);
+var updatemenus = [
+    {
+        buttons: [
+            {
+                args: [{'xaxis.type': 'linear', 'yaxis.type': 'linear'}],
+                label: 'linear',
+                method: 'relayout'
+            },
+            {
+                args: [{'xaxis.type': 'log', 'yaxis.type': 'log'}],
+                label: 'log',
+                method: 'relayout'
+            }
+        ],
+        font: {'size': 14},
+        direction: 'left',
+        pad: { 'r': 5, 't': 5 },
+        showactive: true,
+        type: 'buttons',
+        x: 0.1,
+        xanchor: 'left',
+        y: 1.1,
+        yanchor: 'top'
+    }
+]
 
 var layout_reads_vs_lengths = {
     xaxis: {
@@ -106,6 +128,7 @@ var layout_reads_vs_lengths = {
         zeroline: false,
         ticks: "outside",
         tickwidth: 2,
+        // type: 'log'
     },
     yaxis: {
         title: "reads mapped to each chr/contig",
@@ -115,9 +138,11 @@ var layout_reads_vs_lengths = {
         zeroline: false,
         ticks: "outside",
         tickwidth: 2,
+        // type: 'log'
     },
     showlegend: false,
-    margin: { b: 50, l: 80, t: 0, r: 0 },
+    margin: { b: 50, l: 90, t: 0, r: 0 },
+    updatemenus: updatemenus
 };
 
 var config = { displayModeBar: false };

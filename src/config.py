@@ -177,12 +177,10 @@ class MyArgumentParser(ArgumentParser):
         # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
         self.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
         
-        ## todo
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')
         return None
 
 def check_args(options) -> None:
-    # if options.include_pangene:
     assert not options.include_pangene or options.gtffile != '-', 'Must specify "-g/--gtf-file" to diagnose pangene methylation.'
 
     return None

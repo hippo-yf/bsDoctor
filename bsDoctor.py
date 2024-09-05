@@ -54,16 +54,24 @@ def config_params_further() -> None:
     reference_length = fa.get_reference_length
     params['reference_length'] = reference_length
 
+    bam = MyAlignmentFile(params['bamfile'], 'rb')
+    params['bam'] = bam
+
     # chrs to sample
     # chrs_valid = chrs.split(',')
     chrs = params['testchrs']
     if chrs != 'all':
         chrs_valid = chrs.split(',')
     else:
+        # chrs_valid = [
+        #     chr for chr in fa.references
+        #     if not chr.endswith(('_random', '_alt')) and not chr.startswith('chrUn_') and chr not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
+        # ]
+        # order chrs according to bam file
         chrs_valid = [
-            chr for chr in fa.references
-            if not chr.endswith(('_random', '_alt')) and not chr.startswith('chrUn_') and chr not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
+            c.contig for c in bam.get_index_statistics() if c.contig in fa.references and contig_should_be_included(c.contig) and c.contig not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
         ]
+
     # print(chrs_valid)
 
     # lengths of chrs
@@ -106,8 +114,6 @@ def config_params_further() -> None:
     params['binSizeContig'] = binSizeContig
     params['binsContig'] = binsContig
     
-    bam = MyAlignmentFile(params['bamfile'], 'rb')
-    params['bam'] = bam
 
     # classes
     # ('chr1', 23) -> BinCov()
@@ -237,8 +243,9 @@ def write_report():
     env.globals["include_file"] = include_file
     template = env.get_template('main.jinja-html')
     temp_out = template.render(alldata=data)   
-
-    with open(f"{params['report_dir']}/report-{params['SAMPLE']}.html", 'w', encoding='utf-8') as f:
+    html_out = f"{params['report_dir']}/report-{params['SAMPLE']}.html"
+    
+    with open(html_out, 'w', encoding='utf-8') as f:
         f.writelines(temp_out)
 
 if __name__ == "__main__":

@@ -58,7 +58,7 @@ def compt_plot_DNA_content() -> None:
 
     #### pie plot
     
-    labels = {'nuclear': 'nucler', 'mt': 'MT', 'lambda': 'lambda/spiked-in', 'plastid': 'plastid'}
+    labels = {'nuclear': 'nuclear', 'mt': 'MT', 'lambda': 'lambda/spiked-in', 'plastid': 'plastid'}
 
     nreads = []
     labs = []

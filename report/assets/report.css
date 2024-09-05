@@ -152,3 +152,19 @@ svg {
   text-indent: 0;
   text-rendering: auto;
 }
+
+table {
+  font-size: 1rem;
+  /* padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px; */
+}
+/* table tr td {
+} */
+td.tb-minor {
+  padding-left: 2rem;
+}
+td.tb-major {
+  padding-left: 1px;
+}

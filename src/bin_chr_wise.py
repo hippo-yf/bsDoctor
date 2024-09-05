@@ -104,7 +104,7 @@ def compt_chr_and_bin_wise() -> None:
     dict_chr_covnCHGC = dict.fromkeys(chrs_valid, 0)
 
     ###########################################################
-    #### traverse sampled intervals
+    #### summarization
     ###########################################################
 
     for key, value in dict_binning.items():
@@ -212,7 +212,7 @@ def plot_chr_wise_me() -> None:
 
     strand = 'double'
     for cg in CONTEXTS:
-        figwidth = min(12, len(chrs_plot)*0.15 + 1)
+        figwidth = min(12, len(chrs_plot)*0.18 + 0.5)
         ylim = 0
         me_list = []
         for dp in range(DP_valid):
@@ -228,7 +228,7 @@ def plot_chr_wise_me() -> None:
             ax.set_ylabel('mean DNAme level')
             filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp+1}'
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
     return None
 
@@ -283,11 +283,10 @@ def plot_binning_meth() -> None:
                     axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
                     axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
                     axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-                # if i % 2 == nchr % 2: # ensure ylabel on the left always
-                if kylabel % 2 == 0:
-                    # axs[i].yaxis.set_label_position('right')
+                # if i % 2 == nchr % 2:
+                if i % 2 == kylabel % 2:
                     axs[i].yaxis.tick_right()
-                if i == kylabel:
+                if i == kylabel: # ensure ylabel on the left always
                     axs[i].yaxis.set_label_position('left')
                     axs[i].set_ylabel('mean DNAme level')
                 axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
@@ -355,11 +354,10 @@ def plot_binning_depth() -> None:
                 axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
                 axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
                 axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-            # if i%2 == nchr%2: # ensure ylabel on the left always
-            if kylabel % 2 == 0:
+            # if i%2 == nchr%2:
+            if i % 2 == kylabel % 2:
                 axs[i].yaxis.tick_right()
-            # if i + 1 == int((nchr+1) / 2):
-            if i == kylabel:
+            if i == kylabel: # ensure ylabel on the left always
                 axs[i].yaxis.set_label_position('left')
                 axs[i].set_ylabel('mean read depth')
             axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
