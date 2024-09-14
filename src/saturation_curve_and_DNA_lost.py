@@ -21,13 +21,13 @@ def compt_plot_DNA_composition() -> None:
     params['DNA_lost'] = DNA_lost
 
     ## sequencing saturation 
-    saturaion_level = 1 - prop_unsequenced
+    saturation_level = 1 - prop_unsequenced
 
     data['prop_cov_DP1'] = fp(single_DP1_coverage)
     data['prop_unsequenced'] = fp(prop_unsequenced)
     data['prop_asymptotic'] = fp(single_DP1_coverage + prop_unsequenced)
     data['prop_lost'] = fp(DNA_lost)
-    data['saturaion'] = fp(saturaion_level)
+    data['saturation'] = fp(saturation_level)
 
     # pie plot of DNA
     fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))

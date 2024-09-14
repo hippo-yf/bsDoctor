@@ -82,6 +82,8 @@ def plot_bar_double_srtanded_cpg() -> None:
         a = stranded_CG_depth[i:,:].sum() + stranded_CG_depth[:,i:].sum() - b
         prop_double_cov[i-1] = b/a
 
+    # data['covrate_chg'] = [fp(prop_double_cov[x]) for x in (0,2,4,9)]
+    
     fig, ax = plt.subplots(figsize=(5,3))
     ax.bar(np.arange(1, DP_xdepth+1), prop_double_cov, color=COLS[0])
     plt.xlabel('min{Watson depth, Crick depth}')

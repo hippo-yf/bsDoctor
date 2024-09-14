@@ -3,7 +3,7 @@ import math
 import os
 from typing import NamedTuple, List, Tuple, Dict, Any
 from argparse import ArgumentParser, Namespace
-
+from datetime import datetime
 from src.utils import myMakeDirs, as_bool
 
 import matplotlib
@@ -85,7 +85,7 @@ def config_params(options: Namespace = Namespace()) -> None:
     params['nuclear_sampling_spacing'] = 10_000
     params['context_size'] = 3
     params['cgkmerSize'] = 6
-    params['coordinate_base'] = 1
+    # params['coordinate_base'] = 1
     params['swap_strand'] = False
     params['chr_MT'] = chr_MT
     params['chr_lambda'] = chr_lambda
@@ -135,6 +135,7 @@ def config_params(options: Namespace = Namespace()) -> None:
     myMakeDirs(params['report_dir'])
     myMakeDirs(params['img_dir'])
 
+    data['datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return None
 
 
@@ -171,13 +172,14 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--num-pangene', dest='PANGENE_SAMPLED', help='genes to sample for pangene methylaion level, 1000 by defaults', type=int, default=1_000)
         self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 30 by defaults', type=int, default=20)
         self.add_argument('--max-depth-motig', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
-        self.add_argument('--coordinate-base', dest='coordinate_base', help='0/1-based coordinate of output', type=int, default=1)
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
         self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
         # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
+        self.add_argument('--ploidy', dest='ploidy', help='ploidy of the genome, 2 (diploidy) by defaults', type=int, default=2)
         self.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
         
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')
+
         return None
 
 def check_args(options) -> None:

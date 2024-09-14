@@ -144,10 +144,44 @@ def compt_whole_genome() -> None:
     ATdp =  np.asarray(ATdp)
     misbase = np.asarray(misbase)
     
+    ## whole-genome covrate
+    DPs = [0,2,4,9]
+    covrate_wg_dp = genome_cov/length.sum()
+    data['covrate_wg_dp'] = [fp(covrate_wg_dp[i]) for i in DPs]
+    covrate_wg_sp = (genome_covW + genome_covC)/length.sum()/2
+    data['covrate_wg_sp'] = [fp(covrate_wg_sp[i]) for i in DPs]
+
     # define DP threshold in figs
     prop_CG = covnCG/covnCG[0]
     DP_xdepth = min(MAXDEPTH, max(20, MAXDEPTH -1 - np.argmax(prop_CG[::-1] >= 0.03)))
     params['MAXDP_IN_FIG'] = DP_xdepth
+
+    ##  CG covrate
+    covrate_CG = covnCG/nCG
+    data['covrate_cg'] = [fp(covrate_CG[x]) for x in DPs]
+
+    ##  CHG covrate
+    covrate_CHG = covnCHG/nCHG
+    data['covrate_chg'] = [fp(covrate_CHG[x]) for x in DPs]
+
+    ##  CHH covrate
+    covrate_CHH = covnCHH/nCHH
+    data['covrate_chh'] = [fp(covrate_CHH[x]) for x in DPs]
+
+    # CpGs of double-stranded cov
+    prop_double_cov = np.zeros((len(DPs),))
+    for k, dp in enumerate(DPs):
+        dp += 1
+        b = stranded_CG_depth[dp:, dp:].sum() # both
+        a = stranded_CG_depth[dp:,:].sum() + stranded_CG_depth[:,dp:].sum() - b
+        prop_double_cov[k] = b/a
+    data['covrate_cg_ds'] = [fp(x) for x in prop_double_cov]
+    
+    ## DNAme level
+    data['me_cg_ds'] = [fp(x) for x in nandivide(meCG[DPs], covnCG[DPs])]
+    data['me_chg_ds'] = [fp(x) for x in nandivide(meCHG[DPs], covnCHG[DPs])]
+    data['me_chh_ds'] = [fp(x) for x in nandivide(meCHH[DPs], covnCHH[DPs])]
+
 
     #### summary in dict
     # culmulative covered Cs

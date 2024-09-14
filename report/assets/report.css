@@ -35,6 +35,9 @@ a.nav-link {
 body {
   padding: 0px 20px !important;
 }
+h1 {
+  text-align: left;
+}
 h2 {
   font-family: Gadugi, sans-serif;
   /* font-family: Lato, sans-serif; */
@@ -87,6 +90,12 @@ code {
 }
 .text-sample {
   font-size: 1.5em;
+  text-align: left;
+}
+.text-datetime{
+  font-size: 1rem;
+  color: gray;
+  text-align: right;
 }
 .first-header {
   border-top: 0px;
@@ -154,7 +163,7 @@ svg {
 }
 
 table {
-  font-size: 1rem;
+  font-size: 0.9rem;
   /* padding-top: 0px;
   padding-bottom: 0px;
   margin-top: 0px;
@@ -167,4 +176,19 @@ td.tb-minor {
 }
 td.tb-major {
   padding-left: 1px;
+}
+td.table-header {
+  font-weight: bolder;
+  font-size: 1.1rem;
+  color:#1b98e0;
+}
+.card-body {
+  /* background-color:lavender; */
+  background-color: ghostwhite;
+  /* margin: auto; */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-radius: 10px;
 }

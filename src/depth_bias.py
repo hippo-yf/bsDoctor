@@ -156,15 +156,15 @@ def plot_covrate_vs_depth_of_whole_genome() -> None:
     x = np.arange(DP_xdepth) + 1
     L = np.sum(length)
     fig, ax = plt.subplots(figsize=(5, 3))
-    DPs = (0,2,4,9) # dp of 1,3,5,10 in report
+    # DPs = (0,2,4,9) # dp of 1,3,5,10 in report
     covrate_W = genome_covW[:DP_xdepth]/L
-    data['covrate_ATCG_Watson'] = [fp(covrate_W[i]) for i in DPs]
+    # data['covrate_ATCG_Watson'] = [fp(covrate_W[i]) for i in DPs]
     ax.plot(x, covrate_W, '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
     covrate_C = genome_covC[:DP_xdepth]/L
-    data['covrate_ATCG_Crick'] = [fp(covrate_C[i]) for i in DPs]
+    # data['covrate_ATCG_Crick'] = [fp(covrate_C[i]) for i in DPs]
     ax.plot(x, covrate_C, '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
     covrate_double = genome_cov[:DP_xdepth]/L
-    data['covrate_ATCG_double'] = [fp(covrate_double[i]) for i in DPs]
+    # data['covrate_ATCG_double'] = [fp(covrate_double[i]) for i in DPs]
     ax.plot(x, covrate_double, '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
     ax.legend()
     plt.xlabel('depth threshold')

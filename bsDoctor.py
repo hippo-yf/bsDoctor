@@ -119,17 +119,9 @@ def config_params_further() -> None:
     # ('chr1', 23) -> BinCov()
     dict_binning = dict()
     params['dict_binning'] = dict_binning
-
-    # 'XXCGXX' -> KmerCov()
-    dict_cgkmer = dict()
-    params['dict_cgkmer'] = dict_cgkmer
-
-    # quality stats
-    quality = Quality()
-    params['quality'] = quality
-
-    params['reads_to_sample'] = min([params['reads_to_sample'], bam.mapped])
     
+    params['reads_to_sample'] = min([params['reads_to_sample'], bam.mapped])
+
     return None
     
 
@@ -144,6 +136,9 @@ def compute_and_plot():
 
     # base and read quality
     if data['include_quality']:
+        # quality stats       
+        quality = Quality()
+        params['quality'] = quality
         compt_quality()
         plot_read_length()
         plot_base_quality()
@@ -216,6 +211,9 @@ def compute_and_plot():
 
     # CpG-motif
     if data['include_motif']:
+        # 'XXCGXX' -> KmerCov()
+        dict_cgkmer = dict()
+        params['dict_cgkmer'] = dict_cgkmer
         compt_CpG_motif()
         plot_hist_CpG_motif_freq()
         plot_CpG_motif_freq_watson_vs_crick()

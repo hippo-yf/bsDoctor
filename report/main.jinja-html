@@ -19,8 +19,28 @@
   <!-- Top grid -->
   <div class="row text-center">
     <div class="col">
-      <h1> bsDoctor: Quality Diagnosis for Bisulfite-Seq Data </h1>
-      <p class="text-sample">Sample: {{alldata.SAMPLE}}</p>
+
+<div class=" card mb-3 " style="max-width: 90%;"></div>
+  <div class="row g-0">
+    <div class="col-md-2">
+      <img src="data:image/png;base64,{{ include_file('assets/img/android-chrome-192x192.png', b64=True) }}" class="img-fluid rounded-start" alt="..." width="150px">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body" >
+        <h1>bsDoctor: Quality Diagnosis for Bisulfite-Seq Data </h1>
+        <div class="row">
+        <div class="col text-sample">Sample: {{alldata.SAMPLE}}
+</div>
+        <div class="col text-datetime"> {{alldata.datetime}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      {# <img src=" data:image/png;base64,{{ include_file('assets/img/android-chrome-192x192.png', b64=True) }} "class="card-img-top" width="100px"> #}
+      {# <h1> bsDoctor: Quality Diagnosis for Bisulfite-Seq Data </h1> #}
+      {# <p class="text-sample">Sample: {{alldata.SAMPLE}}</p> #}
     </div>
   </div>
 
