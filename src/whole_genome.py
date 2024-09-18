@@ -1,125 +1,155 @@
 
-from numpy import float64, int64
 from src.utils import *
 from src.config import params, data
 
-from src.utils import adjust_me
 
 def compt_whole_genome() -> None:
     dict_binning = params['dict_binning']
-    MAXDEPTH = params['MAXDEPTH']
+    ploidy = params['ploidy']
+    DP = params['MAXDEPTH']
+    MAX_DP_BY_FIG = params['MAX_DP_BY_FIG'] + 1
+    L = len(dict_binning)
 
-    length = []
-    totalDepth = []
-    totalDepthW = []
-    totalDepthC = []
-    binning_depth = []
-    binning_depthW = []
-    binning_depthC = []
-    binning_cov = []
-    binning_covW = []
-    binning_covC = []
+    # length = []
+    length: NDArray[int32] = np.zeros((L,), dtype=int32)
+    totalDepth: NDArray[int32] = np.zeros((L,), dtype=int32)
+    totalDepthW: NDArray[int32] = np.zeros((L,), dtype=int32)
+    totalDepthC: NDArray[int32] = np.zeros((L,), dtype=int32)
+    # binning_depth = np.zeros((L, DP), dtype=int32)
+    # binning_depthW = np.zeros((L, DP), dtype=int32)
+    # binning_depthC = np.zeros((L, DP), dtype=int32)
+    binning_cov: NDArray[int32] = np.zeros((L, DP), dtype=int32)
+    binning_covW: NDArray[int32] = np.zeros((L, DP), dtype=int32)
+    binning_covC: NDArray[int32] = np.zeros((L, DP), dtype=int32)
 
-    stranded_CG_depth = 0
-    stranded_CG_meth = 0
-    CGmeth_diff_by_depth = 0
+    stranded_CG_depth: NDArray[int64] = np.zeros((100,100), dtype=int64)
+    stranded_CG_meth: NDArray[int64] = np.zeros((20,20), dtype=int64)
+    CGmeth_diff_by_depth: NDArray[int64] = np.zeros((40,100), dtype=int64)
 
     # whole-genome counts
-    meCG: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCGW: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCGC: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHG: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHGW: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHGC: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHH: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHHW: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    meCHHC: NDArray = np.zeros((MAXDEPTH,), dtype=float64)
-    covnCG: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCGW: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCGC: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHG: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHGW: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHGC: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHH: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHHW: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
-    covnCHHC: NDArray = np.zeros((MAXDEPTH,), dtype=int64)
+    # integral me (X10000)
+    imeCG: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCGW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCGC: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHG: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHGW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHGC: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHH: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHHW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    imeCHHC: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCG: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCGW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCGC: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHG: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHGW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHGC: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHH: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHHW: NDArray[int64] = np.zeros((DP,), dtype=int64)
+    covnCHHC: NDArray[int64] = np.zeros((DP,), dtype=int64)
 
     # in total
-    nCG = 0
-    nCGW = 0
-    nCGC = 0
-    nCHG = 0
-    nCHGW = 0
-    nCHGC = 0
-    nCHH = 0
-    nCHHW = 0
-    nCHHC = 0
-    ATdp = []
-    misbase = []
-    nCGMethBin = 0
-    nCHGMethBin = 0
-    nCHHMethBin = 0
+    nCG: int = 0
+    nCGW: int = 0
+    nCGC: int = 0
+    nCHG: int = 0
+    nCHGW: int = 0
+    nCHGC: int = 0
+    nCHH: int = 0
+    nCHHW: int = 0
+    nCHHC: int = 0
+    ATdp: NDArray[int32] = np.zeros((L,), dtype=int32)
+    misbase: NDArray[int32] = np.zeros((L,), dtype=int32)
+    nCGMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
+    nCHGMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
+    nCHHMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
 
-    for key, value in dict_binning.items():
-        length.append(value.length)
-        totalDepth.append(value.dp)
-        totalDepthW.append(value.dpW)
-        totalDepthC.append(value.dpC)
-        binning_depth.append(-np.diff(np.block([value.cov, 0])))
-        binning_depthW.append(-np.diff(np.block([value.covW, 0])))
-        binning_depthC.append(-np.diff(np.block([value.covC, 0])))
-        binning_cov.append(value.cov)
-        binning_covW.append(value.covW)
-        binning_covC.append(value.covC)
+    for i, (key, value) in enumerate(dict_binning.items()):
+        length[i] = value.length
+        totalDepth[i] = value.dpW + value.dpC
+        totalDepthW[i] = value.dpW
+        totalDepthC[i] = value.dpC
+
+        # binning_depth[i,:] = value.cov
+        # binning_depthW[i,:] = value.covW
+        # binning_depthC[i,:] = value.covC
+        # binning_depth.append(-np.diff(np.block([value.cov, 0])))
+        # binning_depthW.append(-np.diff(np.block([value.covW, 0])))
+        # binning_depthC.append(-np.diff(np.block([value.covC, 0])))
+
+        #sites covered by dp
+        binning_cov[i,:] = value.cov
+        binning_covW[i,:] = value.covW
+        binning_covC[i,:] = value.covC
         stranded_CG_depth += value.stranded_CG_depth
         stranded_CG_meth += value.stranded_CG_meth
         CGmeth_diff_by_depth += value.CGmeth_diff_by_depth
         
-        nCG += value.nCG
+        nCG += value.nCGW + value.nCGC
         nCGW += value.nCGW
         nCGC += value.nCGC
-        nCHG += value.nCHG
+        nCHG += value.nCHGW + value.nCHGC
         nCHGW += value.nCHGW
         nCHGC += value.nCHGC
-        nCHH += value.nCHH
+        nCHH += value.nCHHW + value.nCHHC
         nCHHW += value.nCHHW
         nCHHC += value.nCHHC
-        covnCG += value.covnCG
+        covnCG += value.covnCGW + value.covnCGC
         covnCGW += value.covnCGW
         covnCGC += value.covnCGC
-        covnCHG += value.covnCHG
+        covnCHG += value.covnCHGW + value.covnCHGC
         covnCHGW += value.covnCHGW
         covnCHGC += value.covnCHGC
-        covnCHH += value.covnCHH
+        covnCHH += value.covnCHHW + value.covnCHHC
         covnCHHW += value.covnCHHW
         covnCHHC += value.covnCHHC
-        meCG += value.meCG
-        meCGW += value.meCGW
-        meCGC += value.meCGC
-        meCHG += value.meCHG
-        meCHGW += value.meCHGW
-        meCHGC += value.meCHGC
-        meCHH += value.meCHH
-        meCHHW += value.meCHHW
-        meCHHC += value.meCHHC
-        ATdp.append(value.ATdp)
-        misbase.append(value.misbase)
+        imeCG += value.meCGW + value.meCGC
+        imeCGW += value.meCGW
+        imeCGC += value.meCGC
+        imeCHG += value.meCHGW + value.meCHGC
+        imeCHGW += value.meCHGW
+        imeCHGC += value.meCHGC
+        imeCHH += value.meCHHW + value.meCHHC
+        imeCHHW += value.meCHHW
+        imeCHHC += value.meCHHC
+        ATdp[i] = value.ATdp
+        misbase[i] = value.misbase
         nCGMethBin += value.nCGMethBin
         nCHGMethBin += value.nCHGMethBin
         nCHHMethBin += value.nCHHMethBin
 
-    length = np.asarray(length)
+    # save cummualtive ones 
+    covnCG = cumsumrev(covnCG)
+    covnCGW = cumsumrev(covnCGW)
+    covnCGC = cumsumrev(covnCGC)
+    covnCHG = cumsumrev(covnCHG)
+    covnCHGW = cumsumrev(covnCHGW)
+    covnCHGC = cumsumrev(covnCHGC)
+    covnCHH = cumsumrev(covnCHH)
+    covnCHHW = cumsumrev(covnCHHW)
+    covnCHHC = cumsumrev(covnCHHC)
+    # float me
+    meCG = cumsumrev(imeCG)/10000
+    meCGW = cumsumrev(imeCGW)/10000
+    meCGC = cumsumrev(imeCGC)/10000
+    meCHG = cumsumrev(imeCHG)/10000
+    meCHGW = cumsumrev(imeCHGW)/10000
+    meCHGC = cumsumrev(imeCHGC)/10000
+    meCHH  = cumsumrev(imeCHH)/10000
+    meCHHW = cumsumrev(imeCHHW)/10000
+    meCHHC = cumsumrev(imeCHHC)/10000
+    # length = np.asarray(length)
     params['length'] = length # length of bins
-    binning_depth = np.asarray(binning_depth)
-    binning_depthW = np.asarray(binning_depthW)
-    binning_depthC = np.asarray(binning_depthC)
-    binning_cov = np.asarray(binning_cov)
-    binning_covW = np.asarray(binning_covW)
-    binning_covC = np.asarray(binning_covC)
+    # binning_depth = np.asarray(binning_depth)
+    # binning_depthW = np.asarray(binning_depthW)
+    # binning_depthC = np.asarray(binning_depthC)
+    # binning_cov = np.asarray(binning_cov)
+    # binning_covW = np.asarray(binning_covW)
+    # binning_covC = np.asarray(binning_covC)
+    params['binning_cov'] = binning_cov
     params['binning_covW'] = binning_covW
     params['binning_covC'] = binning_covC
-    params['binning_depthW'] = binning_depthW
-    params['binning_depthC'] = binning_depthC
+    # params['binning_depthW'] = binning_depthW
+    # params['binning_depthC'] = binning_depthC
 
     # whole-genome cov
     genome_cov = np.sum(binning_cov, axis=0)
@@ -129,9 +159,6 @@ def compt_whole_genome() -> None:
     params['genome_covW'] = genome_covW
     params['genome_covC'] = genome_covC
 
-    totalDepth = np.asarray(totalDepth)
-    totalDepthW = np.asarray(totalDepthW)
-    totalDepthC = np.asarray(totalDepthC)
     params['totalDepth'] = totalDepth
     params['totalDepthW'] = totalDepthW
     params['totalDepthC'] = totalDepthC
@@ -141,57 +168,61 @@ def compt_whole_genome() -> None:
     params['totalBases'] = totalBases
     params['totalBasesW'] = totalBasesW
     params['totalBasesC'] = totalBasesC
-    ATdp =  np.asarray(ATdp)
-    misbase = np.asarray(misbase)
+    # ATdp =  np.asarray(ATdp)
+    # misbase = np.asarray(misbase)
     
     ## whole-genome covrate
-    DPs = [0,2,4,9]
+    # DPs = [0,2,4,9]
+    DPs = [1,3,5,10]
     covrate_wg_dp = genome_cov/length.sum()
-    data['covrate_wg_dp'] = [fp(covrate_wg_dp[i]) for i in DPs]
+    data['covrate_wg_dp'] = [fp(covrate_wg_dp[k]) for k in DPs]
     covrate_wg_sp = (genome_covW + genome_covC)/length.sum()/2
-    data['covrate_wg_sp'] = [fp(covrate_wg_sp[i]) for i in DPs]
+    data['covrate_wg_sp'] = [fp(covrate_wg_sp[k]) for k in DPs]
 
     # define DP threshold in figs
-    prop_CG = covnCG/covnCG[0]
-    DP_xdepth = min(MAXDEPTH, max(20, MAXDEPTH -1 - np.argmax(prop_CG[::-1] >= 0.03)))
+    # prop_CG = covnCG/covnCG[0]
+    prop_CG = covnCG[1:]/covnCG[1] # prop over dp>=1
+    DP_xdepth = min(DP, max(20, DP -1 - np.argmax(prop_CG[::-1] >= 0.03)))
+    # max dp in fig plotted by dp
     params['MAXDP_IN_FIG'] = DP_xdepth
 
     ##  CG covrate
     covrate_CG = covnCG/nCG
-    data['covrate_cg'] = [fp(covrate_CG[x]) for x in DPs]
+    data['covrate_cg'] = [fp(covrate_CG[k]) for k in DPs]
 
     ##  CHG covrate
     covrate_CHG = covnCHG/nCHG
-    data['covrate_chg'] = [fp(covrate_CHG[x]) for x in DPs]
+    data['covrate_chg'] = [fp(covrate_CHG[k]) for k in DPs]
 
     ##  CHH covrate
     covrate_CHH = covnCHH/nCHH
-    data['covrate_chh'] = [fp(covrate_CHH[x]) for x in DPs]
+    data['covrate_chh'] = [fp(covrate_CHH[k]) for k in DPs]
 
     # CpGs of double-stranded cov
-    prop_double_cov = np.zeros((len(DPs),))
+    prop_double_cov = np.zeros((len(DPs),), dtype=float64)
     for k, dp in enumerate(DPs):
-        dp += 1
+        # dp += 1
         b = stranded_CG_depth[dp:, dp:].sum() # both
         a = stranded_CG_depth[dp:,:].sum() + stranded_CG_depth[:,dp:].sum() - b
         prop_double_cov[k] = b/a
     data['covrate_cg_ds'] = [fp(x) for x in prop_double_cov]
-    
+
+    params['stranded_CG_depth'] = stranded_CG_depth
+
     ## DNAme level
     data['me_cg_ds'] = [fp(x) for x in nandivide(meCG[DPs], covnCG[DPs])]
     data['me_chg_ds'] = [fp(x) for x in nandivide(meCHG[DPs], covnCHG[DPs])]
     data['me_chh_ds'] = [fp(x) for x in nandivide(meCHH[DPs], covnCHH[DPs])]
 
-
     #### summary in dict
-    # culmulative covered Cs
+    # cumulative covered Cs
     dict_genome_covnC = { 
     'CG': {'double': covnCG, 'W': covnCGW, 'C': covnCGC},
     'CHG': {'double': covnCHG, 'W': covnCHGW, 'C': covnCHGC},
     'CHH': {'double': covnCHH, 'W': covnCHHW, 'C': covnCHHC}
     }
 
-    # culmulative me
+    # cumulative me
     dict_genome_me = { 
     'CG': {'double': meCG, 'W': meCGW, 'C': meCGC},
     'CHG': {'double': meCHG, 'W': meCHGW, 'C': meCHGC},
@@ -224,7 +255,7 @@ def compt_whole_genome() -> None:
 
     data['nCHH'] = fi(nCHH)
     #### bs rate by CHH weighted by dp
-    wdp = np.sqrt(np.arange(MAXDEPTH-1))
+    wdp = np.sqrt(np.arange(DP-1))
     w = -np.diff(covnCHH)*wdp
     mechh = np.sum(-np.diff(meCHH)*wdp)/w.sum()
     bs_rate_chh = 1 - mechh
@@ -232,12 +263,11 @@ def compt_whole_genome() -> None:
     params['bs_rate_chh'] = bs_rate_chh
 
     #### adopted bs conversion rate
-    # if 'bs_rate_lambda' in params and 'bs_rate_MT' in params:
 
     if bool(data['include_lambda']) and bool(data['lambda_is_covered']):
         bs_rate = params['bs_rate_lambda']
-    elif bool(data['include_mt']) and bool(data['MT_is_covered']):
-        bs_rate = params['bs_rate_MT']
+    elif bool(data['include_mt']) and bool(data['mt_is_covered']):
+        bs_rate = params['bs_rate_mt']
     else:
         bs_rate = bs_rate_chh
 
@@ -245,12 +275,12 @@ def compt_whole_genome() -> None:
     data['bs_rate'] = fp(bs_rate)
 
     #### adjust whole-genome DNAme
-    data['me_CG'] = fp(meCG[0]/covnCG[0])
-    data['me_CG_adj'] = fp(adjust_me(meCG[0]/covnCG[0], bs_rate))
-    data['me_CHG'] = fp(meCHG[0]/covnCHG[0])
-    data['me_CHG_adj'] = fp(adjust_me(meCHG[0]/covnCHG[0], bs_rate))
-    data['me_CHH'] = fp(meCHH[0]/covnCHH[0])
-    data['me_CHH_adj'] = fp(adjust_me(meCHH[0]/covnCHH[0], bs_rate))
+    data['me_CG'] = fp(meCG[1]/covnCG[1])
+    data['me_CG_adj'] = fp(adjust_me(meCG[1]/covnCG[1], bs_rate))
+    data['me_CHG'] = fp(meCHG[1]/covnCHG[1])
+    data['me_CHG_adj'] = fp(adjust_me(meCHG[1]/covnCHG[1], bs_rate))
+    data['me_CHH'] = fp(meCHH[1]/covnCHH[1])
+    data['me_CHH_adj'] = fp(adjust_me(meCHH[1]/covnCHH[1], bs_rate))
     # data['bsrate_warning'] = int(max(bs_rate_chh, bs_rate_MT, bs_rate_lambda) < 0.9)
     data['bsrate_warning'] = int(bs_rate < 0.9)
     
@@ -264,15 +294,15 @@ def compt_whole_genome() -> None:
 
     #### MT DNA copy number
     if 'mt_mean_dp' in params:
-        data['mt_copynum'] = ff(params['mt_mean_dp'] / mean_dp *2, 4)
+        data['mt_copynum'] = ff(params['mt_mean_dp'] / mean_dp *ploidy, 4)
 
     #### lambda DNA copy number
     if 'lambda_mean_dp' in params:
-        data['lambda_copynum'] = ff(params['lambda_mean_dp'] / mean_dp *2, 4)
+        data['lambda_copynum'] = ff(params['lambda_mean_dp'] / mean_dp *ploidy, 4)
 
     #### plastmid DNA copy number
     if 'plastmid_mean_dp' in params:
-        data['plastmid_copynum'] = ff(params['plastmid_mean_dp'] / mean_dp *2, 4)
+        data['plastmid_copynum'] = ff(params['plastmid_mean_dp'] / mean_dp *ploidy, 4)
 
     #### error rate by A/T sites
     # bins with total AT depth >= 100 
@@ -281,6 +311,7 @@ def compt_whole_genome() -> None:
     err_rate_AT = np.mean(err_AT)
     data['err_rate_AT'] = fp(err_rate_AT)
     params['err_AT'] = err_AT
+
     return None
 
 def plot_base_error_rate_by_AT() -> None:

@@ -9,6 +9,7 @@ import random
 import base64
 
 import numpy as np
+from numpy import int16, uint16, int32, int64, float32, float64, nan
 import matplotlib.pyplot as plt
 from numpy.typing import NDArray
 from typing import NamedTuple, List, Tuple, Dict, Any
@@ -48,10 +49,25 @@ def nandivide(x: NDArray, y: NDArray) -> NDArray:
     x = np.array(x)
     y = np.array(y)
     i = (y != 0)
-    q = np.zeros(np.shape(x), dtype=float)
+    q = np.zeros(np.shape(x), dtype=float32)
     q[i] = x[i]/y[i]
-    q[np.logical_not(i)] = np.nan
+    q[np.logical_not(i)] = nan
     return q
+
+def cumsumrev(x: NDArray) -> NDArray:
+    return np.cumsum(x[::-1])[::-1]
+
+def cumratio(me: NDArray, covn: NDArray, dtype=None) -> NDArray:
+    mecum = np.cumsum(me[::-1])[::-1]
+    covncum = np.cumsum(covn[::-1])[::-1]
+    dtype = me.dtype if dtype is None else float32
+    r = np.zeros(np.shape(me), dtype=dtype)
+    i = covncum > 0
+    r[i] = mecum[i]/covncum[i]
+    # fill nan if float, 0 if int
+    if np.isdtype(me.dtype, 'real floating'):
+        r[~i] = nan
+    return r
 
 # trim values larger than quantile 0.99
 def trimQuantile(x: NDArray, q=0.99) -> NDArray:

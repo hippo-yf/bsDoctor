@@ -17,7 +17,7 @@ from src.config import params
 
 class Quality():
     def __init__(self) -> None:
-        self.base_quality = list() # quality itself
+        self.base_quality = list()
         self.read_length = list()
         self.nreads: int = 0
         self.ndup: int = 0
@@ -25,14 +25,14 @@ class Quality():
         self.npaired: int = 0
         self.nproperpaired: int = 0
         # self.nbases: int = 0
-        self.ncigars: NDArray = np.zeros((10,), dtype=np.int64)
-        self.map_quality = list() # quality itself
+        self.ncigars: NDArray = np.zeros((10,), dtype=int64)
+        self.map_quality = list()
         return None
     
     def regularization(self) -> None:
-        self.base_quality = np.hstack(self.base_quality, dtype=np.uint8)
-        self.map_quality = np.hstack(self.map_quality, dtype=int)
-        self.read_length = np.array(self.read_length, dtype=int)
+        self.base_quality = np.hstack(self.base_quality, dtype=int16)
+        self.map_quality = np.hstack(self.map_quality, dtype=int16)
+        self.read_length = np.array(self.read_length, dtype=int32)
         return None
 
 
@@ -75,7 +75,6 @@ class MyFastaFile(pysam.FastaFile):
 ## genome sampling
 ################################################
 
-## samplimg for coverage
 class GenomicIntervalGenerator:
     
     def __init__(self, 
@@ -122,6 +121,63 @@ class GenomicIntervalGenerator:
                 end = start + self.step
                 # else:
                 #     break
+
+# sample batches within bin
+def cut(start: int, end: int, binSize: int):
+    assert(start < end and binSize > 0)
+    yield start
+    i = math.ceil((start+1) / binSize)
+    while(i*binSize <= end):
+        if 0 < i*binSize - start < binSize/2:
+            i += 1
+        elif end < i*binSize + binSize/2:
+            i += 1
+        else:
+            yield i*binSize
+            i += 1
+    yield end
+
+
+class GenomicIntervalGeneratorWithinBin:
+    def __init__(self, 
+                 fa: pysam.FastaFile, 
+                 chrs,
+                 start: int,
+                 end: int,
+                 step: int,
+                 spacing: int,
+                 binSize: int
+                 ) -> None:
+        
+        self.chrs = fa.references
+        self.lens = fa.lengths
+        self.chrs_selected = chrs
+
+        self.start = start
+        self.end = end
+        self.step = step
+        self.spacing = spacing
+        self.binSize = binSize
+        assert(step > 0 and start < end and binSize > 0)
+        assert(len(self.chrs) > 0 and len(self.chrs) == len(self.lens))
+        assert(isinstance(spacing, int) and spacing >= 0)
+        return None
+    
+    def __iter__(self):
+        for (contig, llen) in zip(self.chrs, self.lens):
+            if contig not in self.chrs_selected:
+                continue
+            cuts = list(cut(self.start, min(self.end, llen), self.binSize))
+            for ib in range(len(cuts) - 1):
+                end2 = cuts[ib+1]
+                start = cuts[ib] + GEN.integers(low=0, high=self.spacing*2+1, size=1)[0]
+                end = start + self.step
+                while start < end2:
+                    end = min(end, end2)
+                    yield GenomicInterval(chr=contig, chr_length=llen, start=start, end=end)
+                    start = end + GEN.integers(low=0, high=self.spacing*2+1, size=1)[0]
+                    end = start + self.step
+
 
 
 ## sampling for saturation curve 
@@ -204,12 +260,12 @@ class CovPanGene():
     def __init__(self, bins: int) -> None:
         # bins = params['gene_breaks']*3
         
-        self.nCG = np.zeros((bins,), dtype=np.int64)
-        self.meCG = np.zeros((bins,), dtype=np.float64)
-        self.nCGW = np.zeros((bins,), dtype=np.int64)
-        self.meCGW = np.zeros((bins,), dtype=np.float64)
-        self.nCGC = np.zeros((bins,), dtype=np.int64)
-        self.meCGC = np.zeros((bins,), dtype=np.float64)
+        self.nCG: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCG: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCGW: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCGW: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCGC: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCGC: NDArray[int64] = np.zeros((bins,), dtype=int64)
         return None
         
 # cov_pangene = CovPanGene()
@@ -225,122 +281,124 @@ class KmerCov():
         self.dpW: int = 0
         self.dpC: int = 0
 
-        init = np.array([0]*MAXDEPTH, dtype=np.int64)
-        init2 = np.array([0]*MAXDEPTH, dtype=np.float64)
-        self.cov: NDArray[np.int64] = init.copy()
-        self.covW: NDArray[np.int64] = init.copy()
-        self.covC: NDArray[np.int64] = init.copy()
-        self.me: NDArray[np.float64] = init2.copy()
-        self.meW: NDArray[np.float64] = init2.copy()
-        self.meC: NDArray[np.float64] = init2.copy()
+        # init = np.array([0]*MAXDEPTH, dtype=np.int64)
+        # init2 = np.array([0]*MAXDEPTH, dtype=np.float64)
+        # self.cov: NDArray[np.int64] = init.copy()
+        self.covW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        # self.me: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.meW: NDArray[int64] = np.zeros((MAXDEPTH,), dtype=int64)
+        self.meC: NDArray[int64] = np.zeros((MAXDEPTH,), dtype=int64)
         return None
     
 class BinCov():
     def __init__(self) -> None:  
         MAXDEPTH = params['MAXDEPTH']
-        MAX_DP_BY_FIG = params['MAX_DP_BY_FIG']
+        MAX_DP_BY_FIG = params['MAX_DP_BY_FIG'] + 1
 
-        init = np.array([0]*MAXDEPTH, dtype=np.int64)
-        init2 = np.array([0]*MAXDEPTH, dtype=np.float64)
+        # init = np.zeros((MAXDEPTH,), dtype=np.int64)
+        # init2 = np.zeros((MAXDEPTH,), dtype=np.int16)
  
         self.length: int = 0 # bases sampled
-        self.nCG: int = 0 # CGs/CHGs/CHHs in the genome
+        # self.nCG: int = 0 # CGs/CHGs/CHHs in the genome
         self.nCGW: int = 0
         self.nCGC: int = 0
-        self.nCHG: int = 0 # CGs/CHGs/CHHs in the genome
+        # self.nCHG: int = 0 # CGs/CHGs/CHHs in the genome
         self.nCHGW: int = 0
         self.nCHGC: int = 0
-        self.nCHH: int = 0 # CGs/CHGs/CHHs in the genome
+        # self.nCHH: int = 0 # CGs/CHGs/CHHs in the genome
         self.nCHHW: int = 0
         self.nCHHC: int = 0
 
-        self.dp: int = 0 # total DP
+        # self.dp: int = 0 # total DP
         self.dpW: int = 0
         self.dpC: int = 0
-        self.dpCG: int = 0 # totol CG dp
+        # self.dpCG: int = 0 # totol CG dp
         self.dpCGW: int = 0
         self.dpCGC: int = 0
-        self.dpCHG: int = 0 # totol CHG dp
+        # self.dpCHG: int = 0 # totol CHG dp
         self.dpCHGW: int = 0
         self.dpCHGC: int = 0
-        self.dpCHH: int = 0 # totol CHG dp
+        # self.dpCHH: int = 0 # totol CHG dp
         self.dpCHHW: int = 0
         self.dpCHHC: int = 0
         
         # ATCG coverage
-        self.cov: NDArray[np.int64] = init.copy()
-        self.covW: NDArray[np.int64] = init.copy()
-        self.covC: NDArray[np.int64] = init.copy()
+        self.cov: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
 
         # CGs coverage and meth
-        self.covnCG: NDArray[np.int64] = init.copy()
-        self.covnCGW: NDArray[np.int64] = init.copy()
-        self.covnCGC: NDArray[np.int64] = init.copy()
-        self.meCG: NDArray[np.float64] = init2.copy()
-        self.meCGW: NDArray[np.float64] = init2.copy()
-        self.meCGC: NDArray[np.float64] = init2.copy()
+        # self.covnCG: NDArray[np.int64] = init.copy()
+        self.covnCGW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covnCGC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        # self.meCG: NDArray[np.int64] = init.copy()
+        self.meCGW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.meCGC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
 
         # CHGs coverage and meth
-        self.covnCHG: NDArray[np.int64] = init.copy()
-        self.covnCHGW: NDArray[np.int64] = init.copy()
-        self.covnCHGC: NDArray[np.int64] = init.copy()
-        self.meCHG: NDArray[np.float64] = init2.copy()
-        self.meCHGW: NDArray[np.float64] = init2.copy()
-        self.meCHGC: NDArray[np.float64] = init2.copy()
+        # self.covnCHG: NDArray[np.int64] = init.copy()
+        self.covnCHGW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covnCHGC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        # self.meCHG: NDArray[np.int64] = init.copy()
+        self.meCHGW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.meCHGC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
 
         # CHHs coverage and meth
-        self.covnCHH: NDArray[np.int64] = init.copy()
-        self.covnCHHW: NDArray[np.int64] = init.copy()
-        self.covnCHHC: NDArray[np.int64] = init.copy()
-        self.meCHH: NDArray[np.float64] = init2.copy()
-        self.meCHHW: NDArray[np.float64] = init2.copy()
-        self.meCHHC: NDArray[np.float64] = init2.copy()
+        # self.covnCHH: NDArray[np.int64] = init.copy()
+        self.covnCHHW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.covnCHHC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        # self.meCHH: NDArray[np.int64] = init.copy()
+        self.meCHHW: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.meCHHC: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
 
         # coverage of low/high meth CGs
-        self.nCGLowMeth: NDArray[np.int64] = init.copy()
-        self.nCGHighMeth: NDArray[np.int64] = init.copy()
+        self.nCGLowMeth: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
+        self.nCGHighMeth: NDArray[int32] = np.zeros((MAXDEPTH,), dtype=int32)
 
         # strand-specific coverage and methylation
-        self.stranded_CG_depth: NDArray[np.int64] = np.zeros((100,100), dtype=np.int64)
+        self.stranded_CG_depth: NDArray[int32] = np.zeros((100,100), dtype=int32)
         # 20X20 bins of [0,1]X[0,1]
-        self.stranded_CG_meth: NDArray[np.int64] = np.zeros((20,20), dtype=np.int64)
+        self.stranded_CG_meth: NDArray[int32] = np.zeros((20,20), dtype=int32)
         # 40(+-) row meth diff bins X 100 cols of DP
-        self.CGmeth_diff_by_depth: NDArray = np.zeros((40,100), dtype=np.int64)
+        self.CGmeth_diff_by_depth: NDArray[int32] = np.zeros((40,100), dtype=int32)
 
         # misbases for ref A/T
         self.misbase: int = 0 # inconsistent bases
         self.ATdp: int = 0 # total depths/bases of A/T
 
         # meth distribution, 20 meth bins of [0,1] X depth [1,30]
-        self.nCGMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
-        self.nCHGMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
-        self.nCHHMethBin: NDArray = np.zeros((20, MAX_DP_BY_FIG), dtype=np.int64)
+        self.nCGMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
+        self.nCHGMethBin: NDArray[int32]  = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
+        self.nCHHMethBin: NDArray[int32]  = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
         return None
 
 # not for each bin
-class CovLambda():
+class CovContig():
     def __init__(self, contig:str) -> None:
         binsContig = params['binsContig']
 
         bins = binsContig[contig]
-        init = np.zeros((bins,), dtype=np.int64)
-        init2 = np.zeros((bins,), dtype=np.float64)
- 
-        self.length: NDArray = init.copy() # len of each bin
-        self.cov: NDArray = init.copy() # covered
-        self.nC: int = 0 # Cytosines in total
-        
-        self.dp: NDArray = init.copy() # total dp for each bin
-        self.dpW: NDArray = init.copy()
-        self.dpC: NDArray = init.copy()
+        # len of each bin
+        self.length: NDArray[int32] = np.zeros((bins,), dtype=int32) 
+        # covered
+        self.cov: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        # Cytosines in total
+        self.nC: int = 0 
+
+        # total dp for each bin
+        self.dp: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.dpW: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.dpC: NDArray[int64] = np.zeros((bins,), dtype=int64)
 
         # Cs coverage and meth
         self.covnC: int = 0
-        self.meC: float = 0
+        self.meC: int64 = int64(0)
 
-        # mistake bases, different with ref base
-        self.dp20: NDArray = init.copy() # nbases with DP>=20
-        self.misbase: NDArray = init2.copy()
+        ## mistake bases, different with ref/max base
+        # nbases with DP>=20
+        self.dp20: NDArray[int32] = np.zeros((bins,), dtype=int32) 
+        self.misbase: NDArray[int64] = np.zeros((bins,), dtype=int64)
         return None
 
 ##############################################
@@ -348,12 +406,14 @@ class CovLambda():
 ##############################################
 
 class Coverage(NamedTuple):
-    watson: NDArray[np.int32]
-    crick: NDArray[np.int32]
+    watson: NDArray[int32]
+    crick: NDArray[int32]
 
 def check_read(forward_read: bool, read_quality: int):
+    # def valid_read(read: pysam.AlignedSegment):
+    #     return (forward_read ^ read.is_reverse) and (not read.is_unmapped) and (not read.is_duplicate) and (not read.is_secondary) and (not read.is_qcfail) and (read.mapping_quality>=read_quality)
     def valid_read(read: pysam.AlignedSegment):
-        return (forward_read ^ read.is_reverse) and (not read.is_unmapped) and (not read.is_duplicate) and (not read.is_secondary) and (not read.is_qcfail) and (read.mapping_quality>=read_quality)
+        return (forward_read ^ read.is_reverse) and (read.mapping_quality>=read_quality)
     return valid_read
 
 class IntervalCoverage(NamedTuple):
@@ -361,20 +421,24 @@ class IntervalCoverage(NamedTuple):
     length: int
     start: int
     end: int
-    bin: NDArray[np.int32]
+    bin: NDArray[int32] | int
     base: str
     cgContext: List[str]
     cgkmer: List[str]
-    covW: NDArray[np.int32]
-    covC: NDArray[np.int32]
-    covWsum: NDArray[np.int32]
-    covCsum: NDArray[np.int32]
-    covMeth: NDArray[np.int32]
-    meth: NDArray[np.float32]
+    covW: NDArray[int32]
+    covC: NDArray[int32]
+    covWsum: NDArray[int32]
+    covCsum: NDArray[int32]
+    covMeth: NDArray[int32]
+    meth: NDArray[int16]
 
     def printInterval(self) -> None:
         for i in range(self.length):
-            print(f'{self.chr}\t{self.start+i}\t{self.bin[i]}\t{self.base[i]}\t{self.cgContext[i]}\t{self.cgkmer[i]}\t{self.covWsum[i]}\t{self.covCsum[i]}\t{self.covMeth[i]}\t{self.meth[i]:.2f}')
+            if len(bin) == 1:
+                ib = bin
+            else:
+                ib = bin[i]
+            print(f'{self.chr}\t{self.start+i}\t{ib}\t{self.base[i]}\t{self.cgContext[i]}\t{self.cgkmer[i]}\t{self.covWsum[i]}\t{self.covCsum[i]}\t{self.covMeth[i]}\t{self.meth[i]:.2f}')
         return None
 
 
@@ -403,7 +467,6 @@ class MyAlignmentFile(pysam.AlignmentFile):
         
         # in some bams, the read strandness seem be reversly flaged in `FLAG`
         # parsed in read.is_reverse
-        # for example gemBS
 
         if swap_strand:
             cov_watson, cov_crick = cov_crick, cov_watson
@@ -430,12 +493,13 @@ class MyAlignmentFile(pysam.AlignmentFile):
         CG_contexts = []
         cgkmers = []
         length = interval.end - interval.start
-        covMeths = np.array([0]*length, dtype=np.int32)
-        meth = np.array([math.nan]*length, dtype=np.float32)
-        bin = np.array([0]*length, dtype=np.int32)
+        covMeths = np.zeros((length,), dtype=np.int32)
+        # meth = np.array([math.nan]*length, dtype=np.float32)
+        meth = np.zeros((length,), dtype=np.int16)
+        # bin = np.zeros((length,), dtype=np.int32)
 
         # bin index
-        kbin = interval.start // binSize
+        # kbin = interval.start // binSize
         nbases = 0 # bases taken
         # keep = np.array([False]*length, dtype=np.bool_) # which bases to take
         
@@ -445,49 +509,49 @@ class MyAlignmentFile(pysam.AlignmentFile):
             base = bases[j]
             # if base == 'A' or base == 'T' or base == 'N': continue
 
-            # bin index
-            if i + interval.start >= (kbin + 1) * binSize:
-                kbin += 1
-            bin[i] = kbin
+            # # bin index
+            # if i + interval.start >= (kbin + 1) * binSize:
+            #     kbin += 1
+            # bin[i] = kbin
 
             CG_context = "-"
-            meth_ratio = math.nan
+            # meth_ratio = math.nan
             cgkmer = '-'
             nCT = 0
             
-            if base == 'C' or base == 'G':
-                if base == 'C':
-                    # CG/CHG/CHH
-                    bases_con = bases[j:(j+consize)]
-                    # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_FORWARD_HASH[bases_con]
-                    CG_context = CG_CONTEXT_FORWARD_HASH[bases_con] if all([n in BASES for n in bases_con]) else '-' 
+            # if base == 'C' or base == 'G':
+            if base == 'C':
+                # CG/CHG/CHH
+                bases_con = bases[j:(j+consize)]
+                # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_FORWARD_HASH[bases_con]
+                CG_context = CG_CONTEXT_FORWARD_HASH[bases_con] if all([b in BASES for b in bases_con]) else '-' 
 
-                    # dinucleatide context CA/CT/...
-                    # dicontext = bases[j:(j+2)]
-                    nCT = covs.watson[1,i] + covs.watson[3,i]
-                    nC = covs.watson[1,i]
-                    # CG kmer
-                    if CG_context == 'CG':
+                # dinucleatide context CA/CT/...
+                # dicontext = bases[j:(j+2)]
+                nCT = covs.watson[1,i] + covs.watson[3,i] # order of ACGT
+                nC = covs.watson[1,i]
+                if nCT > 0: meth[i] = np.int16(nC*10_000/nCT )
+                # CG kmer
+                if CG_context == 'CG':
+                    if 'N' in cgkmer: 
+                        cgkmer = '-'
+                    else:
                         cgkmer = bases[(j-2):(j+4)]
-                        if 'N' in cgkmer: 
-                            cgkmer = '-'
-                else:
-                    bases_con = bases[(j-consize+1):(j+1)]
-                    # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_REVERSE_HASH[bases_con]
-                    CG_context = CG_CONTEXT_REVERSE_HASH[bases_con] if all([n in BASES for n in bases_con]) else '-' 
-                    nC = covs.crick[2,i]
-                    nCT = covs.crick[0,i] + covs.crick[2,i]
-                    if CG_context == 'CG':
-                        kmer = bases[(j-3):(j+3)]
-                        if 'N' in kmer: 
-                            cgkmer = '-'
-                        else:
-                            cgkmer = reverseComp(kmer)
-                        
-                meth_ratio = nC/nCT if nCT>0 else math.nan
+            elif base == 'G':
+                bases_con = bases[(j-consize+1):(j+1)]
+                # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_REVERSE_HASH[bases_con]
+                CG_context = CG_CONTEXT_REVERSE_HASH[bases_con] if all([b in BASES for b in bases_con]) else '-' 
+                nC = covs.crick[2,i]
+                nCT = covs.crick[0,i] + covs.crick[2,i]
+                if nCT > 0: meth[i] = np.int16(nC*10_000/nCT )
+                if CG_context == 'CG':
+                    kmer = bases[(j-3):(j+3)]
+                    if 'N' in kmer: 
+                        cgkmer = '-'
+                    else:
+                        cgkmer = reverseComp(kmer)
             cgkmers.append(cgkmer)
             CG_contexts.append(CG_context)
-            meth[i] = meth_ratio
             covMeths[i] = nCT
 
         return IntervalCoverage(
@@ -495,7 +559,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
             length=length,
             start=interval.start, 
             end=interval.end, 
-            bin = bin,
+            bin = interval.start // binSize,
             base=bases[(cgkmerSize//2):(length+cgkmerSize//2)],
             cgContext=CG_contexts, 
             cgkmer=cgkmers, 
@@ -507,7 +571,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
             meth=meth
             )
     
-    # for extral contigs: MT, lambda DNA
+    # for extranuclear contigs: MT, plastid, lambda DNA
     def detailedCoverageContig(self, interval: GenomicInterval) -> IntervalCoverage:
         fa = params['fa']
         binSizeContig = params['binSizeContig']
@@ -518,13 +582,13 @@ class MyAlignmentFile(pysam.AlignmentFile):
 
         # bam coverages
         covs = self.Watson_Crick_coverage(interval)
-        cov_sum_W = np.sum(covs.watson, axis=0, dtype=np.int32)
-        cov_sum_C = np.sum(covs.crick, axis=0, dtype=np.int32)
+        cov_sum_W = np.sum(covs.watson, axis=0, dtype=int32)
+        cov_sum_C = np.sum(covs.crick, axis=0, dtype=int32)
 
         length = interval.end - interval.start
-        covMeths = np.zeros((length,), dtype=np.int32)
-        meth = np.array([math.nan]*length, dtype=np.float32)
-        bin = np.zeros((length,), dtype=np.int32)
+        covMeths = np.zeros((length,), dtype=int32)
+        meth = np.zeros((length,), dtype=int16)
+        bin = np.zeros((length,), dtype=int32)
 
         # bin index 
         # binSize = binSizeContig[chrs_alias[interval.chr]]
@@ -542,10 +606,9 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 kbin += 1
             bin[i] = kbin
 
-            meth_ratio = math.nan
-            nCT = 0
-            
             if base == 'C' or base == 'G':
+                # meth_ratio = math.nan
+                nCT = 0                
                 if base == 'C':
                     # dinucleatide context CA/CT/...
                     # dicontext = bases[j:(j+2)]
@@ -554,10 +617,9 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 else:
                     nC = covs.crick[2,i]
                     nCT = covs.crick[0,i] + covs.crick[2,i]
-                meth_ratio = nC/nCT if nCT>0 else math.nan
-
-            meth[i] = meth_ratio
-            covMeths[i] = nCT
+                meth_ratio = np.int16(nC/nCT*10_000) if nCT > 0 else 0 
+                meth[i] = meth_ratio
+                covMeths[i] = nCT
 
         return IntervalCoverage(
             chr=interval.chr, 
@@ -611,7 +673,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
 
                 # pdb.set_trace()
                 if nCT <= 0: continue
-                meth_ratio = nC/nCT
+                meth_ratio = int16(nC*10000 / nCT)
                 kbin = g.bins[np.argmax(g.start_padding + i < g.breaks) - 1]
                 cov_pangene.nCG[kbin] += 1
                 cov_pangene.meCG[kbin] += meth_ratio

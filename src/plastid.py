@@ -2,8 +2,8 @@
 import tqdm
 from src.utils import *
 from src.config import params, data
-from src.coverage import CovLambda, GenomicIntervalGenerator
-from src.updateBinning import update_lambda
+from src.coverage import CovContig, GenomicIntervalGenerator
+from src.updateBinning import update_contig
 
 def compt_plastid() -> None:
     chr_plastid = params['chr_plastid']
@@ -14,7 +14,7 @@ def compt_plastid() -> None:
         data['plastid_is_covered'] = 0
         return None
     
-    dict_plastid = CovLambda(contig=chr_plastid)
+    dict_plastid = CovContig(contig=chr_plastid)
     intervals = iter(GenomicIntervalGenerator(
         fa, 
         chrs= chr_plastid, 
@@ -27,7 +27,7 @@ def compt_plastid() -> None:
     intervals_list = list(intervals)
     for i in tqdm.trange(len(intervals_list), desc='Sampling plastid: '):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
-        update_lambda(dict_plastid, detailedIntvl)
+        update_contig(dict_plastid, detailedIntvl)
     
     data['dict_plastid'] = dict_plastid
 
@@ -46,16 +46,16 @@ def compt_plastid() -> None:
         data['plastid_size'] = fi(dict_plastid.length.max())
 
         i = dict_plastid.length > 0
-        plastid_median_dp = np.median(dict_plastid.dp[i]/dict_plastid.length[i])
+        plastid_median_dp = float(np.median(dict_plastid.dp[i]/dict_plastid.length[i]))
         data['plastid_median_dp'] = ff(plastid_median_dp)
-        plastid_mean_dp = np.mean(dict_plastid.dp[i]/dict_plastid.length[i])
+        plastid_mean_dp = float(np.mean(dict_plastid.dp[i]/dict_plastid.length[i]))
         data['plastid_mean_dp'] = ff(plastid_mean_dp)
         
         ## bs rate of lambda DNA
         bs_rate_plastid = -1
         data['bsrate_plastid'] = "nan"
         if dict_plastid.covnC > 100: # at least 100 Cs covered
-            bs_rate_plastid = 1 - dict_plastid.meC/dict_plastid.covnC
+            bs_rate_plastid = 1 - dict_plastid.meC/dict_plastid.covnC/10000
             data['bsrate_plastid'] = fp(bs_rate_plastid)
             
         # base error rate by lambda DNA
@@ -118,7 +118,8 @@ def plot_plastid_base_error_rate() -> None:
     
     fig, ax = plt.subplots(figsize=(5,3))
     if np.sum(dict_plastid.dp20 > 0) > 0:
-        ax.hist(nandivide(dict_plastid.misbase, dict_plastid.dp20), bins=21, density=True, color=COLS[0])
+        i = dict_plastid.dp20 > 0
+        ax.hist(dict_plastid.misbase[i]/dict_plastid.dp20[i], bins=21, density=True, color=COLS[0])
         plt.xlabel('bin-wise base error rate')
         plt.ylabel('density')
 

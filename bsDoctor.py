@@ -11,7 +11,7 @@ from jinja2 import Environment,FileSystemLoader
 from src.config import *
 from src.utils import *
 
-from src.coverage import MyFastaFile, MyAlignmentFile, Quality
+from src.coverage import *
 from src.quality import *
 from src.pangene import *
 from src.summary import *
@@ -114,12 +114,16 @@ def config_params_further() -> None:
     params['binSizeContig'] = binSizeContig
     params['binsContig'] = binsContig
     
-
-    # classes
     # ('chr1', 23) -> BinCov()
     dict_binning = dict()
     params['dict_binning'] = dict_binning
-    
+
+    # CpG-motif
+    if data['include_motif']:
+        # 'NNCGNN' -> KmerCov()
+        dict_cgkmer = dict()
+        params['dict_cgkmer'] = dict_cgkmer
+
     params['reads_to_sample'] = min([params['reads_to_sample'], bam.mapped])
 
     return None
@@ -211,9 +215,6 @@ def compute_and_plot():
 
     # CpG-motif
     if data['include_motif']:
-        # 'XXCGXX' -> KmerCov()
-        dict_cgkmer = dict()
-        params['dict_cgkmer'] = dict_cgkmer
         compt_CpG_motif()
         plot_hist_CpG_motif_freq()
         plot_CpG_motif_freq_watson_vs_crick()

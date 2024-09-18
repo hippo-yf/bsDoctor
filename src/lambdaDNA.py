@@ -2,15 +2,15 @@
 import tqdm
 from src.utils import *
 from src.config import params, data
-from src.coverage import CovLambda, GenomicIntervalGenerator
-from src.updateBinning import update_lambda
+from src.coverage import CovContig, GenomicIntervalGenerator
+from src.updateBinning import update_contig
 
 def compt_lambda() -> None:
     chr_lambda = params['chr_lambda']
     fa = params['fa']
     bam = params['bam']
 
-    dict_lambda = CovLambda(contig=chr_lambda)
+    dict_lambda = CovContig(contig=chr_lambda)
     intervals = iter(GenomicIntervalGenerator(
         fa, 
         chrs= chr_lambda, 
@@ -23,7 +23,7 @@ def compt_lambda() -> None:
     intervals_list = list(intervals)
     for i in tqdm.trange(len(intervals_list), desc='Sampling control DNA: '):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
-        update_lambda(dict_lambda, detailedIntvl)
+        update_contig(dict_lambda, detailedIntvl)
     
     params['dict_lambda'] = dict_lambda
 
@@ -52,7 +52,7 @@ def compt_lambda() -> None:
         bs_rate_lambda = -1
         data['bsrate_lambda'] = "nan"
         if dict_lambda.covnC > 100: # at least 100 Cs covered
-            bs_rate_lambda = 1 - dict_lambda.meC/dict_lambda.covnC
+            bs_rate_lambda = 1 - dict_lambda.meC/dict_lambda.covnC/10000
             params['bs_rate_lambda'] = bs_rate_lambda # for last choice of conversion rate
             data['bsrate_lambda'] = fp(bs_rate_lambda)
             
@@ -119,7 +119,8 @@ def plot_lambda_base_error_rate() -> None:
     
     fig, ax = plt.subplots(figsize=(5,3))
     if np.sum(dict_lambda.dp20 > 0) > 0:
-        ax.hist(nandivide(dict_lambda.misbase, dict_lambda.dp20), bins=21, density=True, color=COLS[0])
+        i = dict_lambda.dp20 > 0
+        ax.hist(dict_lambda.misbase[i]/dict_lambda.dp20[i], bins=21, density=True, color=COLS[0])
         plt.xlabel('bin-wise base error rate')
         plt.ylabel('density')
 

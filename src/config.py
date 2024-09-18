@@ -1,10 +1,10 @@
 
 import math
 import os
-from typing import NamedTuple, List, Tuple, Dict, Any
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
-from src.utils import myMakeDirs, as_bool
+
+from src.utils import *
 
 import matplotlib
 matplotlib.rcParams["svg.fonttype"] = 'none'

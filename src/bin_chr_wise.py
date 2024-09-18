@@ -2,8 +2,8 @@
 import tqdm
 from src.utils import *
 from src.config import params, data
-from src.coverage import CovLambda, GenomicIntervalGenerator
-from src.updateBinning import update_cgkmer, update_binning
+from src.coverage import GenomicIntervalGeneratorWithinBin
+from src.updateBinning import update_cgkmer, update_binning_nuclear 
 
 
 def nuclear_sampling() -> None:
@@ -11,33 +11,36 @@ def nuclear_sampling() -> None:
     bam = params['bam']
     chrs_valid = params['chrs_valid']
     step = params['nuclear_sampling_step']
+    binSize = params['binSize']
     spacing = params['nuclear_sampling_spacing']
     include_motif = data['include_motif']
 
-    intervals = iter(GenomicIntervalGenerator(
+    # intervals = iter(GenomicIntervalGenerator(
+    intervals = iter(GenomicIntervalGeneratorWithinBin(
         fa, 
-        chrs= chrs_valid,
-        start = 0,    
-        end = params['MAX_COORDINATE'],
+        chrs=chrs_valid,
+        start=0,    
+        end=params['MAX_COORDINATE'],
         step=step, # 1_000
-        spacing=spacing #10_000
+        spacing=spacing, #10_000
+        binSize=binSize
         ))
 
     intervals_list = list(intervals)
     for i in tqdm.trange(len(intervals_list), desc='Sampling nuclear chr: '):
         detailedIntvl = bam.detailedCoverage(intervals_list[i])
-        update_binning(detailedIntvl)
+        update_binning_nuclear(detailedIntvl)
         if include_motif: 
             update_cgkmer(detailedIntvl)
     return None
 
 def compt_chr_and_bin_wise() -> None:
-    fa = params['fa']
+    # fa = params['fa']
     reference_length = params['reference_length']
     binSize = params['binSize']
     dict_binning = params['dict_binning']
     chrs_valid = params['chrs_valid']
-    DP_valid = params['MAX_DP_BY_FIG']
+    DP = params['MAX_DP_BY_FIG']
 
     ###########################################################
     #### init bin-wise data
@@ -59,49 +62,66 @@ def compt_chr_and_bin_wise() -> None:
     
     for i, chr in enumerate(chrs_valid):
         nbin = int(np.ceil(reference_length(chr)/binSize))
-        dict_bin_meCG[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCGW[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCGC[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHG[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHGW[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHGC[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHH[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHHW[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_meCHHC[chr] = np.zeros((nbin, DP_valid), dtype=float)
-        dict_bin_dp[chr] = np.zeros((nbin, ), dtype=float)
-        dict_bin_dpW[chr] = np.zeros((nbin, ), dtype=float)
-        dict_bin_dpC[chr] = np.zeros((nbin, ), dtype=float)
+        shape = (nbin, DP)
+        dict_bin_meCG[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCGW[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCGC[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHG[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHGW[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHGC[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHH[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHHW[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_meCHHC[chr] = np.zeros(shape, dtype=int32)
+        dict_bin_dp[chr] = np.zeros((nbin, ), dtype=float32)
+        dict_bin_dpW[chr] = np.zeros((nbin, ), dtype=float32)
+        dict_bin_dpC[chr] = np.zeros((nbin, ), dtype=float32)
 
     ###########################################################
     #### init chr-wise data
     ###########################################################
 
-    # sum of meth
-    dict_chr_meCG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCGC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHGC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHH = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHHW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHHC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_meCHGC = dict.fromkeys(chrs_valid, 0)
+    init = np.zeros((DP,), dtype=int64)
+    # sum of methinit.copy()
+    dict_chr_meCG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHH = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHHW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHHC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_meCHGC = dict.fromkeys(chrs_valid, init.copy())
     # covnCG
-    dict_chr_covnCG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCGC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHH = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHHW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHHC = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHG = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, 0)
-    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, 0)
+    dict_chr_covnCG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHH = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHHW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHHC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, init.copy())
+
+    # mean meth
+    init = np.zeros((DP,), dtype=int64)
+    dict_chr_mmeCG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHGC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHH = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHHW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHHC = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHG = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHGW = dict.fromkeys(chrs_valid, init.copy())
+    dict_chr_mmeCHGC = dict.fromkeys(chrs_valid, init.copy())
 
     ###########################################################
     #### summarization
@@ -109,86 +129,86 @@ def compt_chr_and_bin_wise() -> None:
 
     for key, value in dict_binning.items():
         chr, bin = key
-        if chr not in chrs_valid: continue
+        # if chr not in chrs_valid: continue
+        if value.length <= 0: continue
 
         ##### bin-wise
         # meth CG
-        index = value.covnCG[:DP_valid] >= 1
-        dict_bin_meCG[chr][bin, index] = value.meCG[:DP_valid][index]/value.covnCG[:DP_valid][index]
-        dict_bin_meCG[chr][bin, ~index] = np.nan
+        dict_bin_meCG[chr][bin, :] = cumratio(value.meCGW[:DP] + value.meCGC[:DP], value.covnCGW[:DP] + value.covnCGC[:DP])
         # meth CG W
-        index = value.covnCGW[:DP_valid] >= 1
-        dict_bin_meCGW[chr][bin, index] = value.meCGW[:DP_valid][index]/value.covnCGW[:DP_valid][index]
-        dict_bin_meCGW[chr][bin, ~index] = np.nan
+        dict_bin_meCGW[chr][bin, :] = cumratio(value.meCGW[:DP], value.covnCGW[:DP])
         # meth CG C
-        index = value.covnCGC[:DP_valid] >= 1
-        dict_bin_meCGC[chr][bin, index] = value.meCGC[:DP_valid][index]/value.covnCGC[:DP_valid][index]
-        dict_bin_meCGC[chr][bin, ~index] = np.nan
+        dict_bin_meCGC[chr][bin, :] = cumratio(value.meCGC[:DP], value.covnCGC[:DP])    
         # meth CHG
-        index = value.covnCHG[:DP_valid] >= 1
-        dict_bin_meCHG[chr][bin, index] = value.meCHG[:DP_valid][index]/value.covnCHG[:DP_valid][index]
-        dict_bin_meCHG[chr][bin, ~index] = np.nan
+        dict_bin_meCHG[chr][bin, :] = cumratio(value.meCHGW[:DP] + value.meCHGC[:DP], value.covnCHGW[:DP] + value.covnCHGC[:DP])  
         # meth CHG W
-        index = value.covnCHGW[:DP_valid] >= 1
-        dict_bin_meCHGW[chr][bin, index] = value.meCHGW[:DP_valid][index]/value.covnCHGW[:DP_valid][index]
-        dict_bin_meCHGW[chr][bin, ~index] = np.nan
+        dict_bin_meCHGW[chr][bin, :] = cumratio(value.meCHGW[:DP], value.covnCHGW[:DP])  
         # meth CHG C
-        index = value.covnCHGC[:DP_valid] >= 1
-        dict_bin_meCHGC[chr][bin, index] = value.meCHGC[:DP_valid][index]/value.covnCHGC[:DP_valid][index]
-        dict_bin_meCHGC[chr][bin, ~index] = np.nan
+        dict_bin_meCHGC[chr][bin, :] = cumratio(value.meCHGC[:DP], value.covnCHGC[:DP])  
         # meth CHH
-        index = value.covnCHH[:DP_valid] >= 1
-        dict_bin_meCHH[chr][bin, index] = value.meCHH[:DP_valid][index]/value.covnCHH[:DP_valid][index]
-        dict_bin_meCHH[chr][bin, ~index] = np.nan
+        dict_bin_meCHH[chr][bin, :] = cumratio(value.meCHHW[:DP] + value.meCHHC[:DP], value.covnCHHW[:DP] + value.covnCHHC[:DP])  
         # meth CHH W
-        index = value.covnCHHW[:DP_valid] >= 1
-        dict_bin_meCHHW[chr][bin, index] = value.meCHHW[:DP_valid][index]/value.covnCHHW[:DP_valid][index]
-        dict_bin_meCHHW[chr][bin, ~index] = np.nan
+        dict_bin_meCHHW[chr][bin, :] = cumratio(value.meCHHW[:DP], value.covnCHHW[:DP])  
         # meth CHH C
-        index = value.covnCHHC[:DP_valid] >= 1
-        dict_bin_meCHHC[chr][bin, index] = value.meCHHC[:DP_valid][index]/value.covnCHHC[:DP_valid][index]
-        dict_bin_meCHHC[chr][bin, ~index] = np.nan
+        dict_bin_meCHHC[chr][bin, :] = cumratio(value.meCHHC[:DP], value.covnCHHC[:DP])  
         # depth
-        if value.length < 0: continue
-        dict_bin_dp[chr][bin] = value.dp/value.length
+
+        dict_bin_dp[chr][bin] = (value.dpW + value.dpW)/value.length
         dict_bin_dpW[chr][bin] = value.dpW/value.length
         dict_bin_dpC[chr][bin] = value.dpC/value.length
 
         ##### chr-wise
         ## chr-wise me
-        dict_chr_meCG[chr] += value.meCG[:DP_valid]
-        dict_chr_meCGW[chr] += value.meCGW[:DP_valid]
-        dict_chr_meCGC[chr] += value.meCGC[:DP_valid]
-        dict_chr_meCHG[chr] += value.meCHG[:DP_valid]
-        dict_chr_meCHGW[chr] += value.meCHGW[:DP_valid]
-        dict_chr_meCHGC[chr] += value.meCHGC[:DP_valid]
-        dict_chr_meCHH[chr] += value.meCHH[:DP_valid]
-        dict_chr_meCHHW[chr] += value.meCHHW[:DP_valid]
-        dict_chr_meCHHC[chr] += value.meCHHC[:DP_valid]
+        dict_chr_meCG[chr] += value.meCGW[:DP] + value.meCGC[:DP]
+        dict_chr_meCGW[chr] += value.meCGW[:DP]
+        dict_chr_meCGC[chr] += value.meCGC[:DP]
+        dict_chr_meCHG[chr] += value.meCHGW[:DP] + value.meCHGC[:DP]
+        dict_chr_meCHGW[chr] += value.meCHGW[:DP]
+        dict_chr_meCHGC[chr] += value.meCHGC[:DP]
+        dict_chr_meCHH[chr] += value.meCHHW[:DP] + value.meCHHC[:DP]
+        dict_chr_meCHHW[chr] += value.meCHHW[:DP]
+        dict_chr_meCHHC[chr] += value.meCHHC[:DP]
         ## chr-wise cov
-        dict_chr_covnCG[chr] += value.covnCG[:DP_valid]
-        dict_chr_covnCGW[chr] += value.covnCGW[:DP_valid]
-        dict_chr_covnCGC[chr] += value.covnCGC[:DP_valid]
-        dict_chr_covnCHG[chr] += value.covnCHG[:DP_valid]
-        dict_chr_covnCHGW[chr] += value.covnCHGW[:DP_valid]
-        dict_chr_covnCHGC[chr] += value.covnCHGC[:DP_valid]
-        dict_chr_covnCHH[chr] += value.covnCHH[:DP_valid]
-        dict_chr_covnCHHW[chr] += value.covnCHHW[:DP_valid]
-        dict_chr_covnCHHC[chr] += value.covnCHHC[:DP_valid]
+        dict_chr_covnCG[chr] += value.covnCGW[:DP] + value.covnCGC[:DP]
+        dict_chr_covnCGW[chr] += value.covnCGW[:DP]
+        dict_chr_covnCGC[chr] += value.covnCGC[:DP]
+        dict_chr_covnCHG[chr] += value.covnCHGW[:DP] + value.covnCHGC[:DP]
+        dict_chr_covnCHGW[chr] += value.covnCHGW[:DP]
+        dict_chr_covnCHGC[chr] += value.covnCHGC[:DP]
+        dict_chr_covnCHH[chr] += value.covnCHHW[:DP] + value.covnCHHC[:DP]
+        dict_chr_covnCHHW[chr] += value.covnCHHW[:DP]
+        dict_chr_covnCHHC[chr] += value.covnCHHC[:DP]
     
+    for chr in chrs_valid:
+        dict_chr_mmeCG[chr] = cumratio(dict_chr_meCG[chr], dict_chr_covnCG[chr])
+        dict_chr_mmeCGW[chr] = cumratio(dict_chr_meCGW[chr], dict_chr_covnCGW[chr])
+        dict_chr_mmeCGC[chr] = cumratio(dict_chr_meCGC[chr], dict_chr_covnCGC[chr])
+        dict_chr_mmeCHG[chr] = cumratio(dict_chr_meCHG[chr], dict_chr_covnCHG[chr])
+        dict_chr_mmeCHGW[chr] = cumratio(dict_chr_meCHGW[chr], dict_chr_covnCHGW[chr])
+        dict_chr_mmeCHGC[chr] = cumratio(dict_chr_meCHGC[chr], dict_chr_covnCHGC[chr])
+        dict_chr_mmeCHH[chr] = cumratio(dict_chr_meCHH[chr], dict_chr_covnCHH[chr])
+        dict_chr_mmeCHHW[chr] = cumratio(dict_chr_meCHHW[chr], dict_chr_covnCHHW[chr])
+        dict_chr_mmeCHHC[chr] = cumratio(dict_chr_meCHHC[chr], dict_chr_covnCHHC[chr])
+
+
     ###########################################################
     #### exporting
     ###########################################################
     
-    dict_chr_me = {
-        'CG':{'double': dict_chr_meCG,'W': dict_chr_meCGW, 'C':dict_chr_meCGC},
-        'CHG':{'double': dict_chr_meCHG,'W': dict_chr_meCHGW, 'C':dict_chr_meCHGC},
-        'CHH':{'double': dict_chr_meCHH,'W': dict_chr_meCHHW, 'C':dict_chr_meCHHC}
-        }
-    dict_chr_cov = {
+    # dict_chr_me = {
+    #     'CG':{'double': dict_chr_meCG,'W': dict_chr_meCGW, 'C':dict_chr_meCGC},
+    #     'CHG':{'double': dict_chr_meCHG,'W': dict_chr_meCHGW, 'C':dict_chr_meCHGC},
+    #     'CHH':{'double': dict_chr_meCHH,'W': dict_chr_meCHHW, 'C':dict_chr_meCHHC}
+    #     }
+    dict_chr_covn = {
         'CG':{'double': dict_chr_covnCG,'W': dict_chr_covnCGW, 'C':dict_chr_covnCGC},
         'CHG':{'double': dict_chr_covnCHG,'W': dict_chr_covnCHGW, 'C':dict_chr_covnCHGC},
         'CHH':{'double': dict_chr_covnCHH,'W': dict_chr_covnCHHW, 'C':dict_chr_covnCHHC}
+        }
+    dict_chr_me = {
+        'CG':{'double': dict_chr_mmeCG,'W': dict_chr_mmeCGW, 'C':dict_chr_mmeCGC},
+        'CHG':{'double': dict_chr_mmeCHG,'W': dict_chr_mmeCHGW, 'C':dict_chr_mmeCHGC},
+        'CHH':{'double': dict_chr_mmeCHH,'W': dict_chr_mmeCHHW, 'C':dict_chr_mmeCHHC}
         }
     dict_bin_me = {
         'CG':{'double': dict_bin_meCG,'W': dict_bin_meCGW, 'C':dict_bin_meCGC},
@@ -198,62 +218,70 @@ def compt_chr_and_bin_wise() -> None:
     dict_bin_depth = {'double': dict_bin_dp,'W': dict_bin_dpW, 'C':dict_bin_dpC}
 
     params['dict_chr_me'] = dict_chr_me
-    params['dict_chr_cov'] = dict_chr_cov
+    params['dict_chr_covn'] = dict_chr_covn
     params['dict_bin_me'] = dict_bin_me
     params['dict_bin_depth'] = dict_bin_depth
     return None
 
 def plot_chr_wise_me() -> None:
-    chrs_plot = params['chrs_valid']
+    chrs = params['chrs_valid']
     dict_chr_me = params['dict_chr_me']
-    dict_chr_cov = params['dict_chr_cov']
+    dict_chr_covn = params['dict_chr_covn']
     DP_valid = params['MAX_DP_BY_FIG']
     img_dir = params['img_dir']
 
     strand = 'double'
     for cg in CONTEXTS:
-        figwidth = min(12, len(chrs_plot)*0.18 + 0.5)
+        figwidth = min(12, len(chrs)*0.18 + 0.3)
         ylim = 0
         me_list = []
+        dps_list = []
         for dp in range(DP_valid):
-            me = [dict_chr_me[cg][strand][chr][dp]/dict_chr_cov[cg][strand][chr][dp] for chr in chrs_plot]
+            # me = [dict_chr_me[cg][strand][chr][dp]/dict_chr_cov[cg][strand][chr][dp] for chr in chrs]
+            
+            me = [ dict_chr_me[cg][strand][chr][dp]/10000 for chr in chrs ]
+            dps = [ dict_chr_covn[cg][strand][chr][dp] for chr in chrs ]
             me_list.append(me)
-            ylim = max(ylim, max(me))
+            dps_list.append(dps)
+        ylim = max(ylim, max(me))
         ylim = axlimit(ylim)
         for dp in range(DP_valid):
             fig, ax = plt.subplots(figsize = (figwidth, 2))
-            ax.bar(chrs_plot, me_list[dp], color=COLS[0])
+            dps = np.array(dps_list[dp])
+            mes = np.array(me_list[dp])
+            i = dps > 0 # remove uncovered chrs
+            ax.bar(np.array(chrs)[i], mes[i], color=COLS[0])
             ax.set_ylim(0, ylim)
             plt.xticks(rotation=45)
             ax.set_ylabel('mean DNAme level')
-            filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp+1}'
+            filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp}'
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
             if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()
     return None
 
 def plot_binning_meth() -> None:
-    chrs_plot = params['chrs_valid']
+    chrs = params['chrs_valid']
     dict_bin_me = params['dict_bin_me']
     binSize = params['binSize']
     img_dir = params['img_dir']
     save_svg = params['save_svg']
 
-    dp = 0 # only plot depth >= 1
-    nchr = len(chrs_plot)
+    dp = 1 # only plot depth >= 1
+    nchr = len(chrs)
 
     for cg in CONTEXTS:
         for strand in ['double', 'single']:
             if strand == 'double':
                 me = dict_bin_me[cg][strand]
-                maxbins = max([me[chr].shape[0] for chr in chrs_plot])
+                maxbins = max([me[chr].shape[0] for chr in chrs])
                 add = int(cg!='CG')*0.2 + int(strand=='single')*0.1
                 figheight = nchr*0.35 + 1
                 figwidth = maxbins/250 + 1 + add
             else:
                 me = dict_bin_me[cg]['W']
                 me2 = dict_bin_me[cg]['C']
-                maxbins = max([me[chr].shape[0] for chr in chrs_plot])
+                maxbins = max([me[chr].shape[0] for chr in chrs])
                 figheight = nchr*0.6 + 1
                 figwidth = maxbins/250 + 1.2 + add
 
@@ -263,7 +291,7 @@ def plot_binning_meth() -> None:
             
             plt.xlim(-2, prefixBpSize(np.array([maxbins * binSize]))[0]+2)
             kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
-            for i, chr in enumerate(chrs_plot):
+            for i, chr in enumerate(chrs):
                 shape = np.shape(me[chr])
                 x = np.arange(shape[0]) * binSize
                 x, prefix = prefixBpSize(x)
@@ -278,13 +306,13 @@ def plot_binning_meth() -> None:
                         y2 = np.fmin(np.nanquantile(y, 0.99), y2)
                 
                 if strand == 'double':
-                    axs[i].scatter(x, y, s=1, c=COLS_AREA[0])
+                    axs[i].scatter(x, y/10000, s=1, c=COLS_AREA[0])
                 else:
-                    axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
-                    axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
+                    axs[i].scatter(x, y/10000, s=1, c=COLS_AREA[1])
+                    axs[i].scatter(x, -y2/10000, s=1, c=COLS_AREA[0])
                     axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
                 # if i % 2 == nchr % 2:
-                if i % 2 == kylabel % 2:
+                if i % 2 != kylabel % 2:
                     axs[i].yaxis.tick_right()
                 if i == kylabel: # ensure ylabel on the left always
                     axs[i].yaxis.set_label_position('left')
@@ -296,7 +324,7 @@ def plot_binning_meth() -> None:
             plt.xlabel(f'genome coordinate ({prefix})')
             # if strand == 'single': axs[i].legend()
 
-            filename = f'{img_dir}/meth-bin-{cg}-{strand}-dp{dp+1}'
+            filename = f'{img_dir}/meth-bin-{cg}-{strand}-dp{dp}'
             plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
             if save_svg:
                 plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
@@ -304,24 +332,24 @@ def plot_binning_meth() -> None:
     return None
 
 def plot_binning_depth() -> None:
-    chrs_plot = params['chrs_valid']
+    chrs = params['chrs_valid']
     dict_bin_depth = params['dict_bin_depth']
     binSize = params['binSize']
     img_dir = params['img_dir']
-    nchr = len(chrs_plot)
+    nchr = len(chrs)
     save_svg = params['save_svg']
 
     for strand in ['double', 'single']:
         if strand == 'double':
             dep = dict_bin_depth[strand]
-            maxbins = max([dep[chr].shape[0] for chr in chrs_plot])
+            maxbins = max([dep[chr].shape[0] for chr in chrs])
             add = int(strand=='single')*0.1
             figheight = nchr*0.4 + 1
             figwidth = maxbins/200 + 1 + add
         else:
             dep = dict_bin_depth['W']
             dep2 = dict_bin_depth['C']
-            maxbins = max([dep[chr].shape[0] for chr in chrs_plot])
+            maxbins = max([dep[chr].shape[0] for chr in chrs])
             figheight = nchr*0.7 + 1
             figwidth = maxbins/200 + 1.3 + add
 
@@ -331,12 +359,12 @@ def plot_binning_depth() -> None:
 
         # ylim
         if strand == 'double':
-            maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs_plot]), 0.98)
+            maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs]), 0.98)
         else:
-            maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs_plot]), 0.98)
+            maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs]), 0.98)
             
         kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
-        for i, chr in enumerate(chrs_plot):
+        for i, chr in enumerate(chrs):
             shape = np.shape(dep[chr])
             x0 = np.arange(shape[0]) * binSize
             x, prefix = prefixBpSize(x0)

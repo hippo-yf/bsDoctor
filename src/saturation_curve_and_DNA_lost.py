@@ -35,7 +35,7 @@ def compt_plot_DNA_composition() -> None:
     DNA_composition = [
         "sequenced (depth ≥ 1)",
         "undegraded but not sequenced",
-        "degenerated"
+        "degraded"
         ]
 
     props = [single_DP1_coverage, prop_unsequenced, DNA_lost]

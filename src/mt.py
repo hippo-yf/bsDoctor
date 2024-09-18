@@ -2,29 +2,28 @@
 import tqdm
 from src.utils import *
 from src.config import params, data
-from src.coverage import CovLambda, GenomicIntervalGenerator
-from src.updateBinning import update_lambda
+from src.coverage import CovContig, GenomicIntervalGenerator
+from src.updateBinning import update_contig
 
 def compt_MT() -> None:
     chr_MT = params['chr_MT']
     fa = params['fa']
     bam = params['bam']
 
-    dict_MT = CovLambda(contig=chr_MT)
+    dict_MT = CovContig(contig=chr_MT)
     intervals = iter(GenomicIntervalGenerator(
         fa, 
         chrs=chr_MT, 
         start=0,
         end = params['MAX_COORDINATE'],
         step=5_000,
-        # step=fa.get_reference_length('chrM'),
         spacing=0
         ))
 
     intervals_list = list(intervals)
     for i in tqdm.trange(len(intervals_list), desc='Sampling MT: '):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
-        update_lambda(dict_MT, detailedIntvl)
+        update_contig(dict_MT, detailedIntvl)
 
     params['dict_MT'] = dict_MT
 
@@ -49,11 +48,11 @@ def compt_MT() -> None:
     data['mt_mean_dp'] = ff(float(mt_mean_dp))
 
     ## conversion rate by MT
-    mt_me = dict_MT.meC/dict_MT.covnC
+    mt_me = float(dict_MT.meC/dict_MT.covnC/10000)
     data['mt_me'] = ff(mt_me)
     bs_rate_MT = 1 - mt_me
-    dp_MT = dict_MT.dp/dict_MT.length
-    # print(dict_MT.length.sum(), dict_MT.cov.sum(), np.mean(dp_MT), np.median(dp_MT), bs_rate_MT)
+    params['bs_rate_mt'] = bs_rate_MT
+    # dp_MT = dict_MT.dp/dict_MT.length
     data['bsrate_mt'] = fp(bs_rate_MT)
 
     ## eror rate by MT
@@ -118,8 +117,9 @@ def plot_mt_base_error_rate() -> None:
     img_dir = params['img_dir']
 
     fig, ax = plt.subplots(figsize=(5,3))
-    if np.sum(dict_MT.dp20 > 0) > 0:
-        ax.hist(nandivide(dict_MT.misbase, dict_MT.dp20), bins=21, density=True, color=COLS[0])
+    if np.sum(dict_MT.dp20 > 0) > 10:
+        i = dict_MT.dp20 > 0
+        ax.hist(dict_MT.misbase[i]/dict_MT.dp20[i], bins=21, density=True, color=COLS[0])
         plt.xlabel('bin-wise base error rate')
         plt.ylabel('density')
 
