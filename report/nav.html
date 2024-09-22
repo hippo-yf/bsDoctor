@@ -99,7 +99,7 @@ The side navigation.
       </div>
       {% endif %}
 
-      {% if alldata.include_mt == 1 %}
+      {% if alldata.mt_is_covered == 1 %}
       <div class="accordion-item">
         <div class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel-mt"
@@ -128,7 +128,7 @@ The side navigation.
       </div>
       {% endif %}
 
-      {% if alldata.include_lambda == 1 %}
+      {% if alldata.lambda_is_covered == 1 %}
       <div class="accordion-item">
         <div class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -282,26 +282,26 @@ The side navigation.
         <div class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-CpG-kmer" aria-expanded="false" aria-controls="panelsStayOpen-CpG-kmer">
-            CpG-kmer
+            CpG-motif
           </button>
         </div>
         <div id="panelsStayOpen-CpG-kmer" class="accordion-collapse collapse">
           <div class="accordion-body">
             <ul class="nav flex-column nav-underline">
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-frequency">CpG-kmer frequency</a>
+                <a class="nav-link" href="#CpG-kmer-frequency">CpG-motif frequency</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#stranded-CpG-kmer-frequency">Stranded CpG-kmer frequency</a>
+                <a class="nav-link" href="#stranded-CpG-kmer-frequency">Stranded CpG-motif frequency</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-meth-vs-frequency">CpG-kmer methylation vs frequency</a>
+                <a class="nav-link" href="#CpG-kmer-meth-vs-frequency">CpG-motif methylation vs frequency</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-coverage-vs-depth">CpG-kmer coverage vs depth</a>
+                <a class="nav-link" href="#CpG-kmer-coverage-vs-depth">CpG-motif coverage vs depth</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-meth-vs-depth">CpG-kmer methylation vs depth</a>
+                <a class="nav-link" href="#CpG-kmer-meth-vs-depth">CpG-motif methylation vs depth</a>
               </li>
             </ul>
           </div>

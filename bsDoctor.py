@@ -2,7 +2,7 @@
 
 import re
 import pickle
-import numpy as np
+# import numpy as np
 
 from jinja2 import Environment,FileSystemLoader
 
@@ -236,16 +236,17 @@ def compute_and_plot():
 #### write report
 #######################################
 
-def write_report():
-    
+def write_report() -> None:
+
     env = Environment(loader=FileSystemLoader('report/'))
     env.globals["include_file"] = include_file
     template = env.get_template('main.jinja-html')
     temp_out = template.render(alldata=data)   
     html_out = f"{params['report_dir']}/report-{params['SAMPLE']}.html"
-    
+
     with open(html_out, 'w', encoding='utf-8') as f:
         f.writelines(temp_out)
+    return None
 
 if __name__ == "__main__":
     desc = "bsDoctor: Quality Diagnosis for Bisulfite-Seq Data"
@@ -255,9 +256,6 @@ if __name__ == "__main__":
     check_args(options)
     config_params(options)      
     config_params_further()
-    
-    # print(params)
-    # print(data)
 
     compute_and_plot()
 

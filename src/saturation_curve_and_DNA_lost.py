@@ -1,4 +1,5 @@
 
+from numpy import dtype
 from src.utils import *
 from src.config import params, data
 
@@ -9,16 +10,17 @@ def compt_plot_DNA_composition() -> None:
     totalBases = params['totalBases']
     img_dir = params['img_dir']
 
-    ## coverage rate single-strand DP>=1
-    single_DP1_coverage = (binning_covW[:,0].sum() + binning_covC[:,0].sum()) / length.sum() / 2
+    ## single-stranded coverage rate DP>=1
+    single_DP1_coverage = (binning_covW[:,1].sum() + binning_covC[:,1].sum()) / length.sum() / 2
 
     # unsequenced base prop by Emperical Bayes
-    prop_unsequenced =  (binning_covW[:,0].sum() - binning_covW[:,1].sum() + binning_covC[:,0].sum() - binning_covC[:,1].sum()) / totalBases
+    prop_unsequenced =  (binning_covW[:,1].sum() - binning_covW[:,2].sum() + binning_covC[:,1].sum() - binning_covC[:,2].sum()) / totalBases
 
     # prop of whole genome
     prop_unsequenced = single_DP1_coverage * prop_unsequenced/(1-prop_unsequenced)
     DNA_lost = max(0, 1 - prop_unsequenced - single_DP1_coverage)
     params['DNA_lost'] = DNA_lost
+    params['prop_cov_DP1'] = single_DP1_coverage
 
     ## sequencing saturation 
     saturation_level = 1 - prop_unsequenced
@@ -59,95 +61,104 @@ def compt_plot_DNA_composition() -> None:
     plt.close()
     return None
 
-def _saturation_curve_binning(sampled_bases: int, cov: NDArray) -> NDArray:
-
-    maxdp = len(cov) - np.argmax(cov[::-1] > 0)
-    depths = np.repeat(np.arange(1, maxdp+1), cov[:maxdp])
-
-    if sampled_bases >= np.sum(depths):
-        return np.array(cov[ [0,2,4,9] ])
-    sampling = GEN.multivariate_hypergeometric(depths, sampled_bases)
-
-    return np.array([np.sum(sampling>=1), np.sum(sampling>=3), np.sum(sampling>=5), np.sum(sampling>=10)])
-
-def _saturation_curve(breaks=30) -> NDArray:
+def dilute_bin(cov: NDArray) -> Tuple[NDArray, NDArray]:
     """
-    single-stranded saturation curve
+    dilution of genomic bin
+    cov: cummulative counts 
     """
-    binning_depthW = params['binning_depthW']
-    binning_depthC = params['binning_depthC']
-    binning_covW = params['binning_covW']
-    binning_covC = params['binning_covC']
-    length = params['length']
-    totalBasesW = params['totalBasesW']
-    totalBasesC = params['totalBasesC']
-    totalDepthW = params['totalDepthW']
-    totalDepthC = params['totalDepthC']
-    
-    genome_coverages = np.zeros(shape=(breaks+1, 4))
-    genome_coverages[breaks,:] = np.array([
-        binning_covW[:,0].sum() + binning_covC[:,0].sum(),
-        binning_covW[:,2].sum() + binning_covC[:,2].sum(),
-        binning_covW[:,4].sum() + binning_covC[:,4].sum(),
-        binning_covW[:,9].sum() + binning_covC[:,9].sum()]
-        )/length.sum()/2
-    
-    # sampled_bases = np.logspace(0, np.log10(totalDepth.sum()), breaks+1, dtype=np.int64) -1
-    sampled_basesW = np.linspace(0, totalBasesW, breaks+1, dtype=np.int64)
-    sampled_basesC = np.linspace(0, totalBasesC, breaks+1, dtype=np.int64)
-    for i in np.arange(1, breaks):
+    L = len(cov)
+    DPS = [0,1,3,5,10]
+    maxdp = max(max(DPS)+1, L - np.argmax(cov[::-1] > 0))
+    cov = depthDiff(cov[:maxdp])
 
-        # Watson strand
-        bin_basesW = GEN.multinomial(sampled_basesW[i], totalDepthW/totalBasesW, size=1)[0,:]
-        # DP >= 1,3,5,10
-        coveraged_basesW = [
-            _saturation_curve_binning(bin_basesW[j], binning_depthW[j,:])
-            for j in range(len(length))
-            ]
+    dps = np.arange(maxdp)
+    tbases = dps @ cov
+    breaks = 50
+    dilution = np.zeros((breaks+1, len(DPS)), dtype=int32) # 30bins X dp=[0,1,3,5,10]
+    dilution[0,0] = cov.sum()
+    residue = tbases
+    bases_to_sample = np.array(tbases*(np.arange(0, breaks+1)/breaks), dtype=int64)
+    k = breaks
 
-        # Crick strand
-        bin_basesC = GEN.multinomial(sampled_basesC[i], totalDepthC/totalBasesC, size=1)[0,:]
-        # bin_bases = np.fmin(bin_bases, totalDepth)
+    for _ in range(tbases):
+        if residue <= bases_to_sample[k]:
+            dilution[k,:] = cumsumrev(cov)[DPS]
+            k -= 1
+        if k < 1: break
+        weights = cov * dps
+        weights = weights/weights.sum()
+        i = np.where(GEN.multinomial(1, weights))[0]
+        cov[i] -= 1
+        cov[i-1] += 1
+        residue -=1 
+    if k > 0:
+        dilution[1:(k+1),0] = dilution[0,0]
+    return (bases_to_sample, dilution)
 
-        # DP >= 1,3,5,10
-        coveraged_basesC = [
-            _saturation_curve_binning(bin_basesC[j], binning_depthC[j,:])
-            for j in range(len(length))
-            ]
-        
-        genome_coverages[i,:] = (np.asarray(coveraged_basesW).sum(axis=0) + np.asarray(coveraged_basesC).sum(axis=0))/length.sum()/2
+def dilute_strand(cov: NDArray, nbins: int = 100) -> Tuple[NDArray, NDArray]:
+    """
+    dilution of bins of singe strand
+    """
+    nbases = np.zeros((51,), dtype=float64)
+    dilu = np.zeros((51, 5), dtype=int64)
 
-    # add mean sequencing depth
-    return np.hstack([
-        genome_coverages, 
-        (sampled_basesW+sampled_basesC).reshape((-1,1))/length.sum()/2
-        ])
+    shape = cov.shape
+    if shape[0] > nbins *1.1:
+        kbins = GEN.choice(shape[0], size = nbins, replace=False)
+    else:
+        kbins = range(shape[0])
+    for i in kbins:
+        bases_to_sample, dilution = dilute_bin(cov[i,:])
+        nbases += bases_to_sample
+        dilu += dilution
+    return (nbases, dilu)
+
+def dilute_genome(covW: NDArray, covC: NDArray, nbins: int = 100) -> Tuple[NDArray, NDArray]:
+    """
+    dilution of two strands
+    """
+    nbasesW, diluW = dilute_strand(covW, nbins=nbins)
+    nbasesC, diluC = dilute_strand(covC, nbins=nbins)
+    nbases = nbasesW + nbasesC
+    dilu = diluW + diluC
+    return (nbases, dilu)
 
 def plot_saturation_curve() -> None:
+    bam = params['bam']
+    mean_read_length = params['mean_read_length']
     DNA_lost = params['DNA_lost']
+    binning_covW = params['binning_covW']
+    binning_covC = params['binning_covC']
+    prop_cov_DP1 = params['prop_cov_DP1']
     img_dir = params['img_dir']
 
-    sc = _saturation_curve(breaks=30)
+    library_bases = mean_read_length * bam.mapped
 
-    dp = [1,3,5,10]
+    dps = [1,3,5,10]
     cols = ['#a0d0f8', '#40a0f2','#0d6dbf', '#07375f']
 
+    (nbases, dilu) = dilute_genome(binning_covW, binning_covC, nbins=300)
+
     fig, ax = plt.subplots(figsize=(5, 3))
-    size = np.shape(sc)
-    x = sc[:,-1]
-    for i in range(size[1]-1):
-        ax.plot(x, sc[:,i], '-', c=cols[i], alpha=1, label='DP>='+str(dp[i]))
-    # ax.plot(np.linspace(0, sc[-1, -1], 10), np.repeat(1-DNA_lost, 10), '--')
-    abline(1-DNA_lost, 0, color=COL_gray)
+    prop_dp1_subset = dilu[50,1]/dilu[50,0]
+
+    x = np.array(nbases/nbases[-1]*library_bases, dtype=int64)
+    x, suffix = getSuffix(x)
+    for i in range(len(dps)):
+        y = dilu[:,i+1]/dilu[:,0] * 100
+        # rescale to whole-genole covrate
+        y = y*prop_cov_DP1/prop_dp1_subset 
+        ax.plot(x, y, '-', c=cols[i], alpha=1, label='DP>='+str(dps[i]))
+    abline((1-DNA_lost)*100, 0, color=COL_gray)
+    ax.axis()
     linewidth = 0.001
-    ax.text(0, 1-DNA_lost-linewidth, f'{100-DNA_lost*100:.2f}%', verticalalignment='top')
+    ax.text(0, (1-DNA_lost-linewidth)*100, f'{100-DNA_lost*100:.2f}%', verticalalignment='top')
     ax.legend(title='single-stranded')
-    plt.xlabel('single-stranded sequencing depth')
-    plt.ylabel('single-stranded genomic coverage')
+    plt.xlabel(f'library size ({suffix} bases)')
+    # plt.xlabel('single-stranded sequencing depth')
+    plt.ylabel('single-stranded coverage (%)')
 
     filename = f'{img_dir}/saturation-curve'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
-    return None
-    

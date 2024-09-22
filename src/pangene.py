@@ -2,12 +2,12 @@ import tqdm
 
 from src.utils import *
 from src.config import *
-from src.coverage import genesGenerator, CovPanGene
+from src.coverage import MyAlignmentFile, genesGenerator, CovPanGene
 
 def pangene_sampling() -> None:
     gtffile = params['gtffile']
     PANGENE_SAMPLED = params['PANGENE_SAMPLED']
-    bam = params['bam']
+    bam: MyAlignmentFile = params['bam']
     bins = params['gene_breaks']*3
 
     genes = genesGenerator(gtffile)
@@ -28,9 +28,9 @@ def pangene_sampling() -> None:
     genes_lnc_sampling = sampleGenes(genes_lnc, k=PANGENE_SAMPLED)
     genes_non_sampling = sampleGenes(genes_non, k=PANGENE_SAMPLED)
     
-    params['genes_coding_sampling'] = genes_coding_sampling
-    params['genes_lnc_sampling'] = genes_lnc_sampling
-    params['genes_non_sampling'] = genes_non_sampling
+    # params['genes_coding_sampling'] = genes_coding_sampling
+    # params['genes_lnc_sampling'] = genes_lnc_sampling
+    # params['genes_non_sampling'] = genes_non_sampling
 
     data['ngene_coding'] = fi(len(genes_coding))
     data['ngene_lnc'] = fi(len(genes_lnc))
@@ -41,16 +41,19 @@ def pangene_sampling() -> None:
     cov_pangene_coding = CovPanGene(bins)
     for i in tqdm.trange(len(genes_coding_sampling), desc='Sampling coding genes: '):
         bam.update_pangene(cov_pangene_coding, genes_coding_sampling[i])
+    params['cov_pangene_coding'] = cov_pangene_coding
 
     # lncRNA
     cov_pangene_lnc = CovPanGene(bins)
-    for i in tqdm.trange(len(genes_lnc_sampling), desc='Sampling long-noncoding genes: '):
+    for i in tqdm.trange(len(genes_lnc_sampling), desc='Sampling long noncoding genes: '):
         bam.update_pangene(cov_pangene_lnc, genes_lnc_sampling[i])
+    params['cov_pangene_lnc'] = cov_pangene_lnc
 
     # other noncoding
     cov_pangene_non = CovPanGene(bins)
     for i in tqdm.trange(len(genes_non_sampling), desc='Sampling other non-coding genes: '):
         bam.update_pangene(cov_pangene_non, genes_non_sampling[i])
+    params['cov_pangene_non'] = cov_pangene_non
 
     return None
 
@@ -60,10 +63,10 @@ def _plot_pangene_meth(meth: CovPanGene, name: str) -> None:
 
     fig, ax = plt.subplots(figsize=(5,3))
     x = np.arange(gene_breaks*3)
-    y = meth.meCG/meth.nCG
-    ax.plot(x, y, '-', c=COL_gray)
-    ax.plot(x, meth.meCGW/meth.nCGW, '-', c=COLS[1])
-    ax.plot(x, meth.meCGC/meth.nCGC, '-', c=COLS[0])
+    # y = meth.meCG/meth.nCG
+    ax.plot(x, meth.meCG/meth.nCG/10000, '-', c=COL_gray)
+    ax.plot(x, meth.meCGW/meth.nCGW/10000, '-', c=COLS[1])
+    ax.plot(x, meth.meCGC/meth.nCGC/10000, '-', c=COLS[0])
     ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
     plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
 

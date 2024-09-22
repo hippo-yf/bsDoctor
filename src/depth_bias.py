@@ -1,5 +1,5 @@
 
-import scipy
+from scipy.stats import gaussian_kde
 import numpy as np
 from src.config import params, data
 from src.utils import *
@@ -18,12 +18,12 @@ def plot_depth_vs_cytosine_density() -> None:
             for key, value in dict_binning.items():
                 value = dict_binning[key]
                 dp = {
-                    'double': value.dp, 'W': value.dpW, 'C': value.dpC
+                    'double': value.dpW+value.dpC, 'W': value.dpW, 'C': value.dpC
                 }
                 nC = {
-                    'CG': {'double': value.nCG, 'W': value.nCGW, 'C': value.nCGC},
-                    'CHG': {'double': value.nCHG, 'W': value.nCHGW, 'C': value.nCHGC},
-                    'CHH': {'double': value.nCHH, 'W': value.nCHHW, 'C': value.nCHHC},
+                    'CG': {'double': value.nCGW+value.nCGC, 'W': value.nCGW, 'C': value.nCGC},
+                    'CHG': {'double': value.nCHGW+value.nCHGC, 'W': value.nCHGW, 'C': value.nCHGC},
+                    'CHH': {'double': value.nCHHW+value.nCHHC, 'W': value.nCHHW, 'C': value.nCHHC},
                 }
                 if value.length >= 100:
                     den = nC[cg][strand] / value.length
@@ -40,7 +40,7 @@ def plot_depth_vs_cytosine_density() -> None:
 
             ## depth vs density
             xy = np.vstack([density, depth])
-            d = scipy.stats.gaussian_kde(xy)(xy)
+            d = gaussian_kde(xy)(xy)
             idx = d.argsort()
             x, y, d = density[idx], depth[idx], d[idx]
 
@@ -76,10 +76,10 @@ def plot_depth_dist_by_low_high_me() -> None:
     for key, value in dict_binning.items():
         # if chr != key[0]: continue
         value = dict_binning[key]
-        nCGLowMeth += value.nCGLowMeth
-        nCGHighMeth += value.nCGHighMeth
-
-    x = np.arange(DP) + 1
+        nCGLowMeth += value.nCGLowMeth[1:]
+        nCGHighMeth += value.nCGHighMeth[1:]
+    
+    x = np.arange(1, DP+1)
     y = nCGLowMeth/np.sum(nCGLowMeth)
     y2 = nCGHighMeth/np.sum(nCGHighMeth)
 
@@ -101,15 +101,15 @@ def plot_covrate_vs_depth_of_cytosine() -> None:
     dict_genome_covnC = params['dict_genome_covnC']
     dict_Cs = params['dict_Cs']
     img_dir = params['img_dir']
-    DP_xdepth = params['MAXDP_IN_FIG']
+    DP_xdepth = params['MAXDP_IN_FIG']+1
     save_svg = params['save_svg']
 
     for cg in CONTEXTS:
-        x = np.arange(DP_xdepth) + 1
+        x = np.arange(1, DP_xdepth)
         fig, ax = plt.subplots(figsize=(5, 3))
-        ax.plot(x, dict_genome_covnC[cg]['W'][:DP_xdepth]/dict_Cs[cg]['W'], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
-        ax.plot(x, dict_genome_covnC[cg]['C'][:DP_xdepth]/dict_Cs[cg]['C'], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
-        ax.plot(x, dict_genome_covnC[cg]['double'][:DP_xdepth]/dict_Cs[cg]['double'], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
+        ax.plot(x, dict_genome_covnC[cg]['W'][1:DP_xdepth]/dict_Cs[cg]['W'], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
+        ax.plot(x, dict_genome_covnC[cg]['C'][1:DP_xdepth]/dict_Cs[cg]['C'], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
+        ax.plot(x, dict_genome_covnC[cg]['double'][1:DP_xdepth]/dict_Cs[cg]['double'], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
         ax.legend()
         plt.xlabel('methylation read depth')
         plt.ylabel('genome coverage')
@@ -124,15 +124,15 @@ def plot_covrate_vs_depth_of_cytosine() -> None:
 def plot_depth_dist_of_cytosine() -> None:
     dict_genome_covnC = params['dict_genome_covnC']
     img_dir = params['img_dir']
-    DP_xdepth = params['MAXDP_IN_FIG']
+    DP_xdepth = params['MAXDP_IN_FIG'] + 1
     save_svg = params['save_svg']
 
     for cg in CONTEXTS:
-        x = np.arange(DP_xdepth) + 1
+        x = np.arange(1, DP_xdepth)
         fig, ax = plt.subplots(figsize=(5, 3))
-        ax.plot(x, depthDiff(dict_genome_covnC[cg]['W'])[:DP_xdepth] / dict_genome_covnC[cg]['W'][0], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
-        ax.plot(x, depthDiff(dict_genome_covnC[cg]['C'])[:DP_xdepth] / dict_genome_covnC[cg]['C'][0], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
-        ax.plot(x, depthDiff(dict_genome_covnC[cg]['double'])[:DP_xdepth] / dict_genome_covnC[cg]['double'][0], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
+        ax.plot(x, depthDiff(dict_genome_covnC[cg]['W'])[1:DP_xdepth] / dict_genome_covnC[cg]['W'][0], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
+        ax.plot(x, depthDiff(dict_genome_covnC[cg]['C'])[1:DP_xdepth] / dict_genome_covnC[cg]['C'][0], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
+        ax.plot(x, depthDiff(dict_genome_covnC[cg]['double'])[1:DP_xdepth] / dict_genome_covnC[cg]['double'][0], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
         ax.legend()
         plt.xlabel('methylation read depth')
         plt.ylabel('proportion')
@@ -149,21 +149,21 @@ def plot_covrate_vs_depth_of_whole_genome() -> None:
     genome_covC = params['genome_covC']
     genome_cov = params['genome_cov']
     length = params['length']
-    DP_xdepth = params['MAXDP_IN_FIG']
+    DP_xdepth = params['MAXDP_IN_FIG'] + 1
     img_dir = params['img_dir']
     save_svg = params['save_svg']
 
-    x = np.arange(DP_xdepth) + 1
+    x = np.arange(1, DP_xdepth)
     L = np.sum(length)
     fig, ax = plt.subplots(figsize=(5, 3))
     # DPs = (0,2,4,9) # dp of 1,3,5,10 in report
-    covrate_W = genome_covW[:DP_xdepth]/L
+    covrate_W = genome_covW[1:DP_xdepth]/L
     # data['covrate_ATCG_Watson'] = [fp(covrate_W[i]) for i in DPs]
     ax.plot(x, covrate_W, '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
-    covrate_C = genome_covC[:DP_xdepth]/L
+    covrate_C = genome_covC[1:DP_xdepth]/L
     # data['covrate_ATCG_Crick'] = [fp(covrate_C[i]) for i in DPs]
     ax.plot(x, covrate_C, '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
-    covrate_double = genome_cov[:DP_xdepth]/L
+    covrate_double = genome_cov[1:DP_xdepth]/L
     # data['covrate_ATCG_double'] = [fp(covrate_double[i]) for i in DPs]
     ax.plot(x, covrate_double, '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
     ax.legend()
@@ -181,15 +181,15 @@ def plot_depth_dist_of_whole_genome() -> None:
     genome_covW = params['genome_covW']
     genome_covC = params['genome_covC']
     genome_cov = params['genome_cov']
-    DP_xdepth = params['MAXDP_IN_FIG']
+    DP_xdepth = params['MAXDP_IN_FIG'] + 1
     img_dir = params['img_dir']
     save_svg = params['save_svg']
 
-    x = np.arange(DP_xdepth) + 1
+    x = np.arange(1, DP_xdepth)
     fig, ax = plt.subplots(figsize=(5, 3))
-    ax.plot(x, depthDiff(genome_covW)[:DP_xdepth]/genome_covW[0], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
-    ax.plot(x, depthDiff(genome_covC)[:DP_xdepth]/genome_covC[0], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
-    ax.plot(x, depthDiff(genome_cov)[:DP_xdepth]/genome_cov[0], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
+    ax.plot(x, depthDiff(genome_covW)[1:DP_xdepth]/genome_covW[1], '.-', c=COLS[1], alpha=1, linewidth=1, markersize=5, label='Watson strand')
+    ax.plot(x, depthDiff(genome_covC)[1:DP_xdepth]/genome_covC[1], '.-', c=COLS[0], alpha=1, linewidth=1, markersize=5, label='Crick strand')
+    ax.plot(x, depthDiff(genome_cov)[1:DP_xdepth]/genome_cov[1], '.-', c=COL_gray, linewidth=1, markersize=5, label='double strands')
     ax.legend()
     plt.ylim(bottom=0)
     plt.xlabel('depth')
@@ -225,7 +225,7 @@ def plot_depth_watson_vs_crick() -> None:
 
     ## depth vs density
     xy = np.vstack([depthW, depthC])
-    d = scipy.stats.gaussian_kde(xy)(xy)
+    d = gaussian_kde(xy)(xy)
     idx = d.argsort()
     x, y, d = depthW[idx], depthC[idx], d[idx]
 
@@ -257,12 +257,12 @@ def plot_depth_overall_vs_me() -> None:
     depthMeC = []
     for key, value in dict_binning.items():
         value = dict_binning[key]
-        if value.length >= 20:
+        if value.length >= 20 and value.nCGW+value.nCHGW+value.nCHHW > 10 and value.nCGC+value.nCHGC+value.nCHHC > 10:
             depthW.append(value.dpW/value.length)
             depthC.append(value.dpC/value.length)
             # depthMe.append((value.dpCG+value.dpCHG+value.dpCHH)/(value.nCG+value.nCHG+value.nCHH))
             depthMeW.append((value.dpCGW+value.dpCHGW+value.dpCHHW)/(value.nCGW+value.nCHGW+value.nCHHW))
-            depthMeC.append((value.dpCGC+value.dpCHGC+value.dpCHHC)/(value.nCGC+value.nCHGW+value.nCHHC))
+            depthMeC.append((value.dpCGC+value.dpCHGC+value.dpCHHC)/(value.nCGC+value.nCHGC+value.nCHHC))
     depthW = np.asarray(depthW)
     depthC = np.asarray(depthC)
     # depthMe = np.asarray(depthMe)
@@ -279,7 +279,7 @@ def plot_depth_overall_vs_me() -> None:
 
     #### Watson
     xy = np.vstack([depthW, depthMeW])
-    d = scipy.stats.gaussian_kde(xy)(xy)
+    d = gaussian_kde(xy)(xy)
     idx = d.argsort()
     x, y, d = depthMeW[idx], depthW[idx], d[idx]
 
@@ -301,7 +301,7 @@ def plot_depth_overall_vs_me() -> None:
 
     #### Crick
     xy = np.vstack([depthC, depthMeC])
-    d = scipy.stats.gaussian_kde(xy)(xy)
+    d = gaussian_kde(xy)(xy)
     idx = d.argsort()
     x, y, d = depthMeC[idx], depthC[idx], d[idx]
 

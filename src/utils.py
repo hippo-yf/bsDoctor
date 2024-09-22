@@ -9,7 +9,7 @@ import random
 import base64
 
 import numpy as np
-from numpy import int16, uint16, int32, int64, float32, float64, nan
+from numpy import cov, int16, uint16, int32, int64, float32, float64, nan
 import matplotlib.pyplot as plt
 from numpy.typing import NDArray
 from typing import NamedTuple, List, Tuple, Dict, Any
@@ -44,6 +44,20 @@ def prefixBpSize(x) -> Tuple:
     else: prefix = 'bp'
     return x, prefix
 
+def getSuffix(x) -> Tuple:
+    M = np.max(x)
+    if M >= 1e9: 
+        x = x/1e9
+        prefix = 'G'
+    elif M >= 1e6:
+        x = x/1e6
+        prefix = 'M'
+    elif M >= 1e3:
+        x = x/1e3
+        prefix = 'K'
+    else: prefix = ''
+    return x, prefix
+
 # divide keeping nan's
 def nandivide(x: NDArray, y: NDArray) -> NDArray:
     x = np.array(x)
@@ -58,15 +72,16 @@ def cumsumrev(x: NDArray) -> NDArray:
     return np.cumsum(x[::-1])[::-1]
 
 def cumratio(me: NDArray, covn: NDArray, dtype=None) -> NDArray:
-    mecum = np.cumsum(me[::-1])[::-1]
-    covncum = np.cumsum(covn[::-1])[::-1]
-    dtype = me.dtype if dtype is None else float32
+    mecum = cumsumrev(me)
+    covncum = cumsumrev(covn)
+    if dtype is None:
+        dtype = me.dtype 
     r = np.zeros(np.shape(me), dtype=dtype)
     i = covncum > 0
-    r[i] = mecum[i]/covncum[i]
+    r[i] = np.array(mecum[i]/covncum[i], dtype=dtype)
     # fill nan if float, 0 if int
-    if np.isdtype(me.dtype, 'real floating'):
-        r[~i] = nan
+    if np.isdtype(dtype, 'real floating'):
+        r[np.logical_not(i)] = nan
     return r
 
 # trim values larger than quantile 0.99
@@ -81,7 +96,6 @@ def depthCulSum(x: NDArray) -> NDArray:
 
 def signif(x, digit=3):
     return np.floor(np.array(x)*10**digit)/10**digit
-
 
 # format numbers in strings
 def fi(x: int):

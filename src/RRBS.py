@@ -13,29 +13,31 @@ def compt_RRBS() -> None:
     }
 
     rrbs_kmer = [f'{a}CCGG{b}' for a, b in itertools.product(BASES, BASES)]
+    # RRBSKEYS = ['ccgg', 'non-ccgg']
 
     for key, value in dict_cgkmer.items():
         rrbskey = 'ccgg' if key in rrbs_kmer else 'non-ccgg'
         dict_rrbs[rrbskey]['kmer'].append(key)
-        dict_rrbs[rrbskey]['n'] += value.n
+        dict_rrbs[rrbskey]['n'] += value.nW + value.nC
         dict_rrbs[rrbskey]['nW'] += value.nW
         dict_rrbs[rrbskey]['nC'] += value.nC
-        dict_rrbs[rrbskey]['dp'] += value.dp
+        dict_rrbs[rrbskey]['dp'] += value.dpW + value.dpC
         dict_rrbs[rrbskey]['dpW'] += value.dpW
         dict_rrbs[rrbskey]['dpC'] += value.dpC
-        dict_rrbs[rrbskey]['me'] += value.me
-        dict_rrbs[rrbskey]['meW'] += value.meW
-        dict_rrbs[rrbskey]['meC'] += value.meC
-        dict_rrbs[rrbskey]['cov'] += value.cov
-    
+        dict_rrbs[rrbskey]['me'] += cumsumrev(value.meW + value.meC)/10000
+        dict_rrbs[rrbskey]['meW'] += cumsumrev(value.meW)/10000
+        dict_rrbs[rrbskey]['meC'] += cumsumrev(value.meC)/10000
+        dict_rrbs[rrbskey]['cov'] += cumsumrev(value.covW + value.covC)
+
     params['dict_rrbs'] = dict_rrbs
-    params['MAX_DP_RRBS'] = 30
+    # params['MAX_DP_RRBS'] = 30
     # maxdp = 30
     return None
 
 def plot_RRBS_CpG_motifs() -> None:
     dict_rrbs = params['dict_rrbs']
-    maxdp = params['MAX_DP_RRBS']
+    # maxdp = params['MAX_DP_RRBS'] + 1
+    maxdp = 30
     img_dir = params['img_dir']
 
     fig, axs = plt.subplots(2, 2, figsize=(5,4), width_ratios=[1,3],layout='constrained')
@@ -56,9 +58,9 @@ def plot_RRBS_CpG_motifs() -> None:
                 )
     axs[0,0].set_ylabel('proportion\nin genome')
 
-    x = np.arange(maxdp) + 1
-    axs[0,1].plot(x, dict_rrbs['ccgg']['cov'][:maxdp]/dict_rrbs['ccgg']['n'], color=COLS[1], label='CCGG')
-    axs[0,1].plot(x, dict_rrbs['non-ccgg']['cov'][:maxdp]/dict_rrbs['non-ccgg']['n'], color=COLS[0], label='non-CCGG')
+    x = np.arange(1, maxdp)
+    axs[0,1].plot(x, dict_rrbs['ccgg']['cov'][1:maxdp]/dict_rrbs['ccgg']['n'], color=COLS[1], label='CCGG')
+    axs[0,1].plot(x, dict_rrbs['non-ccgg']['cov'][1:maxdp]/dict_rrbs['non-ccgg']['n'], color=COLS[0], label='non-CCGG')
     axs[0,1].legend()
     axs[0,1].set_ylabel('coverage rate')
 
@@ -75,9 +77,9 @@ def plot_RRBS_CpG_motifs() -> None:
     axs[1,0].set_ylim(top=max([a, b])+1)
     axs[1,0].set_ylabel('mean depth')
 
-    x = np.arange(maxdp) + 1 
-    axs[1,1].plot(x, dict_rrbs['ccgg']['me'][:maxdp]/dict_rrbs['ccgg']['cov'][:maxdp], color=COLS[1])
-    axs[1,1].plot(x, dict_rrbs['non-ccgg']['me'][:maxdp]/dict_rrbs['non-ccgg']['cov'][:maxdp], color=COLS[0])
+    x = np.arange(1, maxdp)
+    axs[1,1].plot(x, dict_rrbs['ccgg']['me'][1:maxdp]/dict_rrbs['ccgg']['cov'][1:maxdp], color=COLS[1])
+    axs[1,1].plot(x, dict_rrbs['non-ccgg']['me'][1:maxdp]/dict_rrbs['non-ccgg']['cov'][1:maxdp], color=COLS[0])
     axs[1,1].set_xlabel('depth threshold')
     axs[1,1].set_ylabel('mean DNAme level')
 

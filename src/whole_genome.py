@@ -1,4 +1,6 @@
 
+from numpy import bincount
+from src.coverage import BinCov
 from src.utils import *
 from src.config import params, data
 
@@ -63,23 +65,18 @@ def compt_whole_genome() -> None:
     nCHGMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
     nCHHMethBin: NDArray[int32] = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
 
+    value: BinCov = BinCov()
     for i, (key, value) in enumerate(dict_binning.items()):
         length[i] = value.length
         totalDepth[i] = value.dpW + value.dpC
         totalDepthW[i] = value.dpW
         totalDepthC[i] = value.dpC
-
-        # binning_depth[i,:] = value.cov
-        # binning_depthW[i,:] = value.covW
-        # binning_depthC[i,:] = value.covC
-        # binning_depth.append(-np.diff(np.block([value.cov, 0])))
-        # binning_depthW.append(-np.diff(np.block([value.covW, 0])))
-        # binning_depthC.append(-np.diff(np.block([value.covC, 0])))
+        # binning_depth[i]
 
         #sites covered by dp
-        binning_cov[i,:] = value.cov
-        binning_covW[i,:] = value.covW
-        binning_covC[i,:] = value.covC
+        binning_cov[i,:] = cumsumrev(value.cov)
+        binning_covW[i,:] = cumsumrev(value.covW)
+        binning_covC[i,:] = cumsumrev(value.covC)
         stranded_CG_depth += value.stranded_CG_depth
         stranded_CG_meth += value.stranded_CG_meth
         CGmeth_diff_by_depth += value.CGmeth_diff_by_depth
@@ -307,7 +304,7 @@ def compt_whole_genome() -> None:
     #### error rate by A/T sites
     # bins with total AT depth >= 100 
     i = ATdp >= 100
-    err_AT = misbase[i]/ATdp[i]
+    err_AT = np.array(misbase[i]/ATdp[i], dtype=float32)
     err_rate_AT = np.mean(err_AT)
     data['err_rate_AT'] = fp(err_rate_AT)
     params['err_AT'] = err_AT
@@ -377,8 +374,9 @@ def plot_theroretical_me_bias() -> None:
 def plot_hist_me() -> None:
     methDist = params['methDist']
     img_dir = params['img_dir']
+    MAX_DP_BY_FIG = params['MAX_DP_BY_FIG']
 
-    for key, value in methDist.items():
+    for cg, value in methDist.items():
         count = np.cumsum(value[:,::-1], axis=1)[:,::-1]
         prop = count / np.sum(count, axis=0)
         # ylim = axlimit(np.max(prop))
@@ -386,16 +384,16 @@ def plot_hist_me() -> None:
         x = np.arange(shape[0])
         x2 = np.arange(0,shape[0]+1, 4)
         xlabels=x2/shape[0]
-        for DP in range(shape[1]):
+        for dp in range(1, MAX_DP_BY_FIG):
         # for DP in range(1):
             fig, ax = plt.subplots(figsize=(5,2))
-            ax.bar(x, prop[:,DP], width=1, align='edge', color='#1B98E0')
+            ax.bar(x, prop[:,dp], width=1, align='edge', color='#1B98E0')
             ax.set_xticks(x2, xlabels)
             # ax.set_ylim(0, ylim)
             ax.set_xlabel('mean DNAme level')
             ax.set_ylabel('proportion')
 
-            filename = f'{img_dir}/meth-dist-genome-{key}-dp{DP+1}'
+            filename = f'{img_dir}/meth-dist-genome-{cg}-dp{dp}'
             plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
             if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
             plt.close()

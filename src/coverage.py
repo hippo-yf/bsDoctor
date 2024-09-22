@@ -274,10 +274,10 @@ class KmerCov():
     def __init__(self) -> None:
         MAXDEPTH = params['MAXDEPTH']
 
-        self.n: int = 0
+        # self.n: int = 0
         self.nW: int = 0
         self.nC: int = 0
-        self.dp: int = 0
+        # self.dp: int = 0
         self.dpW: int = 0
         self.dpC: int = 0
 
@@ -373,7 +373,7 @@ class BinCov():
         self.nCHHMethBin: NDArray[int32]  = np.zeros((20, MAX_DP_BY_FIG), dtype=int32)
         return None
 
-# not for each bin
+# for whole contig not bin
 class CovContig():
     def __init__(self, contig:str) -> None:
         binsContig = params['binsContig']
@@ -533,10 +533,8 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 if nCT > 0: meth[i] = np.int16(nC*10_000/nCT )
                 # CG kmer
                 if CG_context == 'CG':
-                    if 'N' in cgkmer: 
-                        cgkmer = '-'
-                    else:
-                        cgkmer = bases[(j-2):(j+4)]
+                    cgkmer = bases[(j-2):(j+4)]
+                    if 'N' in cgkmer: cgkmer = '-'
             elif base == 'G':
                 bases_con = bases[(j-consize+1):(j+1)]
                 # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_REVERSE_HASH[bases_con]
@@ -659,6 +657,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
             if base == 'C' or base == 'G':
                 if base == 'C':
                     # CG/CHG/CHH
+                    # only CG for pangene
                     bases_con = bases[j:(j+consize)]
                     CG_context = CG_CONTEXT_FORWARD_HASH[bases_con] if all([n in BASES for n in bases_con]) else '-' 
                     if CG_context != 'CG': continue
@@ -673,7 +672,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
 
                 # pdb.set_trace()
                 if nCT <= 0: continue
-                meth_ratio = int16(nC*10000 / nCT)
+                meth_ratio = int64(nC*10000 / nCT)
                 kbin = g.bins[np.argmax(g.start_padding + i < g.breaks) - 1]
                 cov_pangene.nCG[kbin] += 1
                 cov_pangene.meCG[kbin] += meth_ratio

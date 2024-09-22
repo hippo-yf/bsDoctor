@@ -66,7 +66,7 @@ def compt_plot_DNA_content() -> None:
         _nreads[key] = fi(value)
         _nreads_prop[key] = fp(value/bam.mapped)
         _mean_dp[key] = ff(int(mean_read_len*value/length[key]), 2) if length[key]>0 else "0"
-        _copy_num[key] = ff(int((nmapped[key]/length[key]) / (nmapped['nuclear']/length['nuclear']) * ploidy), 1) if length[key]>0 else "0"
+        _copy_num[key] = ff2(int((nmapped[key]/length[key]) / (nmapped['nuclear']/length['nuclear']) * ploidy), 4) if length[key]>0 else "0"
     data['nreads'] = _nreads
     data['nreads_prop'] = _nreads_prop
     data['mean_dp_dict'] = _mean_dp

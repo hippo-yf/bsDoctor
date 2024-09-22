@@ -18,10 +18,10 @@ $(function () {
     // set initial size of figs
     setWidth("#img-depth-bin");
     setWidth("#img-meth-bin");
-    if (alldata.include_mt == 1) {
+    if (alldata.mt_is_covered == 1) {
         setWidth("#cap-15", dpiratio = 300 / 110); // MT binning depth
     }
-    if (alldata.include_lambda == 1) {
+    if (alldata.lambda_is_covered == 1) {
         setWidth("#cap-10", dpiratio=300/110); // lambda binning depth
     }
 

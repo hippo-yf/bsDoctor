@@ -24,6 +24,7 @@ def compt_quality() -> None:
         isampled += 1
     quality.regularization()
 
+    params['mean_read_length'] = np.mean(quality.read_length)
     data['quality_nreads'] = fi(quality.nreads)
     data['quality_nbases'] = fi(len(quality.base_quality))
     data['quality_nloci'] = fi(isampled)

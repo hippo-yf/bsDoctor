@@ -54,8 +54,8 @@
       {% include 'conversion.html' %}
       {% include 'error.html' %}
       {% if alldata.include_saturation == 1 %} {% include 'saturation.html' %} {% endif %}
-      {% if alldata.include_mt == 1 %} {% include 'mt.html' %} {% endif %}
-      {% if alldata.include_lambda == 1 %} {% include 'lambda.html' %} {% endif %}
+      {% if alldata.mt_is_covered == 1 %} {% include 'mt.html' %} {% endif %}
+      {% if alldata.lambda_is_covered == 1 %} {% include 'lambda.html' %} {% endif %}
       {% include 'coverage-bias.html' %}
       {% include 'me-level.html' %}
       {% include 'me-bias.html' %}
