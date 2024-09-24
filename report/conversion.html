@@ -35,14 +35,14 @@ diagnosis of bisulfite conversion.
         {# alert of low conversion rate #}
         {% if alldata.bsrate_warning == 1 %}
         <div class="alert alert-warning" role="alert">
-            Warning! Too low conversion rate.
+            Warning! Estimated conversion rate is too low.
         </div>
         {% endif %}
     </article>
 
     <article id="adjust-meth">
         <h3>Adjust DNAme level</h3>
-        <p>DNAme bias, i.e., observed DNAme level - real DNAme level, is dependent on (observed/unadjusted) DNAme
+        <p>DNAme level bias, i.e., observed DNAme level - real DNAme level, is dependent on (observed/unadjusted) DNAme
             level and bisulfite conversion rate. The theoretical relationsip is illustrated by the following figure. The dashed line indicates the estimated conversion rate in this sample.</p>
         <img src="img/DNAme-bias.png" alt="" width="450px" />
         <p>

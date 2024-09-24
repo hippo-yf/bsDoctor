@@ -173,6 +173,27 @@ $(function () {
         $("#img-Cs-depth-coverage").attr("src", `img/genome-${context}-coverage-vs-depth.png`);
     }
     $("input[name='radio-Cs-depth-dist']").change(img_cytosine_depth);
+
+    // pangene coding
+    function img_pangene_coding() {
+        let context = $("input[name='radio-pangene-coding']:checked").val();
+        $("#img-pan-gene-coding").attr("src", `img/pan-gene-meth-coding-${context}.png`);
+    }
+    $("input[name='radio-pangene-coding']").change(img_pangene_coding);
+
+    // pangene lncRNA
+    function img_pangene_lncRNA() {
+        let context = $("input[name='radio-pangene-lncRNA']:checked").val();
+        $("#img-pan-gene-lncRNA").attr("src", `img/pan-gene-meth-lncRNA-${context}.png`);
+    }
+    $("input[name='radio-pangene-lncRNA']").change(img_pangene_lncRNA);
+
+    // pangene noncoding
+    function img_pangene_noncoding() {
+        let context = $("input[name='radio-pangene-noncoding']:checked").val();
+        $("#img-pan-gene-noncoding").attr("src", `img/pan-gene-meth-other-noncoding-${context}.png`);
+    }
+    $("input[name='radio-pangene-noncoding']").change(img_pangene_noncoding);
 });
 
 function setWidth(id, dpiratio = 300 / 96) {

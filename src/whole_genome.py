@@ -273,33 +273,33 @@ def compt_whole_genome() -> None:
 
     #### adjust whole-genome DNAme
     data['me_CG'] = fp(meCG[1]/covnCG[1])
-    data['me_CG_adj'] = fp(adjust_me(meCG[1]/covnCG[1], bs_rate))
+    data['me_CG_adj'] = fp(minmax(adjust_me(meCG[1]/covnCG[1], bs_rate)))
     data['me_CHG'] = fp(meCHG[1]/covnCHG[1])
-    data['me_CHG_adj'] = fp(adjust_me(meCHG[1]/covnCHG[1], bs_rate))
+    data['me_CHG_adj'] = fp(minmax(adjust_me(meCHG[1]/covnCHG[1], bs_rate)))
     data['me_CHH'] = fp(meCHH[1]/covnCHH[1])
-    data['me_CHH_adj'] = fp(adjust_me(meCHH[1]/covnCHH[1], bs_rate))
+    data['me_CHH_adj'] = fp(minmax(adjust_me(meCHH[1]/covnCHH[1], bs_rate)))
     # data['bsrate_warning'] = int(max(bs_rate_chh, bs_rate_MT, bs_rate_lambda) < 0.9)
     data['bsrate_warning'] = int(bs_rate < 0.9)
     
     #### depth for all bases
     i = length > 0
     median_dp = np.median(totalDepth[i]/length[i])
-    data['median_dp'] = ff(float(median_dp))
+    data['median_dp'] = ff2(float(median_dp), 1)
     # mean_dp = np.mean(totalDepth[i]/length[i])
     mean_dp = np.sum(totalDepth)/np.sum(length)
-    data['mean_dp'] = ff(float(mean_dp))
+    data['mean_dp'] = ff2(float(mean_dp), 1)
 
     #### MT DNA copy number
     if 'mt_mean_dp' in params:
-        data['mt_copynum'] = ff(params['mt_mean_dp'] / mean_dp *ploidy, 4)
+        data['mt_copynum'] = fi(math.ceil(params['mt_mean_dp'] / mean_dp *ploidy))
 
     #### lambda DNA copy number
     if 'lambda_mean_dp' in params:
-        data['lambda_copynum'] = ff(params['lambda_mean_dp'] / mean_dp *ploidy, 4)
+        data['lambda_copynum'] = fi(math.ceil(params['lambda_mean_dp'] / mean_dp *ploidy))
 
     #### plastmid DNA copy number
-    if 'plastmid_mean_dp' in params:
-        data['plastmid_copynum'] = ff(params['plastmid_mean_dp'] / mean_dp *ploidy, 4)
+    if 'plastid_mean_dp' in params:
+        data['plastmid_copynum'] = fi(math.ceil(params['plastid_mean_dp'] / mean_dp *ploidy))
 
     #### error rate by A/T sites
     # bins with total AT depth >= 100 

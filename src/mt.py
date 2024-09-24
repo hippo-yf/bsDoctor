@@ -45,7 +45,8 @@ def compt_MT() -> None:
     data['mt_median_dp'] = ff(float(mt_median_dp))
     # mt_mean_dp = np.mean(dict_MT.dp[i]/dict_MT.length[i])
     mt_mean_dp = np.sum(dict_MT.dp)/np.sum(dict_MT.length)
-    data['mt_mean_dp'] = ff(float(mt_mean_dp))
+    params['mt_mean_dp'] = mt_mean_dp
+    data['mt_mean_dp'] = ff2(float(mt_mean_dp), 1)
 
     ## conversion rate by MT
     mt_me = float(dict_MT.meC/dict_MT.covnC/10000)

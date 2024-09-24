@@ -12,7 +12,7 @@ diagnosis of reads mapped to lambda DNA.
     <article id="lambda-coverage">
         <p>
         <ul>
-            <li>{{ alldata.lambda_length }} non-N bps in total, whereas {{ alldata.lambda_cov_prop }}% are covered
+            <li>{{ alldata.lambda_length }} bps in total, whereas {{ alldata.lambda_cov_prop }}% are covered
                 ({{alldata.lambda_covn }} bps for depth ≥ 1);</li>
             <li>{{ alldata.lambda_nCorG }} cytosines in total, whereas {{ alldata.lambda_covnCorG_prop }}% are covered
                 ({{
@@ -32,6 +32,7 @@ diagnosis of reads mapped to lambda DNA.
             Check the uniformness of coverage depth
         </div>
     </article>
+    {#
     <article id="lambda-dna-content">
         <h3>DNA content</h3>
         <p>
@@ -45,6 +46,7 @@ diagnosis of reads mapped to lambda DNA.
             Check whether the content of spike-in DNA is appropriate.
         </div>
     </article>
+    #}
     <article id="lambda-conversion">
         <h3>Bisulfite conversion</h3>
         <p>
@@ -69,7 +71,7 @@ diagnosis of reads mapped to lambda DNA.
             <sup id="cap-13" class="question-marker">?</sup> is
 
             $$ \text{error
-            rate} = \frac{\text{bases different with reference
+            rate} = \frac{\text{bases different with dominating
             base}}{\text{total bases}} = {{alldata.err_rate_lambda}}\%. $$
         </p>
         <div class="caption" link="#cap-13">

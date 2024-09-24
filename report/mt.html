@@ -11,10 +11,10 @@ diagnosis of reads mapped to mitochondrial DNA.
 
     <article id="mt-coverage">
         <ul>
-            <li>{{ alldata.mt_length }} non-N bps in total, whereas {{ alldata.mt_cov_prop }} are covered ({{
+            <li>{{ alldata.mt_length }} bps in total, whereas {{ alldata.mt_cov_prop }}% are covered ({{
                 alldata.mt_covn }} bp
                 for depth ≥ 1);</li>
-            <li>{{ alldata.mt_nCorG }} cytosines in total, whereas {{ alldata.mt_covnCorG_prop }} are covered ({{
+            <li>{{ alldata.mt_nCorG }} cytosines in total, whereas {{ alldata.mt_covnCorG_prop }}% are covered ({{
                 alldata.mt_covnCorG }} cytosines for
                 depth ≥ 1).</li>
         </ul>
@@ -39,10 +39,10 @@ diagnosis of reads mapped to mitochondrial DNA.
             fragments. <br>
             Change the coefficient accordingly if not diploidy.
         </div>
-        {% raw %} $$ \text{MT DNA copy number} = \frac{ {% endraw %} {{ alldata.mt_mean_dp}} {% raw %} }{ {% endraw %}
-        {{
-        alldata.mean_dp }} {% raw %} } \times 2
-        (\text{diploidy}) = {% endraw %} {{ alldata.mt_copynum }} $$
+        {% raw %} $$ \text{MT DNA copy number} = \frac{ \text{mean read depth of MT DNA} }{ \text{mean read depth of nuclear DNA} } = \frac{ {% endraw %} {{ alldata.mt_mean_dp}} {% raw %} }{ {% endraw %}
+        {{ alldata.mean_dp }} 
+        {% raw %} } \times 2 (\text{ploidy}) = {% endraw %} 
+        {{ alldata.mt_copynum }} $$
         </p>
     </article>
 
@@ -55,8 +55,7 @@ diagnosis of reads mapped to mitochondrial DNA.
             1-\text{MT methylation level} = 1 - {{ alldata.mt_me }} = {{ alldata.bsrate_mt }}\%. $$
         </p>
         <div class="caption" link="#cap-8">
-            According to the author's knowledge, no evidence suggests there is 5-Methylcytosine (5mC) modification on MT
-            DNA at least for mammals.
+            Assume MT DNA is not (5mC) methylated.
         </div>
     </article>
 

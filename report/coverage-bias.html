@@ -47,7 +47,8 @@ diagnosis of coverage bias of nuclear chromosomes.
 
     <article id="depth-of-two-strands">
         <h3>Read depth of two strands</h3>
-        <img src="img/depth-of-two-strands.png" alt="" width="400px">
+        <img src="img/depth-of-two-strands.png" id="fig-depth-of-two-strands" alt="" width="400px">
+        <div class="caption" link="#fig-depth-of-two-strands">Each point represents a {{alldata.bin_size}} binning window.</div>
     </article>
 
     <article id="depth-distribution">
@@ -68,15 +69,15 @@ diagnosis of coverage bias of nuclear chromosomes.
         <h3>Cytosine depth distribution and coverage</h3>
         <p>
             Only the reads contributing to the calculation of DNAme level are
-            included.<sup id="cap-16" class="question-marker">?</sup>
+            included.
         </p>
-        <div class="caption" link="#cap-16">
-            Namely C/T reads for Watson strand and G/A reads for Crick strand.
-        </div>
 
         <div class="row">
             <div class="col text-center">
-                <p>Methylation read depth</p>
+                <p>Methylation read depth <sup id="cap-16" class="question-marker">?</sup></p>
+                <div class="caption" link="#cap-16">
+                    Methylation read depth: only C/T reads of Watson strand or G/A reads of Crick strand.
+                </div>
                 <img src="img/genome-CG-depth-distribution.png" alt="" width="400px" id="img-Cs-depth-dist" />
             </div>
             <div class="col text-center">
@@ -220,7 +221,7 @@ diagnosis of coverage bias of nuclear chromosomes.
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density"
                         for="radio2-depth-vs-Cs-density-2" id="radio2-depth-vs-Cs-density-2" value="W" />
-                    <label class="form-check-label">Watson</label>
+                    <label class="form-check-label" for="radio2-depth-vs-Cs-density-2">Watson</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="radio2-depth-vs-Cs-density"

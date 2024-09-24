@@ -237,12 +237,15 @@ def compute_and_plot():
 #######################################
 
 def write_report() -> None:
-
+    # with open('rrbs-human2/data.pickle', 'rb') as f:
+    #     data = pickle.load(f)
+    
     env = Environment(loader=FileSystemLoader('report/'))
     env.globals["include_file"] = include_file
-    template = env.get_template('main.jinja-html')
+    template = env.get_template('main.html')
+    # print(data)
     temp_out = template.render(alldata=data)   
-    html_out = f"{params['report_dir']}/report-{params['SAMPLE']}.html"
+    html_out = f"{data['report_dir']}/report-{data['SAMPLE']}.html"
 
     with open(html_out, 'w', encoding='utf-8') as f:
         f.writelines(temp_out)

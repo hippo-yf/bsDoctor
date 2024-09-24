@@ -43,6 +43,17 @@ def plot_bar_CpG_depth_difference() -> None:
             cov_diff[i-j+99] += stranded_CG_depth[i,j]
     dp_diff = np.arange(-99, 100)
     cov_diff = cov_diff/cov_diff.sum()
+    
+    # mean and sd in report
+    EX = dp_diff @ cov_diff
+    EabsX = np.abs(dp_diff) @ cov_diff
+    EX2 = dp_diff**2 @ cov_diff
+    sd = np.sqrt(EX2 - EX**2)
+    sdabs = np.sqrt(EX2 - EabsX**2)
+    data['mean_strand_dp_diff'] = ff2(EX, 1)
+    data['sd_strand_dp_diff'] = ff2(sd, 1)
+    data['mean_abs_strand_dp_diff'] = ff2(EabsX, 1)
+    data['sd_abs_strand_dp_diff'] = ff2(sdabs, 1)
 
     dp = min(DP_xdepth+20, 100)
 

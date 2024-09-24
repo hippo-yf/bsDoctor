@@ -10,22 +10,16 @@ diagnosis of sequencing saturation and DNA lost.
     <h2>Saturation curve</h2>
     <article id="sc-curve">
         <h3>Single-stranded saturation curve</h3>
-        <p>
-            The strand difference is essential for bisulfite sequencing. As
-            the sequenced reads increase, the genome coverage increases. bsDoctor
-            simulates the process by sampling the mapped reads/bases
-            hypergeometrically.
-        </p>
-        <p>
-            In the following figure, x-axis represents single-stranded sequencing
-            depth, y-axis represents single-stranded whole-genome coverage. The dashed line is the estimated asymptotic
-            whole-genome coverage if this library is sequenced continuously.
-        </p>
+        <ul>
+            <li><code>x</code>-axis: sequenced bases by downsamping</li>
+            <li><code>y</code>-axis: single-stranded whole-genome coverage rate</li>
+            <li>dashed line: the estimated asymptotic
+                whole-genome coverage rate if the library is sequenced continuously</li>
         <img src="img/saturation-curve.png" alt="" width="500px" />
     </article>
 
     <article id="DNA-template-loss">
-        <h3>DNA template lose</h3>
+        <h3>DNA template loss</h3>
         <p>
             The part of (nuclear) DNA that degraded during library
             construction and the part of undegraded but not sequenced DNA can
@@ -43,7 +37,7 @@ diagnosis of sequencing saturation and DNA lost.
                 degenerated: {{ alldata.prop_lost }}% <sup id="cap-6" class="question-marker">?</sup>
             </li>
             <div class="caption" link="#cap-6">
-                For single-cell samples, it is usually a serious problem.
+                DNA template loss is due to degradation (library quality) or selection (for example RRBS protocol).
             </div>
             <li>ultimate coverage (by sequencing continuously): {{alldata.prop_cov_DP1}}% + {{ alldata.prop_unsequenced
                 }}% = {{ alldata.prop_asymptotic }}%</li>

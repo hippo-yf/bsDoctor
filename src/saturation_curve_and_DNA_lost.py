@@ -125,12 +125,12 @@ def dilute_genome(covW: NDArray, covC: NDArray, nbins: int = 100) -> Tuple[NDArr
 
 def plot_saturation_curve() -> None:
     bam = params['bam']
-    mean_read_length = params['mean_read_length']
     DNA_lost = params['DNA_lost']
     binning_covW = params['binning_covW']
     binning_covC = params['binning_covC']
     prop_cov_DP1 = params['prop_cov_DP1']
     img_dir = params['img_dir']
+    mean_read_length = params['mean_read_Mlen']
 
     library_bases = mean_read_length * bam.mapped
 
@@ -154,7 +154,7 @@ def plot_saturation_curve() -> None:
     linewidth = 0.001
     ax.text(0, (1-DNA_lost-linewidth)*100, f'{100-DNA_lost*100:.2f}%', verticalalignment='top')
     ax.legend(title='single-stranded')
-    plt.xlabel(f'library size ({suffix} bases)')
+    plt.xlabel(f'sequenced bases ({suffix} bases)')
     # plt.xlabel('single-stranded sequencing depth')
     plt.ylabel('single-stranded coverage (%)')
 

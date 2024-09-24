@@ -76,17 +76,40 @@ def compt_chr_and_bin_wise() -> None:
     dict_bin_CHHden = dict()
     dict_bin_CHHWden = dict()
     dict_bin_CHHCden = dict()
-    # dict_bin_CGcovrate = dict() # C covrate
-    # dict_bin_CGWcovrate = dict()
-    # dict_bin_CGCcovrate = dict()
-    # dict_bin_CHGcovrate = dict()
-    # dict_bin_CHGWcovrate = dict()
-    # dict_bin_CHGCcovrate = dict()
-    # dict_bin_CHHcovrate = dict()
-    # dict_bin_CHHWcovrate = dict()
-    # dict_bin_CHHCcovrate = dict()
     # DP_valid = 30
     
+    ###########################################################
+    #### init chr-wise data
+    ###########################################################
+    dict_chr_meCG = dict()
+    dict_chr_meCGW = dict()
+    dict_chr_meCGC = dict()
+    dict_chr_meCHG = dict()
+    dict_chr_meCHGW = dict()
+    dict_chr_meCHGC = dict()
+    dict_chr_meCHH = dict()
+    dict_chr_meCHHW = dict()
+    dict_chr_meCHHC = dict()
+    dict_chr_mmeCG = dict()
+    dict_chr_mmeCGW = dict()
+    dict_chr_mmeCGC = dict()
+    dict_chr_mmeCHG = dict()
+    dict_chr_mmeCHGW = dict()
+    dict_chr_mmeCHGC = dict()
+    dict_chr_mmeCHH = dict()
+    dict_chr_mmeCHHW = dict()
+    dict_chr_mmeCHHC = dict()
+    dict_chr_covnCG = dict()
+    dict_chr_covnCGW = dict()
+    dict_chr_covnCGC = dict()
+    dict_chr_covnCHG = dict()
+    dict_chr_covnCHGW = dict()
+    dict_chr_covnCHGC = dict()
+    dict_chr_covnCHH = dict()
+    dict_chr_covnCHHW = dict()
+    dict_chr_covnCHHC = dict()
+
+    # init
     for i, chr in enumerate(chrs_valid):
         nbin = int(np.ceil(reference_length(chr)/binSize))
         shape = (nbin, DP)
@@ -122,53 +145,40 @@ def compt_chr_and_bin_wise() -> None:
         dict_bin_CHHCden[chr] = np.zeros((nbin,), dtype=float32)
 
 
-    ###########################################################
-    #### init chr-wise data
-    ###########################################################
-
-    init = np.zeros((DP,), dtype=int64)
-    # sum of methinit.copy()
-    dict_chr_meCG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHH = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHHW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHHC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_meCHGC = dict.fromkeys(chrs_valid, init.copy())
-    # covnCG
-    dict_chr_covnCG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHH = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHHW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHHC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_covnCHGC = dict.fromkeys(chrs_valid, init.copy())
-
-    # mean meth
-    init = np.zeros((DP,), dtype=float32)
-    dict_chr_mmeCG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHGC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHH = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHHW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHHC = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHG = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHGW = dict.fromkeys(chrs_valid, init.copy())
-    dict_chr_mmeCHGC = dict.fromkeys(chrs_valid, init.copy())
-
+        ###########################################################
+        #### init chr-wise data
+        ###########################################################
+        # sum of meth
+        dict_chr_meCG[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCGW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCGC[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHG[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHGW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHGC[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHH[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHHW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_meCHHC[chr] = np.zeros((DP,), dtype=int64)
+        # covnCG
+        dict_chr_covnCG[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCGW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCGC[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHG[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHGW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHGC[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHH[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHHW[chr] = np.zeros((DP,), dtype=int64)
+        dict_chr_covnCHHC[chr] = np.zeros((DP,), dtype=int64)
+        # mean meth
+        dict_chr_mmeCG[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCGW[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCGC[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHG[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHGW[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHGC[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHH[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHHW[chr] = np.zeros((DP,), dtype=float32)
+        dict_chr_mmeCHHC[chr] = np.zeros((DP,), dtype=float32)
+        
     ###########################################################
     #### summarization
     ###########################################################
@@ -310,7 +320,7 @@ def plot_chr_wise_me() -> None:
     chrs = params['chrs_valid']
     dict_chr_me = params['dict_chr_me']
     dict_chr_covn = params['dict_chr_covn']
-    DP_valid = params['MAX_DP_BY_FIG']
+    DP_valid = params['MAX_DP_BY_FIG'] + 1
     img_dir = params['img_dir']
 
     strand = 'double'
@@ -319,15 +329,16 @@ def plot_chr_wise_me() -> None:
         ylim = 0
         me_list = []
         dps_list = []
-        for dp in range(DP_valid):
+        for dp in range(1, DP_valid):
             # me = [dict_chr_me[cg][strand][chr][dp]/dict_chr_cov[cg][strand][chr][dp] for chr in chrs]
-            me = [ dict_chr_me[cg][strand][chr][dp+1] for chr in chrs ]
-            dps = [ dict_chr_covn[cg][strand][chr][dp+1] for chr in chrs ]
+            me = [ dict_chr_me[cg][strand][chr][dp] for chr in chrs ]
+            dps = [ dict_chr_covn[cg][strand][chr][dp] for chr in chrs ]
             me_list.append(me)
             dps_list.append(dps)
-        ylim = max(ylim, max(me))
+            ylim = max(ylim, max(me))
         ylim = axlimit(ylim)
-        for dp in range(DP_valid):
+        for dp in range(DP_valid-1):
+            # [0, DP-1] -> [1, DP+1]
             fig, ax = plt.subplots(figsize = (figwidth, 2))
             dps = np.array(dps_list[dp])
             mes = np.array(me_list[dp])

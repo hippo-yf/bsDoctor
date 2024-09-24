@@ -16,15 +16,16 @@ diagnosis of CpG strandness of sequencing coverage and DNAme level.
             different Watson (row) and Crick (column) read depths. Uncovered
             CpGs with coordinate (0,0) is removed for better visualization.
         </p>
-        <img src="img/heatmap-cg-stranded-depth.png" alt="" width="500px" />
+        <img src="img/heatmap-cg-stranded-depth.png" id="fig-heatmap-cg-stranded-depth" alt="" width="500px" />
+        <div class="caption" link="#fig-heatmap-cg-stranded-depth">This picture is useful to diagnose the stranded pattern of whole-genome CpG coverage.</div>
     </article>
     <article id="CpG-depth-diff">
         <h3>depth difference between strands</h3>
         <p>
         <ul>
             <li>CpG depth difference = Watson depth - Crick depth </li>
-            <li>mean of difference: , sd = </li>
-            <li>mean of absolute difference: , sd = </li>
+            <li>difference: mean = {{alldata.mean_strand_dp_diff}}, sd = {{alldata.sd_strand_dp_diff}} </li>
+            <li>absolute difference: mean = {{alldata.mean_abs_strand_dp_diff}}, sd = {{alldata.sd_abs_strand_dp_diff}} </li>
         </ul>
         </p>
         <img src="img/cg-stranded-depth-difference.png" alt="" height="250px" />

@@ -16,7 +16,35 @@ diagnosis of pan-gene DNAme level pattern.
     <article id="pan-gene-coding">
         <h3>Coding genes</h3>
         <p>Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_coding}}) coding genes.</p>
-        <img src="img/pan-gene-meth-coding.png" alt="" width="450px" />
+        <div class="row">
+            <div class="col-9">
+                <img src="img/pan-gene-meth-coding-CG.png" id="img-pan-gene-coding" alt="" width="450px" />
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-coding" id="radio-pangene-coding-1"
+                        value="CG" checked />
+                    <label class="form-check-label" for="radio-pangene-coding-1">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-coding" id="radio-pangene-coding-2"
+                        value="CHG" />
+                    <label class="form-check-label" for="radio-pangene-coding-2">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-coding" id="radio-pangene-coding-3"
+                        value="CHH" />
+                    <label class="form-check-label" for="radio-pangene-coding-3">CHH </label>
+                </div>
+                <div>
+                    <p> <span class="two-strand-text">two strands</span> <br>
+                    <span class="watson-strand-text">Watson strand</span> <br>
+                    <span class="crick-strand-text">Crick strand</span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </article>
     <article id="pan-gene-lnc">
         <h3>Long non-coding genes</h3>
@@ -24,7 +52,36 @@ diagnosis of pan-gene DNAme level pattern.
             Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_lnc}}) long non-coding RNA
             (lncRNA) genes.
         </p>
-        <img src="img/pan-gene-meth-lncRNA.png" alt="" width="450px" />
+        <!-- <img src="img/pan-gene-meth-lncRNA.png" alt="" width="450px" /> -->
+        <div class="row">
+            <div class="col-9">
+                <img src="img/pan-gene-meth-lncRNA-CG.png" id="img-pan-gene-lncRNA" alt="" width="450px" />
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-lncRNA" id="radio-pangene-lncRNA-1"
+                        value="CG" checked />
+                    <label class="form-check-label" for="radio-pangene-lncRNA-1">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-lncRNA" id="radio-pangene-lncRNA-2"
+                        value="CHG" />
+                    <label class="form-check-label" for="radio-pangene-lncRNA-2">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-lncRNA" id="radio-pangene-lncRNA-3"
+                        value="CHH" />
+                    <label class="form-check-label" for="radio-pangene-lncRNA-3">CHH </label>
+                </div>
+                <div>
+                    <p> <span class="two-strand-text">two strands</span> <br>
+                    <span class="watson-strand-text">Watson strand</span> <br>
+                    <span class="crick-strand-text">Crick strand</span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </article>
     <article id="pan-gene-other">
         <h3>Other non-coding genes</h3>
@@ -32,6 +89,35 @@ diagnosis of pan-gene DNAme level pattern.
             Based on randomly selected {{alldata.PANGENE_SAMPLED}} (out of {{alldata.ngene_noncoding}}) other non-coding
             genes, namely genes except coding and lncRNA genes.
         </p>
-        <img src="img/pan-gene-meth-other-noncoding.png" alt="" width="450px" />
+        <!-- <img src="img/pan-gene-meth-other-noncoding.png" alt="" width="450px" /> -->
+        <div class="row">
+            <div class="col-9">
+                <img src="img/pan-gene-meth-other-noncoding-CG.png" id="img-pan-gene-noncoding" alt="" width="450px" />
+            </div>
+            <div class="col legend">
+                <p class="label">Cytosine context</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-noncoding" id="radio-pangene-noncoding-1"
+                        value="CG" checked />
+                    <label class="form-check-label" for="radio-pangene-noncoding-1">CG</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-noncoding" id="radio-pangene-noncoding-2"
+                        value="CHG" />
+                    <label class="form-check-label" for="radio-pangene-noncoding-2">CHG </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-pangene-noncoding" id="radio-pangene-noncoding-3"
+                        value="CHH" />
+                    <label class="form-check-label" for="radio-pangene-noncoding-3">CHH </label>
+                </div>
+                <div>
+                    <p> <span class="two-strand-text">two strands</span> <br>
+                    <span class="watson-strand-text">Watson strand</span> <br>
+                    <span class="crick-strand-text">Crick strand</span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </article>
 </section>

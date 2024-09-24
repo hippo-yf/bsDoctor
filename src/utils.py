@@ -58,6 +58,10 @@ def getSuffix(x) -> Tuple:
     else: prefix = ''
     return x, prefix
 
+# truncate into [a, b]
+def minmax(x: NDArray, a=0, b=1) -> NDArray:
+    return np.fmin(b, np.fmax(a, np.array(x)))
+
 # divide keeping nan's
 def nandivide(x: NDArray, y: NDArray) -> NDArray:
     x = np.array(x)
@@ -200,9 +204,6 @@ def abline(intercept, slope, **kw) -> None:
 # Function to include css/js/font file in Jinja template
 def include_file(name, fdir = 'report/', b64=False):
     try:
-        # if fdir is None:
-        #     fdir = ""
-        # fdir = 'assets/'
         if b64:
             with io.open(os.path.join(fdir, name), "rb") as f:
                 return base64.b64encode(f.read()).decode("utf-8")

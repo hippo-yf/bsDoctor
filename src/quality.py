@@ -41,7 +41,7 @@ def plot_read_length() -> None:
     fig, ax = plt.subplots(figsize=(4,2))
     plt.hist(quality.read_length, bins=21, density=True, color=COLS[0])
     plt.xlabel('read length')
-    plt.ylabel('proportion')
+    plt.ylabel('density')
 
     # filename = r'img/dist-read-length'
     filename = params['img_dir'] + r'/hist-read-length'
@@ -56,7 +56,7 @@ def plot_base_quality() -> None:
     fig, ax = plt.subplots(figsize=(4,2))
     plt.hist(quality.base_quality, bins=21, density=True, color=COLS[0])
     plt.xlabel('base quality')
-    plt.ylabel('proportion')
+    plt.ylabel('density')
 
     filename = params['img_dir'] + r'/hist-base-quality'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
@@ -70,7 +70,7 @@ def plot_read_map_quality() -> None:
     fig, ax = plt.subplots(figsize=(4,2))
     plt.hist(quality.map_quality, bins=21, density=True, color=COLS[0])
     plt.xlabel('read mapping quality')
-    plt.ylabel('proportion')
+    plt.ylabel('density')
 
     filename = params['img_dir'] + r'/hist-read-map-quality'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')

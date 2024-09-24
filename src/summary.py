@@ -45,17 +45,41 @@ def compt_plot_DNA_content() -> None:
         
     params['nmapped_chrs'] = nmapped_chrs
 
-    # read length from a samll batch of reads
-    genomeGen = randomGenomicRegion(fa, bam, size=10)
-    quality = Quality()
-    isampled = 0
-    while quality.nreads < 10**3 and isampled < 10_000:
-        region = next(genomeGen)
-        bam.sample_reads(quality=quality, gi=region)
-        isampled += 1
-    quality.regularization()
+    
+    # read Match length from a samll batch of reads
+    def readMlen(fa, bam, nreads = 10_000) -> float:
+        totalM = 0
+        sampledreads = 0
+        genomeGen = randomGenomicRegion(fa, bam, size=2)
+        for region in genomeGen:
+            ire = bam.fetch(region.chr, region.start, region.end)
+            s = 0
+            for r in ire:
+                cigar = r.cigartuples
+                for (c, n) in cigar:
+                    if c == 0: totalM += n
+                s += 1
+                sampledreads += 1
+                if s > 30: break
+            if sampledreads > nreads: break
+        return totalM/sampledreads
 
-    mean_read_len = np.mean(quality.read_length)
+    mean_read_Mlen = readMlen(fa, bam)
+    params['mean_read_Mlen'] = mean_read_Mlen
+
+    # # read length from a samll batch of reads
+    # genomeGen = randomGenomicRegion(fa, bam, size=10)
+    # quality = Quality()
+    # isampled = 0
+    # while quality.nreads < 10**3 and isampled < 10_000:
+    #     region = next(genomeGen)
+    #     bam.sample_reads(quality=quality, gi=region)
+    #     isampled += 1
+    # quality.regularization()
+
+    # mean_read_len = np.mean(quality.read_length)
+    # params['mean_read_len'] = mean_read_len
+
 
     ## nreads and prop in report table
     _nreads = dict()
@@ -65,13 +89,12 @@ def compt_plot_DNA_content() -> None:
     for key, value in nmapped.items():
         _nreads[key] = fi(value)
         _nreads_prop[key] = fp(value/bam.mapped)
-        _mean_dp[key] = ff(int(mean_read_len*value/length[key]), 2) if length[key]>0 else "0"
-        _copy_num[key] = ff2(int((nmapped[key]/length[key]) / (nmapped['nuclear']/length['nuclear']) * ploidy), 4) if length[key]>0 else "0"
+        _mean_dp[key] = ff2(float(mean_read_Mlen*value/length[key]), 1) if length[key]>0 else "0"
+        _copy_num[key] = fi(math.ceil((nmapped[key]/length[key]) / (nmapped['nuclear']/length['nuclear']) * ploidy)) if length[key]>0 else "0"
     data['nreads'] = _nreads
     data['nreads_prop'] = _nreads_prop
     data['mean_dp_dict'] = _mean_dp
     data['copy_num'] = _copy_num
-
 
     lambda_DNA_content_vs_nuclear = nandivide(nmapped['lambda'], nmapped['nuclear'])
     lambda_DNA_content_vs_MT = nandivide(nmapped['lambda'], nmapped['mt'])

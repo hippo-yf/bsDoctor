@@ -116,6 +116,14 @@ def config_params(options: Namespace = Namespace()) -> None:
     # params['report_dir'] = os.path.join(params['work_dir'], 'report')
     params['report_dir'] = params['work_dir']
     # params['img_dir'] = os.path.join(params['report_dir'], 'img2')
+    
+    # init effective coverage status of contigs
+    data['mt_is_covered'] = 0
+    data['plastid_is_covered'] = 0
+    data['lambda_is_covered'] = 0
+    params['mt_is_covered'] = 0
+    params['plastid_is_covered'] = 0
+    params['lambda_is_covered'] = 0
 
     #### copy/substitue args
     for key, value in options.__dict__.items():
@@ -127,9 +135,10 @@ def config_params(options: Namespace = Namespace()) -> None:
     data['include_mt'] = int(options.chr_MT != '-' and options.include_mt) 
     data['include_plastid'] = int(options.chr_plastid != '-' and options.include_plastid)
     data['include_lambda'] = int(options.chr_lambda != '-' and options.include_lambda)
-    
+    data['ploidy'] = params['ploidy']
     data['MAX_DP_BY_FIG'] = params['MAX_DP_BY_FIG']
 
+    data['report_dir'] = params['report_dir']
     params['img_dir'] = os.path.join(params['report_dir'], 'img')
     myMakeDirs(params['work_dir'])
     myMakeDirs(params['report_dir'])

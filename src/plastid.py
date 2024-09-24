@@ -48,8 +48,10 @@ def compt_plastid() -> None:
         i = dict_plastid.length > 0
         plastid_median_dp = float(np.median(dict_plastid.dp[i]/dict_plastid.length[i]))
         data['plastid_median_dp'] = ff(plastid_median_dp)
-        plastid_mean_dp = float(np.mean(dict_plastid.dp[i]/dict_plastid.length[i]))
-        data['plastid_mean_dp'] = ff(plastid_mean_dp)
+        # plastid_mean_dp = float(np.mean(dict_plastid.dp[i]/dict_plastid.length[i]))
+        plastid_mean_dp = float(np.sum(dict_plastid.dp)/np.sum(dict_plastid.length))
+        params['plastid_mean_dp'] = plastid_mean_dp
+        data['plastid_mean_dp'] = ff2(plastid_mean_dp, 1)
         
         ## bs rate of lambda DNA
         bs_rate_plastid = -1

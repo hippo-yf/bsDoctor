@@ -46,6 +46,7 @@ def compt_lambda() -> None:
         data['lambda_median_dp'] = ff(float(lambda_median_dp))
         # lambda_mean_dp = np.mean(dict_lambda.dp[i]/dict_lambda.length[i])
         lambda_mean_dp = np.sum(dict_lambda.dp)/np.sum(dict_lambda.length)
+        params['lambda_mean_dp'] = lambda_mean_dp
         data['lambda_mean_dp'] = ff(float(lambda_mean_dp))
         
         ## bs rate of lambda DNA

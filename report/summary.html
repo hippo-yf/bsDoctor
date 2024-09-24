@@ -65,7 +65,10 @@ summary information.
                 <td>{{ alldata.covrate_chh[3] }}%</td>
             </tr>
             <tr>
-                <td>CpGs of double-stranded coverage</td>
+                <td class="tb-major">CpGs of double-stranded coverage <sup class="question-marker" id="cap-summary-double-cov">?</sup>
+                <div class="caption" link="#cap-summary-double-cov">
+                    #{CpGs with depth ≥ k on both strands} over #{CpGs with depth ≥ k on any strand}
+                </div></td>
                 <td>{{ alldata.covrate_cg_ds[0] }}%</td>
                 <td>{{ alldata.covrate_cg_ds[1] }}%</td>
                 <td>{{ alldata.covrate_cg_ds[2] }}%</td>
@@ -99,14 +102,6 @@ summary information.
         </tbody>
     </table>
 
-    <!-- <table class="table table-striped table-sm">
-        <tbody>
-            <tr>
-                <td>Read Depth</td><td>10</td>
-            </tr>
-        </tbody>
-    </table> -->
-
     <table class="table table-striped table-sm table-hover">
         <tbody>
             <tr>
@@ -125,33 +120,78 @@ summary information.
             </tr>
             <tr>
                 <td>Mean read depth</td>
-                <td>{{alldata.mean_dp}}({{alldata.mean_dp_dict.nuclear}})</td>
+                <td>{{alldata.mean_dp}}</td>
+                <td> 
+                {% if alldata.mt_is_covered == 1 %}
+                    {{alldata.mt_mean_dp}}
+                {% else %}
+                    -
+                {% endif %} </td>
+                <td> 
+                {% if alldata.plastid_is_covere == 1 %}
+                    {{alldata.plastid_mean_dp}}
+                {% else %}
+                    -
+                {% endif %} </td>
+                <td> 
+                {% if alldata.lambda_is_covered == 1 %}
+                    {{alldata.lambda_mean_dp}}
+                {% else %}
+                    -
+                {% endif %} </td>
+            </tr>
+            <!-- <tr>
+                <td>Mean read depth</td>
+                <td>{{alldata.mean_dp_dict.nuclear}}</td>
                 <td>{{alldata.mean_dp_dict.mt}}</td>
                 <td>{{alldata.mean_dp_dict.plastid}}</td>
                 <td>{{alldata.mean_dp_dict.lambda}}</td>
-            </tr>
+            </tr> -->
             <tr>
+                <td>DNA copy number</td>
+                <td>{{alldata.ploidy}} (ploidy)</td>
+                <td> {% if alldata.mt_is_covered == 1 %}
+                    {{alldata.mt_copynum}}
+                    {% else %}
+                    -
+                    {% endif %} </td>
+                <td> {% if alldata.plastid_is_covere == 1 %}
+                    {{alldata.plastmid_copynum}}
+                    {% else %}
+                    -
+                    {% endif %} </td>
+                <td> {% if alldata.lambda_is_covered == 1 %}
+                    {{alldata.lambda_copynum}}
+                    {% else %}
+                    -
+                    {% endif %} </td>
+            </tr>
+            <!-- <tr>
                 <td>DNA copy number</td>
                 <td>{{alldata.copy_num.nuclear}} (ploidy)</td>
                 <td>{{alldata.copy_num.mt}}</td>
                 <td>{{alldata.copy_num.plastid}}</td>
                 <td>{{alldata.copy_num.lambda}}</td>
-            </tr>
+            </tr> -->
 
             <tr><td colspan="5" class="table-header"> Conversion and Error</td></tr>
 
             <tr>
-                <td>Bisulfite Conversion Rate</td>
+                <td>Bisulfite Conversion Rate <sup class="question-marker" id="cap-summary-coversion-rate">?</sup>
+                    <div class="caption" link="#cap-summary-coversion-rate">
+                        Assuming nuclear CHHs and cytosines of extranuclear DNA are not methylated.
+                    </div>
+                </td>
                 <td>{{alldata.bsrate_chh}}%</td>
-                <td> {% if alldata.include_mt == 1 %}
+                <td> {% if alldata.mt_is_covered == 1 %}
                     {{alldata.bsrate_mt}}%
                     {% else %} -
                     {% endif %} </td>
-                <td> {% if alldata.include_plastid == 1 %}
+                <td> {% if alldata.plastid_is_covered == 1 %}
                     {{alldata.bsrate_plastid}}%
                     {% else %} -
                     {% endif %} </td>
-                <td> {% if alldata.include_lambda == 1 %}
+                <td> {% if alldata.lambda_is_covered == 1 %}
                     {{alldata.bsrate_lambda}}%
                     {% else %} -
                     {% endif %} </td>
@@ -159,15 +199,15 @@ summary information.
             <tr>
                 <td>Base-level Error Rate</td>
                 <td>{{alldata.err_rate_AT}}%</td>
-                <td> {% if alldata.include_mt == 1 %}
+                <td> {% if alldata.mt_is_covered == 1 %}
                     {{alldata.err_rate_mt}}%
                     {% else %} -
                     {% endif %} </td>
-                <td> {% if alldata.include_plastid == 1 %}
+                <td> {% if alldata.plastid_is_covered == 1 %}
                     {{alldata.err_rate_plastid}}%
                     {% else %} -
                     {% endif %} </td>
-                <td> {% if alldata.include_lambda == 1 %}
+                <td> {% if alldata.lambda_is_covered == 1 %}
                     {{alldata.err_rate_lambda}}%
                     {% else %} -
                     {% endif %} </td>
@@ -181,7 +221,10 @@ summary information.
                 <td>Unsequenced Nuclear DNA: {{alldata.prop_unsequenced}}% </td>
                 <td>Sequencing Saturation: {{alldata.saturation}}% </td>
                 <td>Lost Nuclear DNA: {{alldata.prop_lost}}% </td>
-                <td>Max Coverage Rate: {{alldata.prop_asymptotic}}% </td>
+                <td>Max Coverage Rate: {{alldata.prop_asymptotic}}% <sup class="question-marker" id="cap-summary-max-coverage-rate">?</sup>
+                    <div class="caption" link="#cap-summary-max-coverage-rate">
+                        Whole-genome coverage rate by sequencing continuously. 
+                    </div></td>
             </tr>
         </tbody>
     </table>
@@ -192,8 +235,11 @@ summary information.
     </article>
 
     <article>
-        <h3>DNA composition</h3>
-        According to reads mapped to nuclear and extranuclear chromosomes/contigs, DNA content in the sequencing library is estimated.
+        <h3>Read/DNA composition</h3>
+        DNA content <sup id="cap-DNA-composition" class="question-marker">?</sup> (measured by mol of nucleotides ) ∝ #reads, assuming reads are of the same length.
+        <div class="caption" link="#cap-DNA-composition">
+            DNA content in the sequencing library.
+        </div>
 
         <img src="img/pie-DNA-content.png" alt="" height="250px" />
     </article>

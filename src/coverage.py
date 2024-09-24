@@ -266,6 +266,18 @@ class CovPanGene():
         self.meCGW: NDArray[int64] = np.zeros((bins,), dtype=int64)
         self.nCGC: NDArray[int32] = np.zeros((bins,), dtype=int32)
         self.meCGC: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHG: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHG: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHGW: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHGW: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHGC: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHGC: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHH: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHH: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHHW: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHHW: NDArray[int64] = np.zeros((bins,), dtype=int64)
+        self.nCHHC: NDArray[int32] = np.zeros((bins,), dtype=int32)
+        self.meCHHC: NDArray[int64] = np.zeros((bins,), dtype=int64)
         return None
         
 # cov_pangene = CovPanGene()
@@ -636,7 +648,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
             meth=meth
             )
 
-    def update_pangene(self, cov_pangene: CovPanGene, g: Gene) -> None:
+    def update_pangene(self, cov: CovPanGene, g: Gene) -> None:
         # context size
         consize = params['context_size']
         fa = params['fa']
@@ -660,13 +672,13 @@ class MyAlignmentFile(pysam.AlignmentFile):
                     # only CG for pangene
                     bases_con = bases[j:(j+consize)]
                     CG_context = CG_CONTEXT_FORWARD_HASH[bases_con] if all([n in BASES for n in bases_con]) else '-' 
-                    if CG_context != 'CG': continue
+                    # if CG_context != 'CG': continue
                     nCT = covs.watson[1,i] + covs.watson[3,i]
                     nC = covs.watson[1,i]
                 else:
                     bases_con = bases[(j-consize+1):(j+1)]
                     CG_context = CG_CONTEXT_REVERSE_HASH[bases_con] if all([n in BASES for n in bases_con]) else '-' 
-                    if CG_context != 'CG': continue
+                    # if CG_context != 'CG': continue
                     nC = covs.crick[2,i]
                     nCT = covs.crick[0,i] + covs.crick[2,i]
 
@@ -674,14 +686,33 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 if nCT <= 0: continue
                 meth_ratio = int64(nC*10000 / nCT)
                 kbin = g.bins[np.argmax(g.start_padding + i < g.breaks) - 1]
-                cov_pangene.nCG[kbin] += 1
-                cov_pangene.meCG[kbin] += meth_ratio
-                if base == 'C':
-                    cov_pangene.nCGW[kbin] += 1
-                    cov_pangene.meCGW[kbin] += meth_ratio
+                if CG_context == 'CG':
+                    cov.nCG[kbin] += 1
+                    cov.meCG[kbin] += meth_ratio
+                    if base == 'C':
+                        cov.nCGW[kbin] += 1
+                        cov.meCGW[kbin] += meth_ratio
+                    else:
+                        cov.nCGC[kbin] += 1
+                        cov.meCGC[kbin] += meth_ratio
+                elif CG_context == 'CHG':
+                    cov.nCHG[kbin] += 1
+                    cov.meCHG[kbin] += meth_ratio
+                    if base == 'C':
+                        cov.nCHGW[kbin] += 1
+                        cov.meCHGW[kbin] += meth_ratio
+                    else:
+                        cov.nCHGC[kbin] += 1
+                        cov.meCHGC[kbin] += meth_ratio
                 else:
-                    cov_pangene.nCGC[kbin] += 1
-                    cov_pangene.meCGC[kbin] += meth_ratio
+                    cov.nCHH[kbin] += 1
+                    cov.meCHH[kbin] += meth_ratio
+                    if base == 'C':
+                        cov.nCHHW[kbin] += 1
+                        cov.meCHHW[kbin] += meth_ratio
+                    else:
+                        cov.nCHHC[kbin] += 1
+                        cov.meCHHC[kbin] += meth_ratio      
         return None
 
 

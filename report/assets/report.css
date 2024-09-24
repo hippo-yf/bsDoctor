@@ -124,6 +124,15 @@ code {
   color: #1b98e0;
   margin-right: 5px;
 }
+.two-strand-text{
+  color: gray;
+}
+.watson-strand-text{
+  color: #df5353;
+}
+.crick-strand-text{
+  color: #1b98e0;
+}
 p.label {
   font-weight: 600;
   font-size: 1.1em;
