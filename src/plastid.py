@@ -29,9 +29,9 @@ def compt_plastid() -> None:
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
         update_contig(dict_plastid, detailedIntvl)
     
-    data['dict_plastid'] = dict_plastid
+    params['dict_plastid'] = dict_plastid
 
-    # whether lambda DNA is sequenced
+    # whether plastid DNA is sequenced
     if dict_plastid.cov.sum() < 10:
         data['plastid_is_covered'] = 0
     else:
@@ -53,14 +53,14 @@ def compt_plastid() -> None:
         params['plastid_mean_dp'] = plastid_mean_dp
         data['plastid_mean_dp'] = ff2(plastid_mean_dp, 1)
         
-        ## bs rate of lambda DNA
+        ## bs rate of plastid DNA
         bs_rate_plastid = -1
         data['bsrate_plastid'] = "nan"
         if dict_plastid.covnC > 100: # at least 100 Cs covered
             bs_rate_plastid = 1 - dict_plastid.meC/dict_plastid.covnC/10000
             data['bsrate_plastid'] = fp(bs_rate_plastid)
             
-        # base error rate by lambda DNA
+        # base error rate by plastid DNA
         i = dict_plastid.dp20 > 0
         data['err_rate_plastid'] = "nan"
         if sum(i) > 0:
@@ -94,21 +94,21 @@ def plot_plastid_depth_binning() -> None:
     axs[0].plot(x, np.repeat(np.median(yw), len(x)), '--', c='gray')
     axs[0].scatter(x, np.fmin(ylim, yw), c=COLS[1], s=1)
     axs[0].set_ylim(0, ylim)
-    axs[0].text(2, axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[0].text(axs[0].get_xlim()[1], axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='left', verticalalignment='top')
 
     axs[1].plot(x, np.repeat(np.median(yc), len(x)), '--', c='gray')
     axs[1].scatter(x, np.fmin(ylim, yc), c=COLS[0], s=1)
     axs[1].set_ylim(0, ylim)
-    axs[1].text(2, axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[1].text(axs[1].get_xlim()[1], axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='left', verticalalignment='top')
     axs[1].set_ylabel('read depth')
 
     axs[2].plot(x, np.repeat(np.median(yd), len(x)), '--', c='gray')
     axs[2].scatter(x, np.fmin(ylim, yd), c=COL_gray, s=1)
-    axs[2].text(2, axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[2].text(axs[2].get_xlim()[1], axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='left', verticalalignment='top')
 
     plt.xlabel(f'coordinate ({prefix})')
 
-    filename = f'{img_dir}/depth-bin-lambda'
+    filename = f'{img_dir}/depth-bin-plastid'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()

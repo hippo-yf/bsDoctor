@@ -128,7 +128,7 @@ summary information.
                     -
                 {% endif %} </td>
                 <td> 
-                {% if alldata.plastid_is_covere == 1 %}
+                {% if alldata.plastid_is_covered == 1 %}
                     {{alldata.plastid_mean_dp}}
                 {% else %}
                     -
@@ -155,8 +155,8 @@ summary information.
                     {% else %}
                     -
                     {% endif %} </td>
-                <td> {% if alldata.plastid_is_covere == 1 %}
-                    {{alldata.plastmid_copynum}}
+                <td> {% if alldata.plastid_is_covered == 1 %}
+                    {{alldata.plastid_copynum}}
                     {% else %}
                     -
                     {% endif %} </td>

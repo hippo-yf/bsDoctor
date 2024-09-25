@@ -63,6 +63,9 @@ class MyFastaFile(pysam.FastaFile):
                            end=min(intrv.chr_length, intrv.end+padding)
                            ).upper()
         
+        # replace non-ATCG letters to N
+        bases = re.sub('[^ATCG]', 'N', bases)
+
         # padding N
         if intrv.start < padding:
             bases = "N"*(padding-intrv.start) + bases

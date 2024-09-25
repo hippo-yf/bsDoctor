@@ -40,14 +40,6 @@ def config_params_further() -> None:
     params['SAMPLE'] = SAMPLE
     data['title'] = f'bsDoctor Report of Sample: {SAMPLE}'
 
-    # nuclear bin size 
-    a, b = prefixBpSize(params['binSize'])
-    if a - np.ceil(a) < 1e-6:
-        data['bin_size'] = f'{int(a)} {b}'
-    else:
-        data['bin_size'] = f'{a} {b}'
-    data['bin_size']
-
     fa = MyFastaFile(params['fafile'])
     params['fa'] = fa
 
@@ -78,6 +70,36 @@ def config_params_further() -> None:
     lens_valid = [reference_length(chr) for chr in chrs_valid]
     params['chrs_valid'] = chrs_valid
     params['lens_valid'] = lens_valid
+    # params['max_chr_len'] = max(lens_valid)
+
+    # nuclear bin size
+    if params['binSize'] == 0:
+        binSize = getBins(max(lens_valid), params['nbins_chr'])[0]
+        params['binSize'] = binSize
+    
+    # sampling size
+    binSize = params['binSize']
+    prop = params['sampling_prop']
+    if params['binSize'] <= 5000 or prop > 1-1e-6:
+        params['nuclear_sampling_step'] = binSize
+        params['nuclear_sampling_spacing'] = 0
+    else:
+        samples_in_a_bin = 10
+        step_size = max(1000, int(binSize*prop/samples_in_a_bin))
+        params['nuclear_sampling_step'] = step_size
+        params['nuclear_sampling_spacing'] = min(int(step_size*(1/prop-1)), int(binSize*(1-prop)/samples_in_a_bin))
+        if params['nuclear_sampling_spacing'] < step_size/3:
+            params['nuclear_sampling_step'] = step_size
+            params['nuclear_sampling_spacing'] = 0
+
+
+    # prefix
+    a, b = prefixBpSize(params['binSize'])
+    if np.abs(a - np.ceil(a)) < 1e-6:
+        data['bin_size'] = f'{int(a)} {b}'
+    else:
+        data['bin_size'] = f'{a} {b}'
+    data['bin_size']
 
     chr_MT = params['chr_MT']
     chr_lambda = params['chr_lambda']

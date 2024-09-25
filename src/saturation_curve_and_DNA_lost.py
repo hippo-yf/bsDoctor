@@ -137,7 +137,7 @@ def plot_saturation_curve() -> None:
     dps = [1,3,5,10]
     cols = ['#a0d0f8', '#40a0f2','#0d6dbf', '#07375f']
 
-    (nbases, dilu) = dilute_genome(binning_covW, binning_covC, nbins=300)
+    (nbases, dilu) = dilute_genome(binning_covW, binning_covC, nbins=100)
 
     fig, ax = plt.subplots(figsize=(5, 3))
     prop_dp1_subset = dilu[50,1]/dilu[50,0]
@@ -162,3 +162,4 @@ def plot_saturation_curve() -> None:
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
     plt.close()
+    

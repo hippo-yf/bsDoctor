@@ -19,8 +19,8 @@ def plot_heatmap_stranded_CpG_depth() -> None:
     ax.set_yticks(x, labels=x)
     cbar = ax.figure.colorbar(im, ax=ax)
     cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
-    plt.xlabel('methylation read depth of Watson strand')
-    plt.ylabel('methylation read depth of Crick strand')
+    plt.xlabel('methylation read depth of Crick strand')
+    plt.ylabel('methylation read depth of Watson strand')
 
     filename = f'{img_dir}/heatmap-cg-stranded-depth'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')

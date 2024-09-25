@@ -5,7 +5,6 @@ from src.config import params, data
 from src.coverage import GenomicIntervalGeneratorWithinBin, BinCov
 from src.updateBinning import update_cgkmer, update_binning_nuclear 
 
-
 def nuclear_sampling() -> None:
     fa = params['fa']
     bam = params['bam']

@@ -168,9 +168,13 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--diag-plastid', dest='include_plastid', help='diagnose reads mapped to plastid DNA or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
         self.add_argument('--diag-control', dest='include_lambda', help='diagnose reads mapped to spiked-in control DNA (usually lambda DNA) or not, true/false, or yes/no', type=as_bool, required=False, default='yes')
 
-        self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
-        self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
-        self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, 100kbp by defaults', type=int, default=100_000)
+        # self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
+        # self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
+
+        self.add_argument('--sampling-prop', dest='sampling_prop', help='sampling a proportion of sites of nuclear chromosomes, 0.1 by defaults', type=float, required=False, default=0.1)
+
+        self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, overwrite "--max-chr-nbins", 0 by defaults (use "--max-chr-nbins"), ', type=int, default=0)
+        self.add_argument('--max-chr-nbins', dest='nbins_chr', help='max number of bins  of a nuclear chromosome, 2000 by defaults', type=int, default=2000)
         self.add_argument('--bins-control', dest='bins_lambda', help='bins of spkied-in control DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-mt', dest='bins_MT', help='bins of mitochondrial DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-plastid', dest='bins_plastid', help='bins of plastid DNA, 1000 bins by defaults', type=int, default=1000)

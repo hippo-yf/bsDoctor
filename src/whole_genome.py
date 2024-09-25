@@ -297,9 +297,9 @@ def compt_whole_genome() -> None:
     if 'lambda_mean_dp' in params:
         data['lambda_copynum'] = fi(math.ceil(params['lambda_mean_dp'] / mean_dp *ploidy))
 
-    #### plastmid DNA copy number
+    #### plastid DNA copy number
     if 'plastid_mean_dp' in params:
-        data['plastmid_copynum'] = fi(math.ceil(params['plastid_mean_dp'] / mean_dp *ploidy))
+        data['plastid_copynum'] = fi(math.ceil(params['plastid_mean_dp'] / mean_dp *ploidy))
 
     #### error rate by A/T sites
     # bins with total AT depth >= 100 

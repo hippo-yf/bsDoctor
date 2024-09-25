@@ -120,7 +120,7 @@ def fp2(x, k:int=2):
     return '{1:.{0:d}f}'.format(k, x*100)
 
 def reverseComp(str: str) -> str:
-    comp = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+    comp = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C', 'N': 'N'}
     return ''.join([comp[s] for s in str[::-1]])
 
 # 3-nucleotide context, CG/CHG/CHH etc.
@@ -165,7 +165,7 @@ def myMakeDirs(dir: str):
         os.makedirs(dir)
 
 def getBins(length, bins):
-    size = math.ceil(length/bins)
+    size = max(1, math.ceil(length/bins))
     if size > 10: size = math.ceil(size/10)*10
     bins = math.ceil(length/size)
     return (size, bins)
