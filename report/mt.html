@@ -34,16 +34,16 @@ diagnosis of reads mapped to mitochondrial DNA.
         <p>
             Mitochondrion DNA copy number is estimated by the average depth of MTs over
             that of nuclear chromosomes. <sup id="cap-7" class="question-marker">?</sup>
-        <div class="caption" link="#cap-7">
-            The estimate is less accurate for RRBS samples than WGBS samples due to selective enrichment of DNA
-            fragments. <br>
-            Change the coefficient accordingly if not diploidy.
-        </div>
-        {% raw %} $$ \text{MT DNA copy number} = \frac{ \text{mean read depth of MT DNA} }{ \text{mean read depth of nuclear DNA} } = \frac{ {% endraw %} {{ alldata.mt_mean_dp}} {% raw %} }{ {% endraw %}
+        $$ {% raw %} \text{MT DNA copy number} = \frac{ \text{mean read depth of MT DNA} } { \text{mean read depth of nuclear DNA} } = \frac{ {% endraw %} {{ alldata.mt_mean_dp }} {% raw %} }{ {% endraw %}
         {{ alldata.mean_dp }} 
         {% raw %} } \times 2 (\text{ploidy}) = {% endraw %} 
         {{ alldata.mt_copynum }} $$
         </p>
+        <div class="caption" link="#cap-7">
+            The estimate is less accurate for RRBS samples than WGBS samples due to selective enrichment of DNA
+            fragments. <br>
+            Change the coefficient accordingly if not diploidy.
+        </div>    
     </article>
 
     <article id="mt-conversion">
@@ -71,7 +71,7 @@ diagnosis of reads mapped to mitochondrial DNA.
             bases}} = {{ alldata.err_rate_mt}} \%. $$
         </p>
         <div class="caption" link="#cap-9">
-            Mutation rate is much smaller than error rate in bisulfite-seq samples.
+            Mutation rate is usually smaller than error rate in bisulfite-seq samples.
         </div>
         <img src="img/base-error-rate-dist-MT.png" alt="" width="400px" />
     </article>

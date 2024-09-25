@@ -21,12 +21,13 @@ include dependent files, icons, css, js in single html.
 <!--  KaTeX fonts -->
 <style type="text/css">
 
+{#
 @font-face {
   font-family: "KaTeX_SansSerif";
   src: url(data:x-font-woff/woff2;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff2', b64=True) }}) format("woff2"), url(data:x-font-woff/woff;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.woff', b64=True) }}) format("woff"), url(data:font/ttf;base64,{{ include_file('assets/katex-0.16.11/fonts/KaTeX_SansSerif-Bold.ttf', b64=True) }}) format("truetype");
   font-weight: bold;
   font-style: normal;
-}
+} #}
 
 @font-face {
   font-family: "KaTeX_SansSerif";

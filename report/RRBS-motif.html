@@ -7,19 +7,17 @@ diagnosis of sequencing coverage and DNAme level bias of RRBS-related CpG-motif.
 #}
 
 <section id="rrbs-kmer">
-    <h2>RRBS</h2>
+    <h2>RRBS motif</h2>
     <p>Reduced Representation Bisulfite Sequencing (RRBS) uses a methylation-insensitive restriction enzyme, usually
         <code>MspI</code> with the cutting target <code>5'C^CGG3'</code> sequences (<code>^</code> is the cutting site), to enrich CpGs. The enrichment undoubtedly causes preference/bias.
     </p>
 
-    <article id="rrbs-summary">
-        <h3>Summary</h3>
-        <ul>
-            <li>lefttop: Proportion of CCGG-context CpGs over all CpGs in the genome is {{alldata.ccgg_prop}}% </li>
-            <li>leftbottom: Mean single-stranded methylation read depth of CCGG-context CpGs is {{alldata.ccgg_mean_dp}} </li>
-            <li>righttop: Coverage rate of CCGG- and non-CCGG-context CpGs with varing depth thresholds</li>
-            <li>rightbottom: Mean methyaltion level of CCGG- and non-CCGG-context CpGs with varing depth thresholds</li>
-        </ul>
-        <img src="img/rrbs-kmer-summary.png" alt="" width="500px">
-    </article>
+    <ul>
+        <li>lefttop: Proportion of CCGG-context CpGs over all CpGs in the genome is {{alldata.ccgg_prop}}% </li>
+        <li>leftbottom: Mean single-stranded methylation read depth of CCGG-context CpGs is {{alldata.ccgg_mean_dp}} </li>
+        <li>righttop: Coverage rate of CCGG- and non-CCGG-context CpGs with varing depth thresholds</li>
+        <li>rightbottom: Mean methyaltion level of CCGG- and non-CCGG-context CpGs with varing depth thresholds</li>
+    </ul>
+    <img src="img/rrbs-kmer-summary.png" alt="" width="500px" id="img-rrbs-kmer-summary">
+    <div class="caption" link="#img-rrbs-kmer-summary">This result is also meaningful for non-RRBS samples. </div>
 </section>

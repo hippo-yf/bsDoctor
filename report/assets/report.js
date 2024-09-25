@@ -21,8 +21,11 @@ $(function () {
     if (alldata.mt_is_covered == 1) {
         setWidth("#cap-15", dpiratio = 300 / 110); // MT binning depth
     }
+    if (alldata.plastid_is_covered == 1) {
+        setWidth("#img-depth-bin-plastid", dpiratio = 300 / 110); // plastid binning depth
+    }
     if (alldata.lambda_is_covered == 1) {
-        setWidth("#cap-10", dpiratio=300/110); // lambda binning depth
+        setWidth("#cap-10", dpiratio=300 / 110); // lambda binning depth
     }
 
     // put the captions on the right panel
@@ -33,7 +36,7 @@ $(function () {
         dp = $("#range-dp").val();
         $("#label-1").text(dp);
         context = $("input[name='radio-1']:checked").val();
-        file = "img/meth-dist-genome-" + context + "-dp" + dp + ".svg";
+        file = "img/meth-dist-genome-" + context + "-dp" + dp + ".png";
         // console.log(file);
         $("#img-meth-dist").attr("src", file);
     }
@@ -45,7 +48,7 @@ $(function () {
         dp = $("#range-2").val();
         $("#label-2").text(dp);
         context = $("input[name='radio-2']:checked").val();
-        file = "img/meth-chr-" + context + "-double" + "-dp" + dp + ".svg";
+        file = "img/meth-chr-" + context + "-double" + "-dp" + dp + ".png";
         // console.log(file);
         $("#img-meth-chr").attr("src", file);
     }
@@ -92,7 +95,7 @@ $(function () {
     // meth of depth >= k
     function img_cul_meth_by_dp() {
         let context = $("input[name='radio-5']:checked").val();
-        file = "img/meth-" + context + "-vs-dp-threshold.svg";
+        file = "img/meth-" + context + "-vs-dp-threshold.png";
         $("#img-cul-meth-by-dp").attr("src", file);
     }
     $("input[name='radio-5']").change(img_cul_meth_by_dp);
@@ -100,7 +103,7 @@ $(function () {
     // meth of depth = k
     function img_meth_at_dp() {
         let context = $("input[name='radio-meth-at-dp']:checked").val();
-        file = `img/meth-${context}-at-dp-k.svg`
+        file = `img/meth-${context}-at-dp-k.png`
         $("#img-meth-at-dp").attr("src", file);
     }
     $("input[name='radio-meth-at-dp']").change(img_meth_at_dp);
@@ -108,7 +111,7 @@ $(function () {
     // meth vs missing rate 
     function img_meth_vs_missing_rate() {
         let context = $("input[name='radio-meth-vs-missing-rate']:checked").val();
-        file = `img/meth-${context}-vs-missing-rate.svg`
+        file = `img/meth-${context}-vs-missing-rate.png`
         $("#img-meth-vs-missing-rate").attr("src", file);
     }
     $("input[name='radio-meth-vs-missing-rate']").change(img_meth_vs_missing_rate);
@@ -126,7 +129,7 @@ $(function () {
     // meth vs missing rate 
     function img_meth_vs_missing_rate() {
         let context = $("input[name='radio-meth-vs-missing-rate']:checked").val();
-        file = `img/meth-${context}-vs-missing-rate.svg`
+        file = `img/meth-${context}-vs-missing-rate.png`
         $("#img-meth-vs-missing-rate").attr("src", file);
     }
     $("input[name='radio-meth-vs-missing-rate']").change(img_meth_vs_missing_rate);
@@ -168,7 +171,7 @@ $(function () {
     // cytosine depth
     function img_cytosine_depth() {
         let context = $("input[name='radio-Cs-depth-dist']:checked").val();
-        // file = `img/meth-${context}-at-dp-k.svg`
+        // file = `img/meth-${context}-at-dp-k.png`
         $("#img-Cs-depth-dist").attr("src", `img/genome-${context}-depth-distribution.png`);
         $("#img-Cs-depth-coverage").attr("src", `img/genome-${context}-coverage-vs-depth.png`);
     }

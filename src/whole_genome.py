@@ -374,7 +374,7 @@ def plot_theroretical_me_bias() -> None:
 def plot_hist_me() -> None:
     methDist = params['methDist']
     img_dir = params['img_dir']
-    MAX_DP_BY_FIG = params['MAX_DP_BY_FIG']
+    MAX_DP_BY_FIG = params['MAX_DP_BY_FIG'] + 1
 
     for cg, value in methDist.items():
         count = np.cumsum(value[:,::-1], axis=1)[:,::-1]

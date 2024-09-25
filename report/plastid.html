@@ -18,8 +18,8 @@ diagnosis of reads mapped to plastid DNA.
         <p>
             Mean read depth of {{ alldata.plastid_bin_size }}bp binning windows for Watson strand (top), Crick strand (middle), and double strands (bottom).
         </p>
-        <img src="img/depth-bin-plastid.png" alt="" width="300px" id="cap-15" />
-        <div class="caption" link="#cap-15">
+        <img src="img/depth-bin-plastid.png" alt="" width="300px" id="img-depth-bin-plastid" />
+        <div class="caption" link="#img-depth-bin-plastid">
             Check the uniformness of read coverage.
         </div>
     </article>
@@ -28,8 +28,8 @@ diagnosis of reads mapped to plastid DNA.
         <h3>DNA copy number</h3>
         <p>
             Plastid DNA copy number is estimated by the average depth of plastids over
-            that of nuclear chromosomes. <sup id="cap-7" class="question-marker">?</sup>
-        <div class="caption" link="#cap-7">
+            that of nuclear chromosomes. <sup id="plastid-dna-copy-number" class="question-marker">?</sup>
+        <div class="caption" link="#plastid-dna-copy-number">
             The estimate is less accurate for RRBS samples than WGBS samples due to selective enrichment of DNA fragments. <br> Change the coefficient accordingly if not diploidy.
         </div>
         {% raw %} $$ \text{plastid DNA copy number} = \frac{ {% endraw %} {{ alldata.plastid_mean_dp}} {% raw %} }{ {% endraw %}
@@ -41,10 +41,10 @@ diagnosis of reads mapped to plastid DNA.
         <h3>Bisulfite conversion</h3>
         <p>
             From the 'methylation' of cytosines in plastid genome
-            <sup id="cap-8" class="question-marker">?</sup>, we can estimate bisulfite conversion rate as 
+            <sup id="plastid-conversion" class="question-marker">?</sup>, we can estimate bisulfite conversion rate as 
             $$ \text{conversion rate} = 1-\text{plastid methylation level} = 1 - {{ alldata.plastid_me }} = {{ alldata.bsrate_plastid }}\%. $$
         </p>
-        <div class="caption" link="#cap-8">
+        <div class="caption" link="#plastid-conversion">
             Assume plastid DNA is not 5mC methylated.
         </div>
     </article>
@@ -54,13 +54,14 @@ diagnosis of reads mapped to plastid DNA.
         <p>
             The (base-level) error rate that a base is mis-detected during library
             preparation, sequencing, and alignment, can be estimated
-            <sup id="cap-9" class="question-marker">?</sup> from inconsistent
+            <sup id="plastid-error" class="question-marker">?</sup> from inconsistent
             bases mapped to plastid genome. From the error rate distribution of
-            20-bp binning windows, the average error rate is $$ \text{error rate} =
+            20-bp binning windows, the average error rate is 
+            $$ \text{error rate} =
             \frac{\text{bases different with dominating base}}{\text{total read
             bases}} = {{ alldata.err_rate_plastid}} \%. $$
         </p>
-        <div class="caption" link="#cap-9">
+        <div class="caption" link="#plastid-error">
             Mutation rate is much smaller than error rate in bisulfite-seq samples.
         </div>
         <img src="img/base-error-rate-dist-plastid.png" alt="" width="400px" />
