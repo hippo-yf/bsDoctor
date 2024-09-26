@@ -1,8 +1,11 @@
 
 from scipy.stats import gaussian_kde
 import numpy as np
+from src.coverage import BinCov
 from src.config import params, data
 from src.utils import *
+
+# from scipy.stats import linregress
 
 def plot_depth_vs_cytosine_density() -> None:
     dict_binning = params['dict_binning']
@@ -270,7 +273,7 @@ def plot_depth_overall_vs_me() -> None:
     depthMeC = np.asarray(depthMeC)
 
     # sampling 3000 points
-    if len(depthW) > 3000:
+    if len(depthW) > 4000:
         i = GEN.choice(len(depthW), size=3000, replace=False)
         depthW = depthW[i]
         depthC = depthC[i]
@@ -281,17 +284,20 @@ def plot_depth_overall_vs_me() -> None:
     xy = np.vstack([depthW, depthMeW])
     d = gaussian_kde(xy)(xy)
     idx = d.argsort()
-    x, y, d = depthMeW[idx], depthW[idx], d[idx]
+    x, y, d = depthW[idx], depthMeW[idx], d[idx]
 
     fig, ax = plt.subplots(figsize=(5, 4))
     plt.scatter(x, y, c=d, s=1, cmap='Spectral_r')
-    abline(0, 1, color=COL_gray)
+    abline(0, 1, color=COL_gray, label='slope=1')
+    slope = simLinearReg0(x, y)
+    abline(0, slope, color='lightgray', label=f'slope={slope:.2f}')
     lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
     plt.ylim(0, lim)
     plt.xlim(0, lim)
+    plt.legend()
     plt.colorbar()
-    plt.ylabel('mean depth of Watson strand')
-    plt.xlabel('mean methylation depth of Watson strand')
+    plt.xlabel('mean depth of Watson strand')
+    plt.ylabel('mean methylation depth of Watson strand')
     
     filename = f'{img_dir}/depth-vs-meth-depth-of-watson-strand'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
@@ -303,19 +309,104 @@ def plot_depth_overall_vs_me() -> None:
     xy = np.vstack([depthC, depthMeC])
     d = gaussian_kde(xy)(xy)
     idx = d.argsort()
-    x, y, d = depthMeC[idx], depthC[idx], d[idx]
+    x, y, d = depthC[idx], depthMeC[idx], d[idx]
 
     fig, ax = plt.subplots(figsize=(5, 4))
     plt.scatter(x, y, c=d, s=1, cmap='Spectral_r')
-    abline(0, 1, color=COL_gray)
     lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
     plt.ylim(0, lim)
     plt.xlim(0, lim)
+    abline(0, 1, color=COL_gray, label='slope=1')
+    slope = simLinearReg0(x, y)
+    abline(0, slope, linewidth=1, color='lightgray', label=f'slope={slope:.2f}')
+    ax.text(ax.get_xlim()[1], ax.get_ylim()[0], f'slope={slope:.2f}', horizontalalignment='right', verticalalignment='bottom')
+    plt.legend()
     plt.colorbar()
-    plt.ylabel('mean depth of Crick strand')
-    plt.xlabel('mean methylation depth of Crick strand')
+    plt.xlabel('mean depth of Crick strand')
+    plt.ylabel('mean methylation depth of Crick strand')
 
     filename = f'{img_dir}/depth-vs-meth-depth-of-crick-strand'
+    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    plt.close()
+    return None
+
+def plot_depth_AT_vs_CG() -> None:
+    dict_binning = params['dict_binning']
+    img_dir = params['img_dir']
+    save_svg = params['save_svg']
+
+    depthCGW = []
+    depthCGC = []
+    depthATW = []
+    depthATC = []
+    value: BinCov = BinCov()
+    for key, value in dict_binning.items():
+        value = dict_binning[key]
+        if value.nCandG >= 10 and value.nAandT >= 10:
+            depthCGW.append(value.dpCandGW/value.nCandG)
+            depthCGC.append(value.dpCandGC/value.nCandG)
+            depthATW.append(value.dpAandTW/value.nAandT)
+            depthATC.append(value.dpAandTC/value.nAandT)
+    depthCGW = np.asarray(depthCGW)
+    depthCGC = np.asarray(depthCGC)
+    depthATW = np.asarray(depthATW)
+    depthATC = np.asarray(depthATC)
+
+    # sampling 3000 points
+    if len(depthCGW) > 4000:
+        i = GEN.choice(len(depthCGW), size=3000, replace=False)
+        depthCGW = depthCGW[i]
+        depthCGC = depthCGC[i]
+        depthATW = depthATW[i]
+        depthATC = depthATC[i]
+
+    #### Watson
+    xy = np.vstack([depthCGW, depthATW])
+    d = gaussian_kde(xy)(xy)
+    idx = d.argsort()
+    x, y, d = depthCGW[idx], depthATW[idx], d[idx]
+
+    fig, ax = plt.subplots(figsize=(5, 4))
+    plt.scatter(x, y, c=d, s=1, cmap='Spectral_r')
+    abline(0, 1, color=COL_gray, label='slope=1')
+    # slope, intercept, *_ = linregress(x, y)
+    # abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
+    lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
+    plt.ylim(0, lim)
+    plt.xlim(0, lim)
+    plt.legend()
+    plt.colorbar()
+    plt.xlabel('mean C/G depth of Watson strand')
+    plt.ylabel('mean A/T depth of Watson strand')
+    
+    filename = f'{img_dir}/depth-AT-vs-CG-of-watson-strand'
+    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+    if save_svg:
+        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+    plt.close()
+
+    #### Crick
+    xy = np.vstack([depthCGC, depthATC])
+    d = gaussian_kde(xy)(xy)
+    idx = d.argsort()
+    x, y, d = depthCGC[idx], depthATC[idx], d[idx]
+
+    fig, ax = plt.subplots(figsize=(5, 4))
+    plt.scatter(x, y, c=d, s=1, cmap='Spectral_r')
+    lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
+    plt.ylim(0, lim)
+    plt.xlim(0, lim)
+    abline(0, 1, color=COL_gray, label='slope=1')
+    # slope, intercept, *_ = linregress(x, y)
+    # abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
+    plt.legend()
+    plt.colorbar()
+    plt.xlabel('mean C/G depth of Crick strand')
+    plt.ylabel('mean A/T depth of Crick strand')
+
+    filename = f'{img_dir}/depth-AT-vs-CG-of-crick-strand'
     plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
     if save_svg:
         plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')

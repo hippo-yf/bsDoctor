@@ -27,9 +27,10 @@ def compt_MT() -> None:
 
     params['dict_MT'] = dict_MT
 
-    # whether lambda DNA is sequenced
-    if dict_MT.cov.sum() < 10:
+    # whether mt DNA is effectively sequenced
+    if dict_MT.covnC < 10:
         data['mt_is_covered'] = 0
+        return None
     else:
         data['mt_is_covered'] = 1
 
@@ -39,7 +40,7 @@ def compt_MT() -> None:
     data['mt_length'] = fi(dict_MT.length.sum())
     data['mt_covn'] = fi(dict_MT.cov.sum())
     data['mt_cov_prop'] = fp(dict_MT.cov.sum()/dict_MT.length.sum())
-    data['mt_bin_size'] = fi(dict_MT.length.max())
+    # data['mt_bin_size'] = fi(dict_MT.length.max())
     
     i = dict_MT.length > 0
     mt_median_dp = np.median(dict_MT.dp[i]/dict_MT.length[i])

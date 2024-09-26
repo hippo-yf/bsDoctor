@@ -43,7 +43,15 @@ def update_binning_nuclear(intv: IntervalCoverage) -> None:
         base = intv.base[i]
         # if intv.base[i] == 'N': continue
         if base not in BASES: continue
-        # depth = covd[i] # atcg depth
+        
+        if base == 'A' or base == 'T':
+            value.nAandT += 1
+            value.dpAandTW += intv.covWsum[i]
+            value.dpAandTC += intv.covCsum[i]
+        else:
+            value.nCandG += 1
+            value.dpCandGW += intv.covWsum[i]
+            value.dpCandGC += intv.covCsum[i]
 
         # value.covW[:min(MAXDEPTH, intv.covWsum[i])] += 1
         # value.covC[:min(MAXDEPTH, intv.covCsum[i])] += 1

@@ -213,3 +213,9 @@ def include_file(name, fdir = 'report/', b64=False):
     except (OSError, IOError) as e:
         # logger.error(f"Could not include file '{name}': {e}")
         pass
+
+def simLinearReg0(x: NDArray, y: NDArray) -> float:
+    """
+    simple linear regression with 0 intercept
+    """
+    return float(np.dot(x, y) / np.sum(x**2))

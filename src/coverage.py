@@ -312,7 +312,7 @@ class BinCov():
         MAX_DP_BY_FIG = params['MAX_DP_BY_FIG'] + 1
 
         # init = np.zeros((MAXDEPTH,), dtype=np.int64)
-        # init2 = np.zeros((MAXDEPTH,), dtype=np.int16)
+        # init2 = np.zeros((MAXDEPTH,), dtype=int16)
  
         self.length: int = 0 # bases sampled
         # self.nCG: int = 0 # CGs/CHGs/CHHs in the genome
@@ -328,6 +328,13 @@ class BinCov():
         # self.dp: int = 0 # total DP
         self.dpW: int = 0
         self.dpC: int = 0
+        self.dpAandTW: int = 0 # total dp of A/T bases
+        self.dpAandTC: int = 0
+        self.dpCandGW: int = 0 # total dp of C/G bases
+        self.dpCandGC: int = 0
+        self.nAandT: int = 0 # A/T bases
+        self.nCandG: int = 0 # C/G bases
+
         # self.dpCG: int = 0 # totol CG dp
         self.dpCGW: int = 0
         self.dpCGC: int = 0
@@ -486,8 +493,8 @@ class MyAlignmentFile(pysam.AlignmentFile):
         if swap_strand:
             cov_watson, cov_crick = cov_crick, cov_watson
         return Coverage(
-            watson=np.array(cov_watson, dtype=np.int32),
-            crick=np.array(cov_crick, dtype=np.int32)
+            watson=np.array(cov_watson, dtype=int32),
+            crick=np.array(cov_crick, dtype=int32)
             )
     
     def detailedCoverage(self, interval: GenomicInterval) -> IntervalCoverage:
@@ -502,15 +509,15 @@ class MyAlignmentFile(pysam.AlignmentFile):
 
         # bam coverages
         covs = self.Watson_Crick_coverage(interval)
-        cov_sum_W = np.sum(covs.watson, axis=0, dtype=np.int32)
-        cov_sum_C = np.sum(covs.crick, axis=0, dtype=np.int32)
+        cov_sum_W = np.sum(covs.watson, axis=0, dtype=int32)
+        cov_sum_C = np.sum(covs.crick, axis=0, dtype=int32)
 
         CG_contexts = []
         cgkmers = []
         length = interval.end - interval.start
-        covMeths = np.zeros((length,), dtype=np.int32)
+        covMeths = np.zeros((length,), dtype=int32)
         # meth = np.array([math.nan]*length, dtype=np.float32)
-        meth = np.zeros((length,), dtype=np.int16)
+        meth = np.zeros((length,), dtype=int16)
         # bin = np.zeros((length,), dtype=np.int32)
 
         # bin index
@@ -522,7 +529,6 @@ class MyAlignmentFile(pysam.AlignmentFile):
             # skip A/Ts
             j = i + cgkmerSize//2
             base = bases[j]
-            # if base == 'A' or base == 'T' or base == 'N': continue
 
             # # bin index
             # if i + interval.start >= (kbin + 1) * binSize:
@@ -538,25 +544,23 @@ class MyAlignmentFile(pysam.AlignmentFile):
             if base == 'C':
                 # CG/CHG/CHH
                 bases_con = bases[j:(j+consize)]
-                # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_FORWARD_HASH[bases_con]
                 CG_context = CG_CONTEXT_FORWARD_HASH[bases_con] if all([b in BASES for b in bases_con]) else '-' 
 
                 # dinucleatide context CA/CT/...
                 # dicontext = bases[j:(j+2)]
                 nCT = covs.watson[1,i] + covs.watson[3,i] # order of ACGT
                 nC = covs.watson[1,i]
-                if nCT > 0: meth[i] = np.int16(nC*10_000/nCT )
+                if nCT > 0: meth[i] = int16(nC*10_000/nCT )
                 # CG kmer
                 if CG_context == 'CG':
                     cgkmer = bases[(j-2):(j+4)]
                     if 'N' in cgkmer: cgkmer = '-'
             elif base == 'G':
                 bases_con = bases[(j-consize+1):(j+1)]
-                # CG_context = '-' if 'N' in bases_con else CG_CONTEXT_REVERSE_HASH[bases_con]
                 CG_context = CG_CONTEXT_REVERSE_HASH[bases_con] if all([b in BASES for b in bases_con]) else '-' 
                 nC = covs.crick[2,i]
                 nCT = covs.crick[0,i] + covs.crick[2,i]
-                if nCT > 0: meth[i] = np.int16(nC*10_000/nCT )
+                if nCT > 0: meth[i] = int16(nC*10_000/nCT )
                 if CG_context == 'CG':
                     kmer = bases[(j-3):(j+3)]
                     if 'N' in kmer: 
@@ -630,7 +634,7 @@ class MyAlignmentFile(pysam.AlignmentFile):
                 else:
                     nC = covs.crick[2,i]
                     nCT = covs.crick[0,i] + covs.crick[2,i]
-                meth_ratio = np.int16(nC/nCT*10_000) if nCT > 0 else 0 
+                meth_ratio = int16(nC/nCT*10_000) if nCT > 0 else 0 
                 meth[i] = meth_ratio
                 covMeths[i] = nCT
 

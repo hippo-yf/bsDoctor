@@ -134,13 +134,21 @@ $(function () {
     }
     $("input[name='radio-meth-vs-missing-rate']").change(img_meth_vs_missing_rate);
 
-    // depth vs meth depth
-    function img_depth_vs_meth_depth() {
-        let strand = $("input[name='radio-depth-vs-meth-depth']:checked").val();
-        file = `img/depth-vs-meth-depth-of-${strand}-strand.png`
-        $("#img-depth-vs-meth-depth").attr("src", file);
+    // // depth vs meth depth
+    // function img_depth_vs_meth_depth() {
+    //     let strand = $("input[name='radio-depth-vs-meth-depth']:checked").val();
+    //     file = `img/depth-vs-meth-depth-of-${strand}-strand.png`
+    //     $("#img-depth-vs-meth-depth").attr("src", file);
+    // }
+    // $("input[name='radio-depth-vs-meth-depth']").change(img_depth_vs_meth_depth);
+
+    // depth AT vs CG
+    function img_depth_AT_vs_CG() {
+        let strand = $("input[name='radio-depth-AT-vs-CG']:checked").val();
+        file = `img/depth-AT-vs-CG-of-${strand}-strand.png`
+        $("#img-depth-AT-vs-CG").attr("src", file);
     }
-    $("input[name='radio-depth-vs-meth-depth']").change(img_depth_vs_meth_depth);
+    $("input[name='radio-depth-AT-vs-CG']").change(img_depth_AT_vs_CG);
 
     // meth vs cytosine density
     function img_meth_vs_Cs_density() {

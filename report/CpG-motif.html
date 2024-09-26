@@ -8,6 +8,7 @@ diagnosis of sequencing coverage and DNAme level bias of CpG-motif.
 
 <section id="CpG-motif">
     <h2>CpG-motif</h2>
+
     <article id="CpG-kmer-frequency">
         <h3>CpG-motif frequency</h3>
         <p>
@@ -17,8 +18,8 @@ diagnosis of sequencing coverage and DNAme level bias of CpG-motif.
             CpG-motif as the fold of mean proportion of 1/256 ≈ 0.0039.
         </p>
         <img src="img/CpG-motif-frequency-dist.png" alt="" height=250px" />
-
     </article>
+
     <article id="stranded-CpG-kmer-frequency">
         <h3>Stranded CpG-motif frequency</h3>
         <p>Relative frequency on two strands.</p>
@@ -26,20 +27,23 @@ diagnosis of sequencing coverage and DNAme level bias of CpG-motif.
         <div class="img" id="plot-freq-on-two-strands" style="width: 450px; height: 350px"></div>
         <div class="caption" link="#plot-freq-on-two-strands">Find the strand preference of CpG-motif.</div>
     </article>
+
     <article id="stranded-CpG-kmer-meth">
-        <h3>Stranded CpG-motif methylation</h3>
+        <h3>Stranded CpG-motif DNAme level</h3>
         <p>Mean methylation level a CpG-motif on two strands (depth ≥ 1).</p>
         <div class="img" id="plot-kmer-meth-on-two-strands" style="width: 450px; height: 350px"></div>
         <div class="caption" link="#plot-kmer-meth-on-two-strands">Find the stranded methylation difference of CpG-motif.</div>
         <!-- <img src="img/kmer-stranded-me-dp1.png" alt="" width="500px" /> -->
     </article>
+
     <article id="CpG-kmer-depth-vs-frequency">
         <h3>Mean depth vs frequency</h3>
         <div class="img" id="plot-depth-vs-freq" style="width: 450px; height: 350px"></div>
         <!-- <img src="img/kmer-mean-depth-vs-freq.png" alt="" width="500px" /> -->
     </article>
+
     <article id="CpG-kmer-meth-vs-frequency">
-        <h3>Mean methylation vs frequency</h3>
+        <h3>Mean DNAme level vs frequency</h3>
         <p>
             The methylation (depth ≥ 1) of a stranded CpG-motif is indicated by the central cytosine
             (NN<strong>C</strong>GNN).
@@ -47,6 +51,7 @@ diagnosis of sequencing coverage and DNAme level bias of CpG-motif.
         <div class="img" id="plot-kmer-meth-vs-freq" style="width: 450px; height: 350px"></div>
         <!-- <img src="img/kmer-meth-vs-frequency.png" alt="" width="500px" /> -->
     </article>
+
     <article id="CpG-kmer-coverage-vs-depth">
         <h3>Coverage rate vs read depth</h3>
         <p>
@@ -60,8 +65,9 @@ diagnosis of sequencing coverage and DNAme level bias of CpG-motif.
               width="60%"
             /> -->
     </article>
+
     <article id="CpG-kmer-meth-vs-depth">
-        <h3>Mean methylation vs depth</h3>
+        <h3>Mean DNAme level vs depth</h3>
         <p>
             Each line represents the mean methylation of specific CpG-motif
             with different thresholds of depth.

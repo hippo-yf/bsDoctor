@@ -28,8 +28,9 @@ def compt_lambda() -> None:
     params['dict_lambda'] = dict_lambda
 
     # whether lambda DNA is sequenced
-    if dict_lambda.cov.sum() < 10:
+    if dict_lambda.covnC < 10:
         data['lambda_is_covered'] = 0
+        return None
     else:
         data['lambda_is_covered'] = 1
 
@@ -39,7 +40,7 @@ def compt_lambda() -> None:
         data['lambda_length'] = fi(dict_lambda.length.sum())
         data['lambda_covn'] = fi(dict_lambda.cov.sum())
         data['lambda_cov_prop'] = fp(dict_lambda.cov.sum()/dict_lambda.length.sum())
-        data['lambda_size'] = fi(dict_lambda.length.max())
+        # data['lambda_size'] = fi(dict_lambda.length.max())
 
         i = dict_lambda.length > 0
         lambda_median_dp = np.median(dict_lambda.dp[i]/dict_lambda.length[i])
@@ -52,10 +53,12 @@ def compt_lambda() -> None:
         ## bs rate of lambda DNA
         bs_rate_lambda = -1
         data['bsrate_lambda'] = "nan"
-        if dict_lambda.covnC > 100: # at least 100 Cs covered
-            bs_rate_lambda = 1 - dict_lambda.meC/dict_lambda.covnC/10000
-            params['bs_rate_lambda'] = bs_rate_lambda # for last choice of conversion rate
-            data['bsrate_lambda'] = fp(bs_rate_lambda)
+        lambda_me = float(dict_lambda.meC/dict_lambda.covnC/10000)
+        data['lambda_me'] = ff(lambda_me)
+        # if dict_lambda.covnC >= 10: # at least 10 Cs covered
+        bs_rate_lambda = 1 - lambda_me
+        params['bs_rate_lambda'] = bs_rate_lambda # for last choice of conversion rate
+        data['bsrate_lambda'] = fp(bs_rate_lambda)
             
         # base error rate by lambda DNA
         i = dict_lambda.dp20 > 0

@@ -66,18 +66,14 @@ diagnosis of coverage bias of nuclear chromosomes.
     </article>
 
     <article id="cg-depth-distribution">
-        <h3>Cytosine depth distribution and coverage</h3>
+        <h3>Methylation depth distribution and coverage</h3>
         <p>
-            Only the reads contributing to the calculation of DNAme level are
-            included.
+            Methylation read depth of cytosines: only the reads contributing to the calculation of DNAme level are included, namely, C/T reads from Watson strand or G/A reads from Crick strand.
         </p>
 
         <div class="row">
             <div class="col text-center">
-                <p>Methylation read depth <sup id="cap-16" class="question-marker">?</sup></p>
-                <div class="caption" link="#cap-16">
-                    Methylation read depth: only C/T reads of Watson strand or G/A reads of Crick strand.
-                </div>
+                <p>Methylation read depth</p>
                 <img src="img/genome-CG-depth-distribution.png" alt="" width="400px" id="img-Cs-depth-dist" />
             </div>
             <div class="col text-center">
@@ -105,6 +101,7 @@ diagnosis of coverage bias of nuclear chromosomes.
         </div>
     </article>
 
+{#
     <article id="depth-vs-meth-depth">
         <h3>Methylation depth vs total depth</h3>
         <p>Available reads for methyaltion calculation is a subset of total reads.</p>
@@ -128,7 +125,32 @@ diagnosis of coverage bias of nuclear chromosomes.
             </div>
         </div>
     </article>
-    
+#}
+
+    <article id="depth-AT-vs-CG">
+        <h3>Depth of A/T vs C/G bases</h3>
+        <p>Each point represents mean values of a binning window. </p>
+        <div class="row">
+            <div class="col-9">
+                <img src="img/depth-AT-vs-CG-of-watson-strand.png" alt="" width="400px" id="img-depth-AT-vs-CG" />
+                <div class="caption" link="#img-depth-AT-vs-CG">A/T bases are usually less covered than C/G bases. Check the difference.</div>
+            </div>
+            <div class="col legend">
+                <p class="label">Strand</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-depth-AT-vs-CG"
+                        id="radio-depth-AT-vs-CG-1" value="watson" checked />
+                    <label class="form-check-label" for="radio-depth-AT-vs-CG-1">Watson</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio-depth-AT-vs-CG"
+                        id="radio-depth-AT-vs-CG-2" value="crick" />
+                    <label class="form-check-label" for="radio-depth-AT-vs-CG-2">Crick</label>
+                </div>
+            </div>
+        </div>
+    </article>
+
     <article id="cov-rate-vs-cg-density">
         <h3>Cytosine coverage vs cytosine densities</h3>
         <p>
@@ -187,7 +209,7 @@ diagnosis of coverage bias of nuclear chromosomes.
 
     <article id="depth-vs-cg-density">
         <h3>Mean depth vs cytosine density</h3>
-        <p>For each 100kbp binning window, mean read depth of all sites are plotted against cytosine density in this
+        <p>For each {{alldata.bin_size}}-bp binning window, mean read depth of all sites are plotted against cytosine density in this
             window with colour indicating the density of windows.</p>
         <div class="row">
             <div class="col-9">

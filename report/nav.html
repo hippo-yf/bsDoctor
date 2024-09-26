@@ -8,41 +8,22 @@ The side navigation.
 
 <div class="col-2">
   <aside class="bd-sidebar">
+
     <div class="accordion" id="accordionPanels">
-      
+
       <div class="accordion-item">
         <!-- <div class="accordion-header"> -->
         <button class="accordion-button collapsed" type="button">
           <a class="nav-link" href="#Summary">Summary</a>
         </button>
-
       </div>
 
       {% if alldata.include_quality == 1 %}
       <div class="accordion-item">
         <div class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#panel-quality" aria-expanded="false" aria-controls="panel-quality">
-            Base/read quality
+          <button class="accordion-button collapsed" type="button">
+            <a class="nav-link" href="#base-read-quality">Base/read quality</a>
           </button>
-        </div>
-        <div id="panel-quality" class="accordion-collapse collapse">
-          <div class="accordion-body">
-            <ul class="nav flex-column nav-underline">
-              <li class="nav-item">
-                <a class="nav-link" href="#base-quality">base quality</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#read-length">read length</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#mapping-quality">read mapping quality</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#cigar">CIGAR distribution</a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
       {% endif %}
@@ -202,16 +183,22 @@ The side navigation.
                 <a class="nav-link" href="#binning-coverage">Binning coverage</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#depth-distribution">Depth distribution</a>
+                <a class="nav-link" href="#depth-of-two-strands">Read depth of two strands</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#Genome-coverage">Genome coverage</a>
+                <a class="nav-link" href="#depth-distribution">Depth distribution and coverage</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#cg-depth-distribution">CpG depth distribution</a>
+                <a class="nav-link" href="#cg-depth-distribution">Methylation depth distribution and coverage</a>
+              </li>              
+              <li class="nav-item">
+                <a class="nav-link" href="#depth-AT-vs-CG">Depth of A/T vs C/G bases</a>
+              </li>              
+              <li class="nav-item">
+                <a class="nav-link" href="#cov-rate-vs-cg-density">Cytosine coverage vs cytosine densities</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#cg-coverage">CpG coverage rate</a>
+                <a class="nav-link" href="#depth-vs-cg-density">Mean depth vs cytosine density</a>
               </li>
             </ul>
           </div>
@@ -230,16 +217,13 @@ The side navigation.
           <div class="accordion-body">
             <ul class="nav flex-column nav-underline">
               <li class="nav-item">
-                <a class="nav-link" href="#genome-feature-methylation">Methylation levels of genome features</a>
+                <a class="nav-link" href="#meth-wholegenome">Whole genome</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#chr-methylation">Methylation levels of chromosomes</a>
+                <a class="nav-link" href="#chr-methylation">Whole chromosome/contig</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#binning-methylation">Binning methylation</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#pan-gene-methylation">Pan-gene methylation</a>
+                <a class="nav-link" href="#binning-methylation">Binning DNAme level</a>
               </li>
             </ul>
           </div>
@@ -288,19 +272,19 @@ The side navigation.
           <div class="accordion-body">
             <ul class="nav flex-column nav-underline">
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-stranded-depth">CpG depth strandness</a>
+                <a class="nav-link" href="#CpG-stranded-depth">CpG read depth of two strands</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-depth-diff">Stranded depth difference</a>
+                <a class="nav-link" href="#CpG-depth-diff">Depth difference between strands</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#CpG-double-stranded-coverage">CpGs of double-stranded coverage</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-stranded-meth">CpG methylation strandness</a>
+                <a class="nav-link" href="#CpG-stranded-meth">CpG DNAme level of two strands</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-stranded-meth-diff">CpG stranded methylation difference</a>
+                <a class="nav-link" href="#CpG-stranded-meth-diff">DNAme level difference between strands</a>
               </li>
             </ul>
           </div>
@@ -325,13 +309,19 @@ The side navigation.
                 <a class="nav-link" href="#stranded-CpG-kmer-frequency">Stranded CpG-motif frequency</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-meth-vs-frequency">CpG-motif methylation vs frequency</a>
+                <a class="nav-link" href="#stranded-CpG-kmer-meth">Stranded CpG-motif DNAme level</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-coverage-vs-depth">CpG-motif coverage vs depth</a>
+                <a class="nav-link" href="#CpG-kmer-depth-vs-frequency">Mean depth vs frequency</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#CpG-kmer-meth-vs-depth">CpG-motif methylation vs depth</a>
+                <a class="nav-link" href="#CpG-kmer-meth-vs-frequency">Mean DNAme level vs frequency</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-coverage-vs-depth">Coverage rate vs read depth</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#CpG-kmer-meth-vs-depth">Mean DNAme level vs depth</a>
               </li>
             </ul>
           </div>

@@ -32,7 +32,7 @@ def compt_plastid() -> None:
     params['dict_plastid'] = dict_plastid
 
     # whether plastid DNA is sequenced
-    if dict_plastid.cov.sum() < 10:
+    if dict_plastid.covnC < 10:
         data['plastid_is_covered'] = 0
     else:
         data['plastid_is_covered'] = 1
@@ -43,7 +43,7 @@ def compt_plastid() -> None:
         data['plastid_length'] = fi(dict_plastid.length.sum())
         data['plastid_covn'] = fi(dict_plastid.cov.sum())
         data['plastid_cov_prop'] = fp(dict_plastid.cov.sum()/dict_plastid.length.sum())
-        data['plastid_size'] = fi(dict_plastid.length.max())
+        # data['plastid_size'] = fi(dict_plastid.length.max())
 
         i = dict_plastid.length > 0
         plastid_median_dp = float(np.median(dict_plastid.dp[i]/dict_plastid.length[i]))
@@ -56,9 +56,11 @@ def compt_plastid() -> None:
         ## bs rate of plastid DNA
         bs_rate_plastid = -1
         data['bsrate_plastid'] = "nan"
-        if dict_plastid.covnC > 100: # at least 100 Cs covered
-            bs_rate_plastid = 1 - dict_plastid.meC/dict_plastid.covnC/10000
-            data['bsrate_plastid'] = fp(bs_rate_plastid)
+        plastid_me = float(dict_plastid.meC/dict_plastid.covnC/10000)
+        data['plastid_me'] = ff(plastid_me)
+        # if dict_plastid.covnC > 100: # at least 100 Cs covered
+        bs_rate_plastid = 1 - plastid_me
+        data['bsrate_plastid'] = fp(bs_rate_plastid)
             
         # base error rate by plastid DNA
         i = dict_plastid.dp20 > 0
@@ -94,17 +96,17 @@ def plot_plastid_depth_binning() -> None:
     axs[0].plot(x, np.repeat(np.median(yw), len(x)), '--', c='gray')
     axs[0].scatter(x, np.fmin(ylim, yw), c=COLS[1], s=1)
     axs[0].set_ylim(0, ylim)
-    axs[0].text(axs[0].get_xlim()[1], axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[0].text(axs[0].get_xlim()[1], axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='right', verticalalignment='top')
 
     axs[1].plot(x, np.repeat(np.median(yc), len(x)), '--', c='gray')
     axs[1].scatter(x, np.fmin(ylim, yc), c=COLS[0], s=1)
     axs[1].set_ylim(0, ylim)
-    axs[1].text(axs[1].get_xlim()[1], axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[1].text(axs[1].get_xlim()[1], axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='right', verticalalignment='top')
     axs[1].set_ylabel('read depth')
 
     axs[2].plot(x, np.repeat(np.median(yd), len(x)), '--', c='gray')
     axs[2].scatter(x, np.fmin(ylim, yd), c=COL_gray, s=1)
-    axs[2].text(axs[2].get_xlim()[1], axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='left', verticalalignment='top')
+    axs[2].text(axs[2].get_xlim()[1], axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='right', verticalalignment='top')
 
     plt.xlabel(f'coordinate ({prefix})')
 

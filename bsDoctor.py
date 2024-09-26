@@ -92,6 +92,7 @@ def config_params_further() -> None:
             params['nuclear_sampling_step'] = step_size
             params['nuclear_sampling_spacing'] = 0
 
+    print(f'nuclear bin size: {params['binSize']}; sampling: {params['nuclear_sampling_step']}, {params['nuclear_sampling_spacing']}')
 
     # prefix
     a, b = prefixBpSize(params['binSize'])
@@ -118,17 +119,19 @@ def config_params_further() -> None:
         binSizeContig[chr_lambda] = binSize_lambda[0]
         binsContig[chr_lambda] = binSize_lambda[1]
         params['binSize_lambda'] = binSize_lambda
+        data['binSize_lambda'] = fi(binSize_lambda[0])
     if data['include_mt']:
         binSize_MT = getBins(reference_length(chr_MT), bins_mt)
         binSizeContig[chr_MT] = binSize_MT[0]
         binsContig[chr_MT] = binSize_MT[1]
         params['binSize_MT'] = binSize_MT
-        
+        data['binSize_MT'] = fi(binSize_MT[0])
     if data['include_plastid']:
         binSize_plastid = getBins(reference_length(chr_plastid), bins_plastid)
         binSizeContig[chr_plastid] = binSize_plastid[0]
         binsContig[chr_plastid] = binSize_plastid[1]
         params['binSize_plastid'] = binSize_plastid
+        data['binSize_plastid'] = fi(binSize_plastid[0])
 
     # binSizeContig = {chr_lambda: binSize_lambda[0], chr_MT: binSize_MT[0], chr_plastid: binSize_plastid[0]}
     # binsContig = {chr_lambda: binSize_lambda[1], chr_MT: binSize_MT[1], chr_plastid: binSize_plastid[1]}
@@ -136,6 +139,9 @@ def config_params_further() -> None:
     params['binSizeContig'] = binSizeContig
     params['binsContig'] = binsContig
     
+    print(f'{binSizeContig=}', f'{binsContig=}')
+
+
     # ('chr1', 23) -> BinCov()
     dict_binning = dict()
     params['dict_binning'] = dict_binning
@@ -233,7 +239,8 @@ def compute_and_plot():
     plot_covrate_vs_depth_of_whole_genome()
     plot_depth_dist_of_whole_genome()
     plot_depth_watson_vs_crick()
-    plot_depth_overall_vs_me()
+    # plot_depth_overall_vs_me()
+    plot_depth_AT_vs_CG()
 
     # CpG-motif
     if data['include_motif']:
@@ -288,5 +295,4 @@ if __name__ == "__main__":
         pickle.dump(data, fd)
 
     write_report()
-    
-    
+        

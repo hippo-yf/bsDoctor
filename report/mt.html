@@ -12,7 +12,7 @@ diagnosis of reads mapped to mitochondrial DNA.
     <article id="mt-coverage">
         <ul>
             <li>{{ alldata.mt_length }} bps in total, whereas {{ alldata.mt_cov_prop }}% are covered ({{
-                alldata.mt_covn }} bp
+                alldata.mt_covn }} bps
                 for depth ≥ 1);</li>
             <li>{{ alldata.mt_nCorG }} cytosines in total, whereas {{ alldata.mt_covnCorG_prop }}% are covered ({{
                 alldata.mt_covnCorG }} cytosines for
@@ -20,7 +20,7 @@ diagnosis of reads mapped to mitochondrial DNA.
         </ul>
         <h3>Read depth</h3>
         <p>
-            Mean read depth of {{ alldata.mt_bin_size }}bp binning windows for Watson strand (top), Crick strand
+            Mean read depth of {{ alldata.mt_bin_size }}-bp binning windows for Watson strand (top), Crick strand
             (middle), and double strands (bottom).
         </p>
         <img src="img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
@@ -66,7 +66,7 @@ diagnosis of reads mapped to mitochondrial DNA.
             preparation, sequencing, and alignment, can be estimated
             <sup id="cap-9" class="question-marker">?</sup> from inconsistent
             bases mapped to MT genome. From the error rate distribution of
-            20-bp binning windows, the average error rate is $$ \text{error rate} =
+            {{alldata.binSize_MT}}-bp binning windows, the average error rate is $$ \text{error rate} =
             \frac{\text{bases different with dominating base}}{\text{total read
             bases}} = {{ alldata.err_rate_mt}} \%. $$
         </p>
