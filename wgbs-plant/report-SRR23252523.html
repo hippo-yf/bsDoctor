@@ -2117,7 +2117,7 @@ body {
         </p>
         <img src="img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
         <div class="caption" link="#cap-15">
-            Check the uniformness of read coverage.
+            The extreme values are truncated to the <em>y</em>-axis limit of 0.99 quantile of MT bins.
         </div>
     </article>
 
@@ -2184,7 +2184,7 @@ body {
         </p>
         <img src="img/depth-bin-plastid.png" alt="" width="300px" id="img-depth-bin-plastid" />
         <div class="caption" link="#img-depth-bin-plastid">
-            Check the uniformness of read coverage.
+            The extreme values are truncated to the <em>y</em>-axis limit of 0.99 quantile of plastid bins.
         </div>
     </article>
 
@@ -3004,40 +3004,40 @@ body {
 
   <!-- custom JS -->
   <script type="text/javascript">
-var bin_img_is_updated = true;
-
-function setWidth(id, dpiratio = 300 / 96) {
-    let myImg = document.querySelector(id);
-    let width = myImg.naturalWidth / dpiratio;
-    widthnew = Math.min(930, Math.floor(width));
-    $(id).width(widthnew + 'px');
-}
-
-function placeCaptions() {
-    // $("#col-caption").empty();  // reset
-    $(".caption").each(function (i, e) {
-        $("#col-caption").append($(e));
-        link = $(e).attr('link');
-        pos = $(e).offset();
-        pos.top = $(link).offset().top;
-        $(e).offset(pos);
-    });
-}
-
-function resetCaptions() {
-    if (!bin_img_is_updated) return;
-    $(".caption").each(function (i, e) {
-        link = $(e).attr('link');
-        pos = $(e).offset();
-        pos.top = $(link).offset().top;
-        $(e).offset(pos);
-    });
-    bin_img_is_updated = false;
-}
-
-
 // after page loading finished
 $(function () {
+        
+    // flag to update locations of captions
+    var bin_img_is_updated = true;
+
+    function setWidth(id, dpiratio = 300 / 96) {
+        let myImg = document.querySelector(id);
+        let width = myImg.naturalWidth / dpiratio;
+        widthnew = Math.min(930, Math.floor(width));
+        $(id).width(widthnew + 'px');
+    }
+
+    function placeCaptions() {
+        // $("#col-caption").empty();  // reset
+        $(".caption").each(function (i, e) {
+            $("#col-caption").append($(e));
+            link = $(e).attr('link');
+            pos = $(e).offset();
+            pos.top = $(link).offset().top;
+            $(e).offset(pos);
+        });
+    }
+
+    function resetCaptions() {
+        if (!bin_img_is_updated) return;
+        $(".caption").each(function (i, e) {
+            link = $(e).attr('link');
+            pos = $(e).offset();
+            pos.top = $(link).offset().top;
+            $(e).offset(pos);
+        });
+        bin_img_is_updated = false;
+    }
     
     // add number marker to headers
     $("#main-content").children().filter('section').each(function (i, e) {
@@ -3244,7 +3244,6 @@ $(function () {
         $("#img-pan-gene-noncoding").attr("src", `img/pan-gene-meth-other-noncoding-${context}.png`);
     }
     $("input[name='radio-pangene-noncoding']").change(img_pangene_noncoding);
-
 
     // update locations of captions, `img onload` fails
     document.querySelector('body').onwheel = resetCaptions;

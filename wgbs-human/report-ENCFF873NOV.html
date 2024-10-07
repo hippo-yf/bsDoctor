@@ -2115,7 +2115,7 @@ body {
         </p>
         <img src="img/depth-bin-MT.png" alt="" width="300px" id="cap-15" />
         <div class="caption" link="#cap-15">
-            Check the uniformness of read coverage.
+            The extreme values are truncated to the <em>y</em>-axis limit of 0.99 quantile of MT bins.
         </div>
     </article>
 
@@ -2191,7 +2191,7 @@ body {
         </p>
         <img src="img/depth-bin-lambda.png" alt="" width="600px" id="cap-10" />
         <div class="caption" link="#cap-10">
-            Check the uniformness of coverage depth
+            The extreme values are truncated to the <em>y</em>-axis limit of 0.99 quantile.
         </div>
     </article>
     
@@ -3001,6 +3001,7 @@ body {
 
   <!-- custom JS -->
   <script type="text/javascript">
+// flag to update locations of captions
 var bin_img_is_updated = true;
 
 function setWidth(id, dpiratio = 300 / 96) {
@@ -3241,7 +3242,6 @@ $(function () {
         $("#img-pan-gene-noncoding").attr("src", `img/pan-gene-meth-other-noncoding-${context}.png`);
     }
     $("input[name='radio-pangene-noncoding']").change(img_pangene_noncoding);
-
 
     // update locations of captions, `img onload` fails
     document.querySelector('body').onwheel = resetCaptions;
