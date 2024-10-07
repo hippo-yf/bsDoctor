@@ -1,7 +1,40 @@
 
-// after loading finished
-$(function () {
+// flag to update locations of captions
+var bin_img_is_updated = true;
 
+function setWidth(id, dpiratio = 300 / 96) {
+    let myImg = document.querySelector(id);
+    let width = myImg.naturalWidth / dpiratio;
+    widthnew = Math.min(930, Math.floor(width));
+    $(id).width(widthnew + 'px');
+}
+
+function placeCaptions() {
+    // $("#col-caption").empty();  // reset
+    $(".caption").each(function (i, e) {
+        $("#col-caption").append($(e));
+        link = $(e).attr('link');
+        pos = $(e).offset();
+        pos.top = $(link).offset().top;
+        $(e).offset(pos);
+    });
+}
+
+function resetCaptions() {
+    if (!bin_img_is_updated) return;
+    $(".caption").each(function (i, e) {
+        link = $(e).attr('link');
+        pos = $(e).offset();
+        pos.top = $(link).offset().top;
+        $(e).offset(pos);
+    });
+    bin_img_is_updated = false;
+}
+
+
+// after page loading finished
+$(function () {
+    
     // add number marker to headers
     $("#main-content").children().filter('section').each(function (i, e) {
         h2 = $(e).find('h2').first();
@@ -61,8 +94,8 @@ $(function () {
         let context = $("input[name='radio-3']:checked").val();
         let swicth = $("#switch-3").prop('checked');
         let strand = swicth ? 'single' : 'double';
-        file = "img/meth-bin-" + context + "-" + strand + "-dp" + dp + ".png";
-        // console.log(file);
+        // file = "img/meth-bin-" + context + "-" + strand + "-dp" + dp + ".png";
+        file = `img/meth-bin-${context}-${strand}-dp${dp}.png`;
         $("#img-meth-bin").attr("src", file);
         setWidth("#img-meth-bin");
 
@@ -71,26 +104,28 @@ $(function () {
         } else {
             $("#legend-meth-bin").hide();
         }
+        bin_img_is_updated = true;
     }
-    $("#switch-3").change(img_meth_bin);
-    $("input[name='radio-3']").change(img_meth_bin);
+    $("#switch-3").on("change", img_meth_bin);
+    $("input[name='radio-3']").on("change", img_meth_bin);
 
+ 
     // binning depth
     function img_depth_bin() {
         let swicth = $("#switch-4").prop('checked');
         let strand = swicth ? 'single' : 'double';
-        file = "img/depth-bin-" + strand + ".png";
-        // console.log(file);
+        file = `img/depth-bin-${strand}.png`;
+
         $("#img-depth-bin").attr("src", file);
         setWidth("#img-depth-bin");
-
         if (swicth) {
             $("#legend-depth-bin").show();
         } else {
             $("#legend-depth-bin").hide();
         }
-    }
-    $("#switch-4").change(img_depth_bin);
+        bin_img_is_updated = true;
+    }    
+    $("#switch-4").on("change", img_depth_bin);
 
     // meth of depth >= k
     function img_cul_meth_by_dp() {
@@ -205,22 +240,8 @@ $(function () {
         $("#img-pan-gene-noncoding").attr("src", `img/pan-gene-meth-other-noncoding-${context}.png`);
     }
     $("input[name='radio-pangene-noncoding']").change(img_pangene_noncoding);
+
+    // update locations of captions, `img onload` fails
+    document.querySelector('body').onwheel = resetCaptions;
+    
 });
-
-function setWidth(id, dpiratio = 300 / 96) {
-    let myImg = document.querySelector(id);
-    let width = myImg.naturalWidth / dpiratio;
-    widthnew = Math.min(930, Math.floor(width));
-    $(id).width(widthnew + 'px');
-}
-
-function placeCaptions() {
-    $(".caption").each(function (i, e) {
-        $("#col-caption").append($(e));
-
-        link = $(e).attr('link');
-        pos = $(e).offset();
-        pos.top = $(link).offset().top;
-        $(e).offset(pos);
-    });
-}

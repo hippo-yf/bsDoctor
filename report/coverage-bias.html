@@ -10,10 +10,10 @@ diagnosis of coverage bias of nuclear chromosomes.
     <h2>Genome Coverage</h2>
 
     <article id="binning-coverage">
-        <h3>Binning coverage</h3>
+        <h3>Binning read depth</h3>
         <p>
-            Each point represents the mean coverage depth of each 100k bp
-            binning window. The outliers are truncated <em>y</em>-axis limit.
+            Each point represents the mean coverage depth of each {{alldata.bin_size}}
+            binning window.
         </p>
 
         <div class="row">
@@ -37,8 +37,7 @@ diagnosis of coverage bias of nuclear chromosomes.
                 <div class="col-auto">
                     <img src="img/depth-bin-single.png" alt="" id="img-depth-bin" />
                     <div class="caption" link="#img-depth-bin">
-                        Check the uniformness of coverage depth of each strand and
-                        whole genome.
+                        The extreme values are truncated to the <em>y</em>-axis limit of 0.99 quantile of all bins.
                     </div>
                 </div>
             </div>

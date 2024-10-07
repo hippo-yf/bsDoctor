@@ -5,7 +5,7 @@ from src.coverage import BinCov
 from src.config import params, data
 from src.utils import *
 
-# from scipy.stats import linregress
+from scipy.stats import linregress
 
 def plot_depth_vs_cytosine_density() -> None:
     dict_binning = params['dict_binning']
@@ -370,9 +370,9 @@ def plot_depth_AT_vs_CG() -> None:
 
     fig, ax = plt.subplots(figsize=(5, 4))
     plt.scatter(x, y, c=d, s=1, cmap='Spectral_r')
-    abline(0, 1, color=COL_gray, label='slope=1')
-    # slope, intercept, *_ = linregress(x, y)
-    # abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
+    abline(0, 1, color=COL_gray, label='y = x')
+    slope, intercept, *_ = linregress(x, y)
+    abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
     lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
     plt.ylim(0, lim)
     plt.xlim(0, lim)
@@ -398,9 +398,9 @@ def plot_depth_AT_vs_CG() -> None:
     lim = max(np.quantile(y, 0.995), np.quantile(x, 0.995))
     plt.ylim(0, lim)
     plt.xlim(0, lim)
-    abline(0, 1, color=COL_gray, label='slope=1')
-    # slope, intercept, *_ = linregress(x, y)
-    # abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
+    abline(0, 1, color=COL_gray, label='y = x')
+    slope, intercept, *_ = linregress(x, y)
+    abline(intercept, slope, color='lightgray', label=f'y = {intercept:.2f} + {slope:.2f}x')
     plt.legend()
     plt.colorbar()
     plt.xlabel('mean C/G depth of Crick strand')

@@ -16,7 +16,7 @@ def compt_lambda() -> None:
         chrs= chr_lambda, 
         start = 0,    
         end = params['MAX_COORDINATE'],
-        step=5_000,
+        step=500_000,
         spacing=0
         ))
 

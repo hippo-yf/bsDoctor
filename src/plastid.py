@@ -20,7 +20,7 @@ def compt_plastid() -> None:
         chrs= chr_plastid, 
         start = 0,    
         end = params['MAX_COORDINATE'],
-        step=5_000,
+        step=500_000,
         spacing=0
         ))
 
