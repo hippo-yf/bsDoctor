@@ -98,6 +98,9 @@ def config_params(options: Namespace = Namespace()) -> None:
     params['MAXDEPTH'] = MAXDEPTH
     # params['meth_bins'] = 20 #  #bins of meth
     
+    # for figs
+    params['binpi'] = 200 # bins per inch
+
     # pangene
     params['PANGENE_SAMPLED'] = PANGENE_SAMPLED
     params['gene_padding'] = gene_padding
@@ -144,6 +147,9 @@ def config_params(options: Namespace = Namespace()) -> None:
     myMakeDirs(params['report_dir'])
     myMakeDirs(params['img_dir'])
 
+    params['contigs_ex_start'] = tuple(params['contigs_ex_start'].split(','))
+    params['contigs_ex_end'] = tuple(params['contigs_ex_end'].split(','))
+
     data['datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return None
 
@@ -170,11 +176,13 @@ class MyArgumentParser(ArgumentParser):
 
         # self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
         # self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
+        
+        self.add_argument('--exclude-contigs-start-with', dest='contigs_ex_start', help='exclude contigs, seperated by comma(,), "chrUn_" by defaults', type=str, default='chrUn_')
+        self.add_argument('--exclude-contigs-end-with', dest='contigs_ex_end', help='exclude contigs, seperated by comma(,), "_random,_alt" by defaults', type=str, default='_random,_alt')
 
         self.add_argument('--sampling-prop', dest='sampling_prop', help='sampling a proportion of sites of nuclear chromosomes, 0.1 by defaults', type=float, required=False, default=0.1)
-
         self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, overwrite "--max-chr-nbins", 0 by defaults (use "--max-chr-nbins"), ', type=int, default=0)
-        self.add_argument('--max-chr-nbins', dest='nbins_chr', help='max number of bins  of a nuclear chromosome, 2000 by defaults', type=int, default=2000)
+        self.add_argument('--max-chr-nbins', dest='nbins_chr', help='max number of bins  of a nuclear chromosome, 1500 by defaults', type=int, default=1500)
         self.add_argument('--bins-control', dest='bins_lambda', help='bins of spkied-in control DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-mt', dest='bins_MT', help='bins of mitochondrial DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-plastid', dest='bins_plastid', help='bins of plastid DNA, 1000 bins by defaults', type=int, default=1000)
@@ -182,12 +190,13 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('--read-quality', dest='read_quality', help='read mapping quality threshold', type=int, required=False, default=0)
         self.add_argument('--max-depth', dest='MAXDEPTH', help='depth larger than max depth will be truncated, 200 by defaults', type=int, default=200)
         self.add_argument('--reads-for-quality', dest='reads_to_sample', help='reads to sample for quality statstics, 10K reads by defaults', type=int, default=10_000)
+        
         self.add_argument('--num-pangene', dest='PANGENE_SAMPLED', help='genes to sample for pangene methylaion level, 1000 by defaults', type=int, default=1_000)
         self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 30 by defaults', type=int, default=20)
         self.add_argument('--max-depth-motig', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
         self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
-        # self.add_argument('--figure-subdir', dest='img_dir', help='figure subdirectory', type=str, default='img')
+
         self.add_argument('--ploidy', dest='ploidy', help='ploidy of the genome, 2 (diploidy) by defaults', type=int, default=2)
         self.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
         
@@ -196,7 +205,7 @@ class MyArgumentParser(ArgumentParser):
         return None
 
 def check_args(options) -> None:
-    assert not options.include_pangene or options.gtffile != '-', 'Must specify "-g/--gtf-file" to diagnose pangene methylation.'
+    assert (not options.include_pangene) or (options.gtffile != '-'), 'Must specify "-g/--gtf-file" to diagnose pangene methylation.'
 
     return None
     

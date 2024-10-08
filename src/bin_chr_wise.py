@@ -26,7 +26,8 @@ def nuclear_sampling() -> None:
         ))
 
     intervals_list = list(intervals)
-    for i in tqdm.trange(len(intervals_list), desc='Sampling nuclear chr: '):
+    print(f'Sampling nuclear chromosomes/contigs:\n{chrs_valid}')
+    for i in tqdm.trange(len(intervals_list), desc=''):
         detailedIntvl = bam.detailedCoverage(intervals_list[i])
         update_binning_nuclear(detailedIntvl)
         if include_motif: 
@@ -359,6 +360,7 @@ def plot_binning_meth() -> None:
     binSize = params['binSize']
     img_dir = params['img_dir']
     save_svg = params['save_svg']
+    binpi = params['binpi']
 
     dp = 1 # only plot depth >= 1
     nchr = len(chrs)
@@ -372,7 +374,7 @@ def plot_binning_meth() -> None:
                 maxbins = max([me[chr].shape[0] for chr in chrs])
                 add = int(cg!='CG')*0.2 + int(strand=='single')*0.1
                 figheight = nchr*0.35 + 1
-                figwidth = maxbins/250 + 1 + add
+                figwidth = maxbins/binpi + 1 + add
             else:
                 me = dict_bin_me[cg]['W']
                 me2 = dict_bin_me[cg]['C']
@@ -380,13 +382,13 @@ def plot_binning_meth() -> None:
                 covn2 = dict_bin_covn[cg]['C']
                 maxbins = max([me[chr].shape[0] for chr in chrs])
                 figheight = nchr*0.6 + 1
-                figwidth = maxbins/250 + 1.2 + add
+                figwidth = maxbins/binpi + 1.2 + add
 
             fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
             if nchr == 1: axs = [axs]
             fig.subplots_adjust(hspace=0)
             
-            plt.xlim(-2, prefixBpSize(np.array([maxbins * binSize]))[0]+2)
+            # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)
             kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
             for i, chr in enumerate(chrs):
                 shape = np.shape(me[chr])
@@ -439,20 +441,21 @@ def plot_binning_depth() -> None:
     img_dir = params['img_dir']
     nchr = len(chrs)
     save_svg = params['save_svg']
+    binpi = params['binpi']
 
     for strand in ['double', 'single']:
         if strand == 'double':
             dep = dict_bin_depth[strand]
             maxbins = max([dep[chr].shape[0] for chr in chrs])
             add = int(strand=='single')*0.1
-            figheight = nchr*0.4 + 1
-            figwidth = maxbins/200 + 1 + add
+            figheight = nchr*0.35 + 1
+            figwidth = maxbins/binpi + 1 + add
         else:
             dep = dict_bin_depth['W']
             dep2 = dict_bin_depth['C']
             maxbins = max([dep[chr].shape[0] for chr in chrs])
-            figheight = nchr*0.7 + 1
-            figwidth = maxbins/200 + 1.3 + add
+            figheight = nchr*0.6 + 1
+            figwidth = maxbins/binpi + 1.3 + add
 
         fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
         if nchr == 1: axs = [axs]
@@ -463,7 +466,8 @@ def plot_binning_depth() -> None:
             maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs]), 0.98)
         else:
             maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs]), 0.98)
-            
+        
+        # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)    
         kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
         for i, chr in enumerate(chrs):
             shape = np.shape(dep[chr])

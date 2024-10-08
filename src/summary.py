@@ -16,6 +16,8 @@ def compt_plot_DNA_content() -> None:
     chr_plastid = params['chr_plastid']
     img_dir = params['img_dir']
     ploidy = params['ploidy']
+    contigs_ex_start = params['contigs_ex_start']
+    contigs_ex_end = params['contigs_ex_end']
 
     # reads of nuclear, mt, plastid, and lambda
     nmapped = {'nuclear': 0, 'mt': 0, 'lambda': 0, 'plastid': 0}
@@ -106,14 +108,14 @@ def compt_plot_DNA_content() -> None:
 
     #### reads mapped to each chr
     # for interactive scatter plot
-    chrs_fa = fa.references
+    chrs_fa = excludeContigs(fa.references, contigs_ex_start, contigs_ex_end)
     nreads = []
     lens = []
     chrs = []
+    
     for c in bam.get_index_statistics():
         cont = c.contig
-        if contig_should_be_included(cont) and cont in chrs_fa:
-        # if cont in chrs_fa:
+        if cont in chrs_fa:
             chrs.append(cont)
             nreads.append(c.mapped)
             lens.append(reference_length(cont))

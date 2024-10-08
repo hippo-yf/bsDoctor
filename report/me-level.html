@@ -41,7 +41,7 @@ diagnosis of DNAme level of nuclear chromosomes.
 
     <article id="chr-methylation">
         <h3>Whole chromosome/contig</h3>
-        <p>Mean methylation level of each chromosomes/contigs.</p>
+        <p>Mean DNAme level of each chromosomes/contigs.</p>
         <div class="row">
             <div class="col-8">
                 <img src="img/meth-chr-CG-double-dp1.png" alt="" height="250px" id="img-meth-chr" />
@@ -69,9 +69,7 @@ diagnosis of DNAme level of nuclear chromosomes.
     <article id="binning-methylation">
         <h3>Binning DNAme level</h3>
         <p>
-            Each point represents the average methylation level (genome
-            cytosine-wise average instead of read- or sequencing base-wise
-            average) of each 100k base binning window.
+            Each point represents the mean DNAme level (cytosine-wise average) of each {{alldata.bin_size}} binning window.
         </p>
         <div class="row">
             <div class="col-2"></div>
@@ -107,6 +105,7 @@ diagnosis of DNAme level of nuclear chromosomes.
         <div class="row">
             <div class="col-xl-12">
                 <img src="img/meth-bin-CG-single-dp1.png" alt="" id="img-meth-bin" />
+                <div class="caption" link="#img-meth-bin">The order of chromosomes is the same with chromosomes in bam file or the argument.</div>
             </div>
         </div>
     </article>

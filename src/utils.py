@@ -101,27 +101,34 @@ def depthCulSum(x: NDArray) -> NDArray:
 def signif(x, digit=3):
     return np.floor(np.array(x)*10**digit)/10**digit
 
-# format numbers in strings
+def round2(x, k: int = 2):
+    if x < 10**(k-1): return x
+    p = int(math.log10(x)) - (k-1)
+    return 10**p * round(x/10**p)
+
+# format numbers to strings
 def fi(x: int):
     return f'{x:,}'
 
 def ff(x: float, k:int=4):
-    s = f'%.{k}g'
+    s = f'%.0{k}g'
     return s % x
 
 def ff2(x: float, k:int=2):
-    s = f'%.{k}f'
+    s = f'%.0{k}f'
     return s % x
 
 def fp(x, k:int=4):
-    return '{1:.{0:d}g}'.format(k, x*100) # '%.{k}g%%'
+    return '{1:.0{0:d}g}'.format(k, x*100) # '%.{k}g%%'
 
 def fp2(x, k:int=2):
-    return '{1:.{0:d}f}'.format(k, x*100)
+    return '{1:.0{0:d}f}'.format(k, x*100)
 
+BASE_COMP = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C', 'N': 'N'}
 def reverseComp(str: str) -> str:
-    comp = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C', 'N': 'N'}
-    return ''.join([comp[s] for s in str[::-1]])
+    # comp = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C', 'N': 'N'}
+    global BASE_COMP
+    return ''.join([BASE_COMP[s] for s in str[::-1]])
 
 # 3-nucleotide context, CG/CHG/CHH etc.
 
@@ -166,7 +173,8 @@ def myMakeDirs(dir: str):
 
 def getBins(length, bins):
     size = max(1, math.ceil(length/bins))
-    if size > 10: size = math.ceil(size/10)*10
+    # if size > 10: size = math.ceil(size/10)*10
+    size = round2(size)
     bins = math.ceil(length/size)
     return (size, bins)
 
@@ -184,22 +192,20 @@ def relative_freq_CpG_motif (x, df=4):
     # df: number of free bases
     return x/np.sum(x) * 4**df
 
-# remove patch contigs
-def excludeContigs(contigs: List[str]) -> List[str]:
-    valid = [c for c in contigs if not c.endswith(('_random', '_alt')) and not c.startswith('chrUn_')]
+# remove patches
+# def excludeContigs(contigs: List[str]) -> List[str]:
+#     valid = [c for c in contigs if not c.endswith(('_random', '_alt')) and not c.startswith('chrUn_')]
+#     return valid
+
+def excludeContigs(contigs: List[str], starts: Tuple[str], ends: Tuple[str]) -> List[str]:
+    if starts:
+        valid = [c for c in contigs if not c.startswith(starts)]
+    if ends:
+        valid = [c for c in valid if not c.endswith(ends)]
     return valid
 
-def contig_should_be_included(contig: str) -> bool:
-    return not contig.endswith(('_random', '_alt')) and not contig.startswith('chrUn_')
-
-## utils for figures
-def abline(intercept, slope, **kw) -> None:
-    """Plot a line from slope and intercept"""
-    axes = plt.gca()
-    x_vals = np.array(axes.get_xlim())
-    y_vals = intercept + slope * x_vals
-    plt.plot(x_vals, y_vals, '--', **kw)
-    return None
+# def contig_should_be_included(contig: str) -> bool:
+#     return not contig.endswith(('_random', '_alt')) and not contig.startswith('chrUn_')
 
 # Function to include css/js/font file in Jinja template
 def include_file(name, fdir = 'report/', b64=False):
@@ -213,6 +219,16 @@ def include_file(name, fdir = 'report/', b64=False):
     except (OSError, IOError) as e:
         # logger.error(f"Could not include file '{name}': {e}")
         pass
+
+## utils for figures
+def abline(intercept, slope, **kw) -> None:
+    """Plot a line from slope and intercept"""
+    axes = plt.gca()
+    x_vals = np.array(axes.get_xlim())
+    y_vals = intercept + slope * x_vals
+    plt.plot(x_vals, y_vals, '--', **kw)
+    return None
+
 
 def simLinearReg0(x: NDArray, y: NDArray) -> float:
     """

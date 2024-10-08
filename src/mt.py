@@ -21,7 +21,8 @@ def compt_MT() -> None:
         ))
 
     intervals_list = list(intervals)
-    for i in tqdm.trange(len(intervals_list), desc='Sampling MT: '):
+    print(f'Sampling MT DNA: {chr_MT}')
+    for i in tqdm.trange(len(intervals_list), desc=''):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
         update_contig(dict_MT, detailedIntvl)
 

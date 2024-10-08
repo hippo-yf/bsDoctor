@@ -52,17 +52,19 @@ def config_params_further() -> None:
     # chrs to sample
     # chrs_valid = chrs.split(',')
     chrs = params['testchrs']
-    if chrs != 'all':
-        chrs_valid = chrs.split(',')
-    else:
+    if chrs == 'all':
         # chrs_valid = [
         #     chr for chr in fa.references
         #     if not chr.endswith(('_random', '_alt')) and not chr.startswith('chrUn_') and chr not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
         # ]
         # order chrs according to bam file
+        chrs_valid = [c.contig for c in bam.get_index_statistics()]
+        chrs_valid = excludeContigs(chrs_valid, params['contigs_ex_start'], params['contigs_ex_end'])
         chrs_valid = [
-            c.contig for c in bam.get_index_statistics() if c.contig in fa.references and contig_should_be_included(c.contig) and c.contig not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
+            c for c in chrs_valid if c in fa.references and c not in (params['chr_lambda'], params['chr_MT'], params['chr_plastid'])
         ]
+    else:
+        chrs_valid = chrs.split(',')
 
     # print(chrs_valid)
 
@@ -92,7 +94,7 @@ def config_params_further() -> None:
             params['nuclear_sampling_step'] = step_size
             params['nuclear_sampling_spacing'] = 0
 
-    print(f'nuclear bin size: {params['binSize']}; sampling: {params['nuclear_sampling_step']}, {params['nuclear_sampling_spacing']}')
+    print(f'nuclear bin size: {params["binSize"]}; sampling: {params["nuclear_sampling_step"]}, {params["nuclear_sampling_spacing"]}')
 
     # prefix
     a, b = prefixBpSize(params['binSize'])
@@ -100,7 +102,7 @@ def config_params_further() -> None:
         data['bin_size'] = f'{int(a)} {b}'
     else:
         data['bin_size'] = f'{a} {b}'
-    data['bin_size']
+    # data['bin_size']
 
     chr_MT = params['chr_MT']
     chr_lambda = params['chr_lambda']
@@ -133,14 +135,10 @@ def config_params_further() -> None:
         params['binSize_plastid'] = binSize_plastid
         data['binSize_plastid'] = fi(binSize_plastid[0])
 
-    # binSizeContig = {chr_lambda: binSize_lambda[0], chr_MT: binSize_MT[0], chr_plastid: binSize_plastid[0]}
-    # binsContig = {chr_lambda: binSize_lambda[1], chr_MT: binSize_MT[1], chr_plastid: binSize_plastid[1]}
-
     params['binSizeContig'] = binSizeContig
     params['binsContig'] = binsContig
     
     print(f'{binSizeContig=}', f'{binsContig=}')
-
 
     # ('chr1', 23) -> BinCov()
     dict_binning = dict()
@@ -289,6 +287,7 @@ if __name__ == "__main__":
     config_params(options)      
     config_params_further()
 
+    print(data)
     compute_and_plot()
 
     with open(f"{params['report_dir']}/data.pickle", 'wb') as fd:

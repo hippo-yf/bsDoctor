@@ -21,7 +21,8 @@ def compt_lambda() -> None:
         ))
 
     intervals_list = list(intervals)
-    for i in tqdm.trange(len(intervals_list), desc='Sampling control DNA: '):
+    print(f'Sampling control DNA: {chr_lambda}')
+    for i in tqdm.trange(len(intervals_list), desc=''):
         detailedIntvl = bam.detailedCoverageContig(intervals_list[i])
         update_contig(dict_lambda, detailedIntvl)
     
