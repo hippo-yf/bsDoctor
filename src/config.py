@@ -198,7 +198,7 @@ class MyArgumentParser(ArgumentParser):
         self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
 
         self.add_argument('--ploidy', dest='ploidy', help='ploidy of the genome, 2 (diploidy) by defaults', type=int, default=2)
-        self.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
+        self.add_argument('-v', '--version', action='version', version=__version__)
         
         self.add_argument('--save-svg', dest='save_svg', help='save .svg figures or not, yes by defaults', type=as_bool, default='yes')
 

@@ -1,7 +1,7 @@
 [project]
-name = "bsdoctor"
-version = "0.1.0"
-description = "Add your description here"
+name = "bsDoctor"
+version = "1.0.0"
+description = "Comprehensive Quality Diagnosis for Bisulfite-Seq Data"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
