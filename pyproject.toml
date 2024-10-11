@@ -1,0 +1,14 @@
+[project]
+name = "bsdoctor"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "jinja2>=3.1.4",
+    "matplotlib>=3.9.2",
+    "numpy>=2.1.2",
+    "pysam>=0.22.1",
+    "scipy>=1.14.1",
+    "tqdm>=4.66.5",
+]
