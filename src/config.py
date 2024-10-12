@@ -59,7 +59,7 @@ def config_params(options: Namespace = Namespace()) -> None:
     # depth = max{depth, MAXDEPTH}
     MAXDEPTH = 200
 
-    # gene pading for pan-gene summary
+    # gene padding for pan-gene summary
     gene_padding = 5_000 # up-/down-stream
     gene_breaks = 50 # breaks of up body down
 
@@ -128,7 +128,7 @@ def config_params(options: Namespace = Namespace()) -> None:
     params['plastid_is_covered'] = 0
     params['lambda_is_covered'] = 0
 
-    #### copy/substitue args
+    #### copy/substitute args
     for key, value in options.__dict__.items():
         params[key] = value
         if key.startswith('include_'):
@@ -159,9 +159,9 @@ class MyArgumentParser(ArgumentParser):
         super().__init__(**args)
 
         self.add_argument('-b', '--bam-file', dest='bamfile', help='a .bam file', type=str, required=True)
-        self.add_argument('-f', '--fa-file', dest='fafile', help='a .fa[.gz] file of referece genome', type=str, required=True)
+        self.add_argument('-f', '--fa-file', dest='fafile', help='a .fa[.gz] file of reference genome', type=str, required=True)
         self.add_argument('-g', '--gtf-file', dest='gtffile', help='a .gtf[.gz] file', type=str, required=False, default='-')
-        self.add_argument('--chr', dest='testchrs', help='nuclear chromosomes to diagnose, seprated by comma(,), such as "chr1,chr2,chr3", all chromosomes by defaults', type=str, required=False, default='all')
+        self.add_argument('--chr', dest='testchrs', help='nuclear chromosomes to diagnose, separated by comma(,), such as "chr1,chr2,chr3", all chromosomes by defaults', type=str, required=False, default='all')
         self.add_argument('--mt', dest='chr_MT', help='name of mitochondrial DNA', type=str, required=False, default='-')
         self.add_argument('--plastid', dest='chr_plastid', help='name of plastid DNA', type=str, required=False, default='-')
         self.add_argument('--control-DNA', dest='chr_lambda', help='name of spiked-in DNA, usually lambda DNA', type=str, required=False, default='-')
@@ -177,23 +177,23 @@ class MyArgumentParser(ArgumentParser):
         # self.add_argument('--sampling-step', dest='nuclear_sampling_step', help='sampling step size of nuclear chromosomes, 1Kbp by defaults', type=int, required=False, default=1000)
         # self.add_argument('--sampling-spacing', dest='nuclear_sampling_spacing', help='sampling spacing size of nuclear chromosomes, 10Kbp by defaults', type=int, required=False, default=10_000)
         
-        self.add_argument('--exclude-contigs-start-with', dest='contigs_ex_start', help='exclude contigs, seperated by comma(,), "chrUn_" by defaults', type=str, default='chrUn_')
-        self.add_argument('--exclude-contigs-end-with', dest='contigs_ex_end', help='exclude contigs, seperated by comma(,), "_random,_alt" by defaults', type=str, default='_random,_alt')
+        self.add_argument('--exclude-contigs-start-with', dest='contigs_ex_start', help='exclude contigs, separated by comma(,), "chrUn_" by defaults', type=str, default='chrUn_')
+        self.add_argument('--exclude-contigs-end-with', dest='contigs_ex_end', help='exclude contigs, separated by comma(,), "_random,_alt" by defaults', type=str, default='_random,_alt')
 
         self.add_argument('--sampling-prop', dest='sampling_prop', help='sampling a proportion of sites of nuclear chromosomes, 0.1 by defaults', type=float, required=False, default=0.1)
         self.add_argument('--bin-size', dest='binSize', help='bin size of nuclear chromosomes, overwrite "--max-chr-nbins", 0 by defaults (use "--max-chr-nbins"), ', type=int, default=0)
         self.add_argument('--max-chr-nbins', dest='nbins_chr', help='max number of bins  of a nuclear chromosome, 1500 by defaults', type=int, default=1500)
-        self.add_argument('--bins-control', dest='bins_lambda', help='bins of spkied-in control DNA, 1000 bins by defaults', type=int, default=1000)
+        self.add_argument('--bins-control', dest='bins_lambda', help='bins of spiked-in control DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-mt', dest='bins_MT', help='bins of mitochondrial DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--bins-plastid', dest='bins_plastid', help='bins of plastid DNA, 1000 bins by defaults', type=int, default=1000)
         self.add_argument('--base-quality', dest='quality_threshold', help='base quality threshold', type=int, required=False, default=0)
         self.add_argument('--read-quality', dest='read_quality', help='read mapping quality threshold', type=int, required=False, default=0)
         self.add_argument('--max-depth', dest='MAXDEPTH', help='depth larger than max depth will be truncated, 200 by defaults', type=int, default=200)
-        self.add_argument('--reads-for-quality', dest='reads_to_sample', help='reads to sample for quality statstics, 10K reads by defaults', type=int, default=10_000)
+        self.add_argument('--reads-for-quality', dest='reads_to_sample', help='reads to sample for quality statistics, 10K reads by defaults', type=int, default=10_000)
         
-        self.add_argument('--num-pangene', dest='PANGENE_SAMPLED', help='genes to sample for pangene methylaion level, 1000 by defaults', type=int, default=1_000)
-        self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 30 by defaults', type=int, default=20)
-        self.add_argument('--max-depth-motig', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
+        self.add_argument('--num-pangene', dest='PANGENE_SAMPLED', help='genes to sample for pangene methylation level, 1000 by defaults', type=int, default=1_000)
+        self.add_argument('--max-depth-plot', dest='MAX_DP_BY_FIG', help='max depth for figures plotted for sites of each specific depth, 20 by defaults', type=int, default=20)
+        self.add_argument('--max-depth-motif', dest='MAX_DP_CG_MOTIF', help='max depth in CpG-motif diagnosis, 50 by defaults', type=int, default=50)
         self.add_argument('--swap-strand', dest='swap_strand', help='swap read counts on two strands, true/false, or yes/no', type=as_bool, required=False, default='no')
         self.add_argument('-o', '--report-dir', dest='report_dir', help='report directory, "bsDoctor-report" by defaults', type=str, default='bsDoctor-report')
 
