@@ -86,49 +86,55 @@ def plot_mt_depth_binning() -> None:
     figheight = 3*0.5 + 1
     figwidth = len(x)/200 + 1 + 0.2
 
-    fig, axs = plt.subplots(3, 1, sharex=True, sharey=False, figsize=(figwidth, figheight))
-    fig.subplots_adjust(hspace=0)
+    try:
+        fig, axs = plt.subplots(3, 1, sharex=True, sharey=False, figsize=(figwidth, figheight))
+        fig.subplots_adjust(hspace=0)
 
-    axs[0].plot(x, np.repeat(np.median(yw), len(x)), '--', c='gray')
-    axs[0].scatter(x, np.fmin(ylim, yw), c=COLS[1], s=1)
-    axs[0].set_xlim(0, max(x))
-    axs[0].set_ylim(0, ylim)
-    axs[0].text(axs[0].get_xlim()[1], axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='right', verticalalignment='top')
+        axs[0].plot(x, np.repeat(np.median(yw), len(x)), '--', c='gray')
+        axs[0].scatter(x, np.fmin(ylim, yw), c=COLS[1], s=1)
+        axs[0].set_xlim(0, max(x))
+        axs[0].set_ylim(0, ylim)
+        axs[0].text(axs[0].get_xlim()[1], axs[0].get_ylim()[1], f'med: {np.median(yw):.0f}', horizontalalignment='right', verticalalignment='top')
 
-    axs[1].plot(x, np.repeat(np.median(yc), len(x)), '--', c='gray')
-    axs[1].scatter(x, np.fmin(ylim, yc), c=COLS[0], s=1)
-    axs[1].set_xlim(0, max(x))
-    axs[1].set_ylim(0, ylim)
-    axs[1].text(axs[1].get_xlim()[1], axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='right', verticalalignment='top')
-    axs[1].set_ylabel(f'read depth')
+        axs[1].plot(x, np.repeat(np.median(yc), len(x)), '--', c='gray')
+        axs[1].scatter(x, np.fmin(ylim, yc), c=COLS[0], s=1)
+        axs[1].set_xlim(0, max(x))
+        axs[1].set_ylim(0, ylim)
+        axs[1].text(axs[1].get_xlim()[1], axs[1].get_ylim()[1], f'med: {np.median(yc):.0f}', horizontalalignment='right', verticalalignment='top')
+        axs[1].set_ylabel(f'read depth')
 
-    axs[2].plot(x, np.repeat(np.median(yd), len(x)), '--', c='gray')
-    axs[2].scatter(x, np.fmin(ylim, yd), c=COL_gray, s=1)
-    axs[2].set_xlim(0, max(x))
-    axs[2].text(axs[2].get_xlim()[1], axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='right', verticalalignment='top')
+        axs[2].plot(x, np.repeat(np.median(yd), len(x)), '--', c='gray')
+        axs[2].scatter(x, np.fmin(ylim, yd), c=COL_gray, s=1)
+        axs[2].set_xlim(0, max(x))
+        axs[2].text(axs[2].get_xlim()[1], axs[2].get_ylim()[1], f'med: {np.median(yd):.0f}', horizontalalignment='right', verticalalignment='top')
 
-    plt.xlabel(f'coordinate ({prefix})')
+        plt.xlabel(f'coordinate ({prefix})')
 
-    filename = f'{img_dir}/depth-bin-MT'
-    # filename = f'img/depth-bin-MT'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/depth-bin-MT'
+        # filename = f'img/depth-bin-MT'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_mt_base_error_rate() -> None:
     dict_MT = params['dict_MT']
     img_dir = params['img_dir']
 
-    fig, ax = plt.subplots(figsize=(5,3))
-    if np.sum(dict_MT.dp20 > 0) > 10:
-        i = dict_MT.dp20 > 0
-        ax.hist(dict_MT.misbase[i]/dict_MT.dp20[i], bins=21, density=True, color=COLS[0])
-        plt.xlabel('bin-wise base error rate')
-        plt.ylabel('density')
+    try:
+        fig, ax = plt.subplots(figsize=(5,3))
+        if np.sum(dict_MT.dp20 > 0) > 10:
+            i = dict_MT.dp20 > 0
+            ax.hist(dict_MT.misbase[i]/dict_MT.dp20[i], bins=21, density=True, color=COLS[0])
+            plt.xlabel('bin-wise base error rate')
+            plt.ylabel('density')
 
-        filename = f'{img_dir}/base-error-rate-dist-MT'
-        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-        plt.close()
+            filename = f'{img_dir}/base-error-rate-dist-MT'
+            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            plt.close()
+    except:
+        pass
     return None

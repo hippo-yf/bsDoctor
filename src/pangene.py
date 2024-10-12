@@ -61,49 +61,57 @@ def _plot_pangene_meth(meth: CovPanGene, name: str) -> None:
     gene_breaks = params['gene_breaks']
     img_dir = params['img_dir']
 
-    #### CG
-    fig, ax = plt.subplots(figsize=(5,3))
-    x = np.arange(gene_breaks*3)
-    # y = meth.meCG/meth.nCG
-    ax.plot(x, meth.meCG/meth.nCG/10000, '-', c=COL_gray)
-    ax.plot(x, meth.meCGW/meth.nCGW/10000, '-', c=COLS[1])
-    ax.plot(x, meth.meCGC/meth.nCGC/10000, '-', c=COLS[0])
-    ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
-    plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
+    try:
+        #### CG
+        fig, ax = plt.subplots(figsize=(5,3))
+        x = np.arange(gene_breaks*3)
+        # y = meth.meCG/meth.nCG
+        ax.plot(x, meth.meCG/meth.nCG/10000, '-', c=COL_gray)
+        ax.plot(x, meth.meCGW/meth.nCGW/10000, '-', c=COLS[1])
+        ax.plot(x, meth.meCGC/meth.nCGC/10000, '-', c=COLS[0])
+        ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
+        plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
 
-    filename = f'{img_dir}/{name}-CG'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/{name}-CG'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
 
-    #### CHG
-    fig, ax = plt.subplots(figsize=(5,3))
-    x = np.arange(gene_breaks*3)
-    ax.plot(x, meth.meCHG/meth.nCHG/10000, '-', c=COL_gray)
-    ax.plot(x, meth.meCHGW/meth.nCHGW/10000, '-', c=COLS[1])
-    ax.plot(x, meth.meCHGC/meth.nCHGC/10000, '-', c=COLS[0])
-    ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
-    plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
+    try:
+        #### CHG
+        fig, ax = plt.subplots(figsize=(5,3))
+        x = np.arange(gene_breaks*3)
+        ax.plot(x, meth.meCHG/meth.nCHG/10000, '-', c=COL_gray)
+        ax.plot(x, meth.meCHGW/meth.nCHGW/10000, '-', c=COLS[1])
+        ax.plot(x, meth.meCHGC/meth.nCHGC/10000, '-', c=COLS[0])
+        ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
+        plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
 
-    filename = f'{img_dir}/{name}-CHG'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/{name}-CHG'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
+    
+    try:
+        #### CHH
+        fig, ax = plt.subplots(figsize=(5,3))
+        x = np.arange(gene_breaks*3)
+        ax.plot(x, meth.meCHH/meth.nCHH/10000, '-', c=COL_gray)
+        ax.plot(x, meth.meCHHW/meth.nCHHW/10000, '-', c=COLS[1])
+        ax.plot(x, meth.meCHHC/meth.nCHHC/10000, '-', c=COLS[0])
+        ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
+        plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
 
-    #### CHH
-    fig, ax = plt.subplots(figsize=(5,3))
-    x = np.arange(gene_breaks*3)
-    ax.plot(x, meth.meCHH/meth.nCHH/10000, '-', c=COL_gray)
-    ax.plot(x, meth.meCHHW/meth.nCHHW/10000, '-', c=COLS[1])
-    ax.plot(x, meth.meCHHC/meth.nCHHC/10000, '-', c=COLS[0])
-    ax.vlines((49, 99), ax.get_ylim()[0], ax.get_ylim()[1], color= 'gray', linestyles='dashed')
-    plt.xticks([0, 49, 74, 99, 149], labels=['-5kbp', 'TSS', 'gene body', 'TTS', '+5kbp'])
-
-    filename = f'{img_dir}/{name}-CHH'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
-
+        filename = f'{img_dir}/{name}-CHH'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def pangene_compt_plot_meth() -> None:

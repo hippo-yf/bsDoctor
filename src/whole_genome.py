@@ -315,16 +315,19 @@ def plot_base_error_rate_by_AT() -> None:
     err_AT = params['err_AT']
     img_dir = params['img_dir']
 
-    fig, ax = plt.subplots(figsize=(5,3))
-    if len(err_AT) > 0:
-        ax.hist(err_AT, bins=21, density=True, color=COLS[0])
-        plt.xlabel('base error rate')
-        plt.ylabel('density')
-        filename = f'{img_dir}/base-error-rate-by-AT'
-        # filename = f'img/base-error-rate-by-AT'
-        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-        plt.close()
+    try:
+        fig, ax = plt.subplots(figsize=(5,3))
+        if len(err_AT) > 0:
+            ax.hist(err_AT, bins=21, density=True, color=COLS[0])
+            plt.xlabel('base error rate')
+            plt.ylabel('density')
+            filename = f'{img_dir}/base-error-rate-by-AT'
+            # filename = f'img/base-error-rate-by-AT'
+            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            plt.close()
+    except:
+        pass
     return None
 
 def plot_theroretical_me_bias() -> None:
@@ -340,34 +343,37 @@ def plot_theroretical_me_bias() -> None:
     tmp = np.outer(meth, np.ones(200)) + np.outer(np.ones(200), rate)
     meth_bias[tmp<1] = np.nan
 
-    fig, ax = plt.subplots()
-    im = ax.imshow(meth_bias, cmap='Spectral_r')
+    try:
+        fig, ax = plt.subplots()
+        im = ax.imshow(meth_bias, cmap='Spectral_r')
 
-    # vertical line of bsrate
-    if 0.8 < bs_rate < 1:
-        # y0 = np.linspace(1, 1-bsrate, num=10)
-        y0 = [int(max(5, (1-bs_rate)*200)), 195]
-        x0 = [int(bs_rate*200), int(bs_rate*200)]
-        plt.plot(x0, y0, color='gray', linestyle='dashed')
+        # vertical line of bsrate
+        if 0.8 < bs_rate < 1:
+            # y0 = np.linspace(1, 1-bsrate, num=10)
+            y0 = [int(max(5, (1-bs_rate)*200)), 195]
+            x0 = [int(bs_rate*200), int(bs_rate*200)]
+            plt.plot(x0, y0, color='gray', linestyle='dashed')
 
-    ax.tick_params(top=False, bottom=True, labeltop=False, labelbottom=True)
-    x = np.linspace(0, 200-1, 6)
-    lx = [f'{x:.2f}' for x in np.linspace(0.8, 1, 6)]
-    y = np.linspace(0, 200-1, 6)
-    ly = [f'{y:.2f}' for y in np.linspace(0, 1, 6)]
-    ax.set_xticks(x, labels=lx)
-    ax.set_yticks(y, labels=ly)
-    plt.xlabel('Conversion rate')
-    plt.ylabel('Unadjusted DNAme level')
+        ax.tick_params(top=False, bottom=True, labeltop=False, labelbottom=True)
+        x = np.linspace(0, 200-1, 6)
+        lx = [f'{x:.2f}' for x in np.linspace(0.8, 1, 6)]
+        y = np.linspace(0, 200-1, 6)
+        ly = [f'{y:.2f}' for y in np.linspace(0, 1, 6)]
+        ax.set_xticks(x, labels=lx)
+        ax.set_yticks(y, labels=ly)
+        plt.xlabel('Conversion rate')
+        plt.ylabel('Unadjusted DNAme level')
 
-    cbar = ax.figure.colorbar(im, ax=ax)
-    cbar.ax.set_ylabel('DNAme level bias', rotation=-90, va="bottom")
-    
-    filename = f'{params['img_dir']}/DNAme-bias'
-    # filename = f'img/DNAme-bias'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        cbar = ax.figure.colorbar(im, ax=ax)
+        cbar.ax.set_ylabel('DNAme level bias', rotation=-90, va="bottom")
+        
+        filename = f'{params['img_dir']}/DNAme-bias'
+        # filename = f'img/DNAme-bias'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 # count/desity of Cs by meth level binning
@@ -386,15 +392,18 @@ def plot_hist_me() -> None:
         xlabels=x2/shape[0]
         for dp in range(1, MAX_DP_BY_FIG):
         # for DP in range(1):
-            fig, ax = plt.subplots(figsize=(5,2))
-            ax.bar(x, prop[:,dp], width=1, align='edge', color='#1B98E0')
-            ax.set_xticks(x2, xlabels)
-            # ax.set_ylim(0, ylim)
-            ax.set_xlabel('mean DNAme level')
-            ax.set_ylabel('proportion')
+            try:
+                fig, ax = plt.subplots(figsize=(5,2))
+                ax.bar(x, prop[:,dp], width=1, align='edge', color='#1B98E0')
+                ax.set_xticks(x2, xlabels)
+                # ax.set_ylim(0, ylim)
+                ax.set_xlabel('mean DNAme level')
+                ax.set_ylabel('proportion')
 
-            filename = f'{img_dir}/meth-dist-genome-{cg}-dp{dp}'
-            plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
-            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-            plt.close()
+                filename = f'{img_dir}/meth-dist-genome-{cg}-dp{dp}'
+                plt.savefig(filename+'.png', transparent=True, dpi=120, bbox_inches='tight')
+                if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+                plt.close()
+            except:
+                pass
     return None

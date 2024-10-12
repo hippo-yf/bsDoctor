@@ -11,22 +11,25 @@ def plot_heatmap_stranded_CpG_depth() -> None:
     # n = stranded_CG_depth.shape[0]
     x = np.arange(5) *20
 
-    fig, ax = plt.subplots()
-    stranded_CG_depth[0,0] = 0
-    im = ax.imshow(np.log10(1+stranded_CG_depth), cmap='Spectral_r')
-    ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
-    ax.set_xticks(x, labels=x)
-    ax.set_yticks(x, labels=x)
-    cbar = ax.figure.colorbar(im, ax=ax)
-    cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
-    plt.xlabel('methylation read depth of Crick strand')
-    plt.ylabel('methylation read depth of Watson strand')
+    try:
+        fig, ax = plt.subplots()
+        stranded_CG_depth[0,0] = 0
+        im = ax.imshow(np.log10(1+stranded_CG_depth), cmap='Spectral_r')
+        ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
+        ax.set_xticks(x, labels=x)
+        ax.set_yticks(x, labels=x)
+        cbar = ax.figure.colorbar(im, ax=ax)
+        cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
+        plt.xlabel('methylation read depth of Crick strand')
+        plt.ylabel('methylation read depth of Watson strand')
 
-    filename = f'{img_dir}/heatmap-cg-stranded-depth'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if save_svg:
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/heatmap-cg-stranded-depth'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_bar_CpG_depth_difference() -> None:
@@ -55,18 +58,20 @@ def plot_bar_CpG_depth_difference() -> None:
     data['mean_abs_strand_dp_diff'] = ff2(EabsX, 1)
     data['sd_abs_strand_dp_diff'] = ff2(sdabs, 1)
 
-    dp = min(DP_xdepth+20, 100)
+    dp = min(DP_xdepth+10, 100)
+    try:
+        fig, ax = plt.subplots(figsize=(7, 2.5))
+        ax.bar(dp_diff[(100-dp):(100+dp)], cov_diff[(100-dp):(100+dp)], color=COLS[0])
+        plt.xlabel('depth difference of a CpG')
+        plt.ylabel('proportion')
 
-    fig, ax = plt.subplots(figsize=(7, 2.5))
-    ax.bar(dp_diff[(100-dp):(100+dp)], cov_diff[(100-dp):(100+dp)], color=COLS[0])
-    plt.xlabel('depth difference of a CpG')
-    plt.ylabel('proportion')
-
-    filename = f'{img_dir}/cg-stranded-depth-difference'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if save_svg:
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/cg-stranded-depth-difference'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
 
     #### stats of |depth diff|
     # mean/sd, M(mean)AD/sd of cov diff
@@ -95,16 +100,19 @@ def plot_bar_double_srtanded_cpg() -> None:
 
     # data['covrate_chg'] = [fp(prop_double_cov[x]) for x in (0,2,4,9)]
     
-    fig, ax = plt.subplots(figsize=(5,3))
-    ax.bar(np.arange(1, DP_xdepth+1), prop_double_cov, color=COLS[0])
-    plt.xlabel('min{Watson depth, Crick depth}')
-    plt.ylabel('proportion of double-stranded CpGs')
+    try:
+        fig, ax = plt.subplots(figsize=(5,3))
+        ax.bar(np.arange(1, DP_xdepth+1), prop_double_cov, color=COLS[0])
+        plt.xlabel('min{Watson depth, Crick depth}')
+        plt.ylabel('proportion of double-stranded CpGs')
 
-    filename = f'{img_dir}/cg-prop-of-double-stranded-coverage'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if save_svg:
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/cg-prop-of-double-stranded-coverage'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_heatmap_stranded_CpG_meth() -> None:
@@ -122,23 +130,26 @@ def plot_heatmap_stranded_CpG_meth() -> None:
         if k<n-1 else f'[{k/n:.2f}, {(k+1)/n:.2f}]' 
         for k in np.arange(n)
         ]
-    fig, ax = plt.subplots()
-    im = ax.imshow(np.log10(1+stranded_CG_meth), cmap='Spectral_r')
-    ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
-    ax.set_xticks(x, labels=labels)
-    ax.set_yticks(x, labels=labels)
-    plt.xlabel('DNAme of Crick strand')
-    plt.ylabel('DNAme of Watson strand')
+    try:
+        fig, ax = plt.subplots()
+        im = ax.imshow(np.log10(1+stranded_CG_meth), cmap='Spectral_r')
+        ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
+        ax.set_xticks(x, labels=labels)
+        ax.set_yticks(x, labels=labels)
+        plt.xlabel('DNAme of Crick strand')
+        plt.ylabel('DNAme of Watson strand')
 
-    ax.tick_params(axis='x', labelrotation= 90)
-    cbar = ax.figure.colorbar(im, ax=ax)
-    cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
+        ax.tick_params(axis='x', labelrotation= 90)
+        cbar = ax.figure.colorbar(im, ax=ax)
+        cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
 
-    filename = f'{img_dir}/heatmap-cg-stranded-meth'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if save_svg:
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/heatmap-cg-stranded-meth'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_heatmap_stranded_meth_diff() -> None:
@@ -159,24 +170,26 @@ def plot_heatmap_stranded_meth_diff() -> None:
         if k<n-1 else f'[{k/n:5.2f}, {(k+1)/n:5.2f}]' 
         for k in np.arange(-18, 20, step=3)
         ]
-    fig, ax = plt.subplots()
-    im = ax.imshow(np.log10(1+CGmeth_diff_by_depth[:,1:dp]), cmap='Spectral_r')
-    # im = ax.imshow(np.log10(1+stranded_CG_meth), cmap='Spectral_r')
-    ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
-    ax.set_yticks(y, labels=labels)
-    ax.set_xticks(x, labels=x+1)
-    plt.xlabel('min{Watson depth, Crick depth}')
-    plt.ylabel('DNAme difference between strands')
+    try:
+        fig, ax = plt.subplots()
+        im = ax.imshow(np.log10(1+CGmeth_diff_by_depth[:,1:dp]), cmap='Spectral_r')
+        # im = ax.imshow(np.log10(1+stranded_CG_meth), cmap='Spectral_r')
+        ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False)
+        ax.set_yticks(y, labels=labels)
+        ax.set_xticks(x, labels=x+1)
+        plt.xlabel('min{Watson depth, Crick depth}')
+        plt.ylabel('DNAme difference between strands')
 
-    # ax.tick_params(axis='x', labelrotation= 90)
-    cbar = ax.figure.colorbar(im, ax=ax, orientation='horizontal', fraction=0.05, pad=0.08)
-    # cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
-    cbar.ax.set_xlabel('log10 (#CpGs + 1)')
+        # ax.tick_params(axis='x', labelrotation= 90)
+        cbar = ax.figure.colorbar(im, ax=ax, orientation='horizontal', fraction=0.05, pad=0.08)
+        # cbar.ax.set_ylabel('log10 (#CpGs + 1)', rotation=-90, va="bottom")
+        cbar.ax.set_xlabel('log10 (#CpGs + 1)')
 
-    filename = f'{img_dir}/heatmap-cg-stranded-meth-diff'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if save_svg:
-        plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/heatmap-cg-stranded-meth-diff'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if save_svg:
+            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
-

@@ -31,34 +31,37 @@ def compt_plot_DNA_composition() -> None:
     data['prop_lost'] = fp(DNA_lost)
     data['saturation'] = fp(saturation_level)
 
-    # pie plot of DNA
-    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+    try:
+        # pie plot of DNA
+        fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
-    DNA_composition = [
-        "sequenced (depth ≥ 1)",
-        "undegraded but not sequenced",
-        "degraded"
-        ]
+        DNA_composition = [
+            "sequenced (depth ≥ 1)",
+            "undegraded but not sequenced",
+            "degraded"
+            ]
 
-    props = [single_DP1_coverage, prop_unsequenced, DNA_lost]
-    wedges, texts, autotexts = ax.pie(
-        props,
-        # labels=DNA_composition, 
-        autopct=lambda x:fp(x/100)+'%', 
-        textprops=dict(color="w"),
-        colors=COLS[:3]
-        )
+        props = [single_DP1_coverage, prop_unsequenced, DNA_lost]
+        wedges, texts, autotexts = ax.pie(
+            props,
+            # labels=DNA_composition, 
+            autopct=lambda x:fp(x/100)+'%', 
+            textprops=dict(color="w"),
+            colors=COLS[:3]
+            )
 
-    ax.legend(wedges, DNA_composition,
-            title="",
-            loc="center left",
-            bbox_to_anchor=(1, 0, 0.5, 1))
-    plt.setp(autotexts, size=8, weight="bold")
+        ax.legend(wedges, DNA_composition,
+                title="",
+                loc="center left",
+                bbox_to_anchor=(1, 0, 0.5, 1))
+        plt.setp(autotexts, size=8, weight="bold")
 
-    filename = f'{img_dir}/pie-DNA-lost'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/pie-DNA-lost'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def dilute_bin(cov: NDArray) -> Tuple[NDArray, NDArray]:
@@ -139,27 +142,31 @@ def plot_saturation_curve() -> None:
 
     (nbases, dilu) = dilute_genome(binning_covW, binning_covC, nbins=100)
 
-    fig, ax = plt.subplots(figsize=(5, 3))
-    prop_dp1_subset = dilu[50,1]/dilu[50,0]
+    try:
+        fig, ax = plt.subplots(figsize=(5, 3))
+        prop_dp1_subset = dilu[50,1]/dilu[50,0]
 
-    x = np.array(nbases/nbases[-1]*library_bases, dtype=int64)
-    x, suffix = getSuffix(x)
-    for i in range(len(dps)):
-        y = dilu[:,i+1]/dilu[:,0] * 100
-        # rescale to whole-genole covrate
-        y = y*prop_cov_DP1/prop_dp1_subset 
-        ax.plot(x, y, '-', c=cols[i], alpha=1, label='DP>='+str(dps[i]))
-    abline((1-DNA_lost)*100, 0, color=COL_gray)
-    ax.axis()
-    linewidth = 0.001
-    ax.text(0, (1-DNA_lost-linewidth)*100, f'{100-DNA_lost*100:.2f}%', verticalalignment='top')
-    ax.legend(title='single-stranded')
-    plt.xlabel(f'sequenced bases ({suffix} bases)')
-    # plt.xlabel('single-stranded sequencing depth')
-    plt.ylabel('single-stranded coverage (%)')
+        x = np.array(nbases/nbases[-1]*library_bases, dtype=int64)
+        x, suffix = getSuffix(x)
+        for i in range(len(dps)):
+            y = dilu[:,i+1]/dilu[:,0] * 100
+            # rescale to whole-genole covrate
+            y = y*prop_cov_DP1/prop_dp1_subset 
+            ax.plot(x, y, '-', c=cols[i], alpha=1, label='DP>='+str(dps[i]))
+        abline((1-DNA_lost)*100, 0, color=COL_gray)
+        ax.axis()
+        linewidth = 0.001
+        ax.text(0, (1-DNA_lost-linewidth)*100, f'{100-DNA_lost*100:.2f}%', verticalalignment='top')
+        ax.legend(title='single-stranded')
+        plt.xlabel(f'sequenced bases ({suffix} bases)')
+        # plt.xlabel('single-stranded sequencing depth')
+        plt.ylabel('single-stranded coverage (%)')
 
-    filename = f'{img_dir}/saturation-curve'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = f'{img_dir}/saturation-curve'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
+    return None
     

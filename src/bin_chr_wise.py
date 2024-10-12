@@ -338,19 +338,22 @@ def plot_chr_wise_me() -> None:
             ylim = max(ylim, max(me))
         ylim = axlimit(ylim)
         for dp in range(DP_valid-1):
-            # [0, DP-1] -> [1, DP+1]
-            fig, ax = plt.subplots(figsize = (figwidth, 2))
-            dps = np.array(dps_list[dp])
-            mes = np.array(me_list[dp])
-            i = dps > 0 # remove uncovered chrs
-            ax.bar(np.array(chrs)[i], mes[i], color=COLS[0])
-            ax.set_ylim(0, ylim)
-            plt.xticks(rotation=45)
-            ax.set_ylabel('mean DNAme level')
-            filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp+1}'
-            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-            if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-            plt.close()
+            try:
+                # [0, DP-1] -> [1, DP+1]
+                fig, ax = plt.subplots(figsize = (figwidth, 2))
+                dps = np.array(dps_list[dp])
+                mes = np.array(me_list[dp])
+                i = dps > 0 # remove uncovered chrs
+                ax.bar(np.array(chrs)[i], mes[i], color=COLS[0])
+                ax.set_ylim(0, ylim)
+                plt.xticks(rotation=45)
+                ax.set_ylabel('mean DNAme level')
+                filename = f'{img_dir}/meth-chr-{cg}-{strand}-dp{dp+1}'
+                plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+                if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+                plt.close()
+            except:
+                pass
     return None
 
 def plot_binning_meth() -> None:
@@ -384,54 +387,57 @@ def plot_binning_meth() -> None:
                 figheight = nchr*0.6 + 1
                 figwidth = maxbins/binpi + 1.2 + add
 
-            fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
-            if nchr == 1: axs = [axs]
-            fig.subplots_adjust(hspace=0)
-            
-            # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)
-            kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
-            for i, chr in enumerate(chrs):
-                shape = np.shape(me[chr])
-                x = np.arange(shape[0]) * binSize
-                x, prefix = prefixBpSize(x)
+            try:
+                fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
+                if nchr == 1: axs = [axs]
+                fig.subplots_adjust(hspace=0)
                 
-                # trim outliers in non-CG plots
-                y = me[chr][:,dp]
-                if strand == 'single':
-                    y2 = me2[chr][:,dp]
-                if cg != 'CG':
-                    y = np.fmin(np.nanquantile(y, 0.99), y)
+                # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)
+                kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
+                for i, chr in enumerate(chrs):
+                    shape = np.shape(me[chr])
+                    x = np.arange(shape[0]) * binSize
+                    x, prefix = prefixBpSize(x)
+                    
+                    # trim outliers in non-CG plots
+                    y = me[chr][:,dp]
                     if strand == 'single':
-                        y2 = np.fmin(np.nanquantile(y, 0.99), y2)
+                        y2 = me2[chr][:,dp]
+                    if cg != 'CG':
+                        y = np.fmin(np.nanquantile(y, 0.99), y)
+                        if strand == 'single':
+                            y2 = np.fmin(np.nanquantile(y, 0.99), y2)
 
-                # print(np.sum(covn[chr][:,dp] >= 3))
-                mask1 = covn[chr][:,dp] < 3
-                y[mask1] = nan
-                if strand == 'double':
-                    axs[i].scatter(x, y, s=1, c=COLS_AREA[0])
-                else:
-                    y2[covn2[chr][:,dp] < 3] = nan
-                    axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
-                    axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
-                    axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-                # if i % 2 == nchr % 2:
-                if i % 2 != kylabel % 2:
-                    axs[i].yaxis.tick_right()
-                if i == kylabel: # ensure ylabel on the left always
-                    axs[i].yaxis.set_label_position('left')
-                    axs[i].set_ylabel('mean DNAme level')
-                axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
-            # if prefix == '':
-            #     axs[i].set_xlabel('genome coordinate')
-            # else:
-            plt.xlabel(f'genome coordinate ({prefix})')
-            # if strand == 'single': axs[i].legend()
+                    # print(np.sum(covn[chr][:,dp] >= 3))
+                    mask1 = covn[chr][:,dp] < 3
+                    y[mask1] = nan
+                    if strand == 'double':
+                        axs[i].scatter(x, y, s=1, c=COLS_AREA[0])
+                    else:
+                        y2[covn2[chr][:,dp] < 3] = nan
+                        axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
+                        axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
+                        axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
+                    # if i % 2 == nchr % 2:
+                    if i % 2 != kylabel % 2:
+                        axs[i].yaxis.tick_right()
+                    if i == kylabel: # ensure ylabel on the left always
+                        axs[i].yaxis.set_label_position('left')
+                        axs[i].set_ylabel('mean DNAme level')
+                    axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
+                # if prefix == '':
+                #     axs[i].set_xlabel('genome coordinate')
+                # else:
+                plt.xlabel(f'genome coordinate ({prefix})')
+                # if strand == 'single': axs[i].legend()
 
-            filename = f'{img_dir}/meth-bin-{cg}-{strand}-dp{dp}'
-            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-            if save_svg:
-                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-            plt.close()
+                filename = f'{img_dir}/meth-bin-{cg}-{strand}-dp{dp}'
+                plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+                if save_svg:
+                    plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+                plt.close()
+            except:
+                pass
     return None
 
 def plot_binning_depth() -> None:
@@ -457,52 +463,55 @@ def plot_binning_depth() -> None:
             figheight = nchr*0.6 + 1
             figwidth = maxbins/binpi + 1.3 + add
 
-        fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
-        if nchr == 1: axs = [axs]
-        fig.subplots_adjust(hspace=0)
+        try:
+            fig, axs = plt.subplots(nchr, 1, sharex=True, sharey=True, figsize=(figwidth, figheight))
+            if nchr == 1: axs = [axs]
+            fig.subplots_adjust(hspace=0)
 
-        # ylim
-        if strand == 'double':
-            maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs]), 0.98)
-        else:
-            maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs]), 0.98)
-        
-        # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)    
-        kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
-        for i, chr in enumerate(chrs):
-            shape = np.shape(dep[chr])
-            x0 = np.arange(shape[0]) * binSize
-            x, prefix = prefixBpSize(x0)
-            
-            # trim outliers
-            y = dep[chr]
-            y = np.fmin(maxdp, y)
-            if strand == 'single':
-                y2 = dep2[chr]
-                y2 = np.fmin(maxdp, y2)
-            
+            # ylim
             if strand == 'double':
-                axs[i].scatter(x, y, s=1, c=COLS_AREA[0])
+                maxdp = np.quantile(np.hstack([dep[chr] for chr in chrs]), 0.98)
             else:
-                axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
-                axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
-                axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
-            # if i%2 == nchr%2:
-            if i % 2 != kylabel % 2:
-                axs[i].yaxis.tick_right()
-            if i == kylabel: # ensure ylabel on the left always
-                axs[i].yaxis.set_label_position('left')
-                axs[i].set_ylabel('mean read depth')
-            axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
-        # if prefix == '':
-        #     axs[i].set_xlabel('genome coordinate')
-        # else:
-        plt.xlabel(f'genome coordinate ({prefix})')
+                maxdp = np.quantile(np.hstack([np.hstack([dep[chr], dep2[chr]]) for chr in chrs]), 0.98)
+            
+            # plt.xlim(-20, prefixBpSize(np.array([maxbins * binSize]))[0]+20)    
+            kylabel = int((nchr+1) / 2) - 1 # which subplot to place ylabel
+            for i, chr in enumerate(chrs):
+                shape = np.shape(dep[chr])
+                x0 = np.arange(shape[0]) * binSize
+                x, prefix = prefixBpSize(x0)
+                
+                # trim outliers
+                y = dep[chr]
+                y = np.fmin(maxdp, y)
+                if strand == 'single':
+                    y2 = dep2[chr]
+                    y2 = np.fmin(maxdp, y2)
+                
+                if strand == 'double':
+                    axs[i].scatter(x, y, s=1, c=COLS_AREA[0])
+                else:
+                    axs[i].scatter(x, y, s=1, c=COLS_AREA[1])
+                    axs[i].scatter(x, -y2, s=1, c=COLS_AREA[0])
+                    axs[i].hlines(0, 0, max(x), color='#666666', linestyles='dashed', linewidths=1)
+                # if i%2 == nchr%2:
+                if i % 2 != kylabel % 2:
+                    axs[i].yaxis.tick_right()
+                if i == kylabel: # ensure ylabel on the left always
+                    axs[i].yaxis.set_label_position('left')
+                    axs[i].set_ylabel('mean read depth')
+                axs[i].text(axs[i].get_xlim()[1], axs[i].get_ylim()[0], chr, horizontalalignment='right', verticalalignment='bottom')
+            # if prefix == '':
+            #     axs[i].set_xlabel('genome coordinate')
+            # else:
+            plt.xlabel(f'genome coordinate ({prefix})')
 
-        filename = f'{img_dir}/depth-bin-{strand}'
-        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-        if save_svg:
-            plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-        plt.close()
+            filename = f'{img_dir}/depth-bin-{strand}'
+            plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+            if save_svg:
+                plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+            plt.close()
+        except:
+            pass
     return None
     

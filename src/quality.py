@@ -38,44 +38,53 @@ def compt_quality() -> None:
 def plot_read_length() -> None:
     quality = params['quality']
 
-    fig, ax = plt.subplots(figsize=(4,2))
-    plt.hist(quality.read_length, bins=21, density=True, color=COLS[0])
-    plt.xlabel('read length')
-    plt.ylabel('density')
+    try:
+        fig, ax = plt.subplots(figsize=(4,2))
+        plt.hist(quality.read_length, bins=21, density=True, color=COLS[0])
+        plt.xlabel('read length')
+        plt.ylabel('density')
 
-    # filename = r'img/dist-read-length'
-    filename = params['img_dir'] + r'/hist-read-length'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        # filename = r'img/dist-read-length'
+        filename = params['img_dir'] + r'/hist-read-length'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_base_quality() -> None:
     quality = params['quality']
 
-    fig, ax = plt.subplots(figsize=(4,2))
-    plt.hist(quality.base_quality, bins=21, density=True, color=COLS[0])
-    plt.xlabel('base quality')
-    plt.ylabel('density')
+    try:
+        fig, ax = plt.subplots(figsize=(4,2))
+        plt.hist(quality.base_quality, bins=21, density=True, color=COLS[0])
+        plt.xlabel('base quality')
+        plt.ylabel('density')
 
-    filename = params['img_dir'] + r'/hist-base-quality'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = params['img_dir'] + r'/hist-base-quality'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_read_map_quality() -> None:
     quality = params['quality']
 
-    fig, ax = plt.subplots(figsize=(4,2))
-    plt.hist(quality.map_quality, bins=21, density=True, color=COLS[0])
-    plt.xlabel('read mapping quality')
-    plt.ylabel('density')
+    try:
+        fig, ax = plt.subplots(figsize=(4,2))
+        plt.hist(quality.map_quality, bins=21, density=True, color=COLS[0])
+        plt.xlabel('read mapping quality')
+        plt.ylabel('density')
 
-    filename = params['img_dir'] + r'/hist-read-map-quality'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = params['img_dir'] + r'/hist-read-map-quality'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
 
 def plot_bar_base_cigar() -> None:
@@ -84,15 +93,18 @@ def plot_bar_base_cigar() -> None:
     x = range(len(prop))
     CIGARS = ['M', 'I', 'D', 'N', 'S', 'H', 'P', '=', 'X', 'B']
 
-    fig, ax = plt.subplots(figsize=(4,2))
-    plt.bar(x, prop, color=COLS[0])
-    plt.xticks(x, labels=CIGARS)
-    plt.xlabel('base mapping CIGAR')
-    plt.ylabel('proportion')
+    try:
+        fig, ax = plt.subplots(figsize=(4,2))
+        plt.bar(x, prop, color=COLS[0])
+        plt.xticks(x, labels=CIGARS)
+        plt.xlabel('base mapping CIGAR')
+        plt.ylabel('proportion')
 
-    filename = params['img_dir'] + r'/bar-base-CIGAR'
-    plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
-    if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
-    plt.close()
+        filename = params['img_dir'] + r'/bar-base-CIGAR'
+        plt.savefig(filename+'.png', transparent=True, dpi=300, bbox_inches='tight')
+        if params['save_svg']: plt.savefig(filename+'.svg', transparent=True, bbox_inches='tight')
+        plt.close()
+    except:
+        pass
     return None
     

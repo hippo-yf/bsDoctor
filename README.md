@@ -9,32 +9,45 @@
 
 ## Functionalities
 
-- Summary, 
+- Summary
 - Quality
 - Bisulfite conversion
-- Base-level error
+- **Base-level error**
 - Saturation curve
-- Extranuclear DNA: mitochondria/plastid/control lambda DNA
+- Extranuclear DNA: mitochondria/plastid/lambda control DNA
 - Genome coverage
 - DNAme level
-- DNAme level bias
-- CpG strandness
-- CpG motif
-- RRBS motif
+- **DNAme level bias**
+- **CpG strandness**
+- **CpG motif**
+- **RRBS motif**
 - Pan-gene DNAme level
 
 ## Usages
 
-`python bsDoctor.py -b sample.bam -f genome.fa [-g genome.gtf[.gz]] [-o output] [OPTIONS]`
+defaults for all chromosomes and all diagnosis modules:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
+
+a subset of chromosomes:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr NC_003070.9,NC_003071.7  --mt NC_037304.1 --plastid NC_000932.1 -o output2`
+
+disable pan-gene diagnosis:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz --mt NC_037304.1 --plastid NC_000932.1 -o output3 --diag-pangene no`
+
+disable MT, plastid, and pan-gene diagnosis:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
+
+*Reference genome (`.fa` file) must be uncompressed or compressed with `bgzip`.*
+
+## Parameters
 
 |**parameter** | **type** | **description**| **defaults** |
 |  ----  | ----  | ----  | ----  |
-|-h/--help|  |show help message and exit||
 |-b/--bam|str |a .bam file|required|
-|-f/--fa|str |a .fa[.gz] file of reference genome|required|
-|-f/--gtf|str |a .gtf[.gz] file||
+|-f/--fa|str |a .fa[.gz] file of reference genome|required, uncompressed or compressed with `bgzip`|
+|-g/--gtf|str |a .gtf[.gz] file||
 |-o/--report-dir|str |report directory|bsDoctor-report|
-|--chr|str |nuclear chromosomes to diagnose, separated by comma(,), such as "chr1,chr2,chr3"|all chromosomes|
+|--chr|str |nuclear chromosomes to diagnose, separated by comma(,), such as "chr1,chr2,chr3"|all|
 |--mt|str |name of mitochondrial DNA|-|
 |--plastid|str |name of plastid DNA|-|
 |--control-DNA|str |name of spiked-in DNA, usually lambda DNA|-|
@@ -60,7 +73,8 @@
 |--num-pangene|int |genes to sample for pangene methylation level|1000|
 |--max-depth-plot|int |max depth for figures plotted for sites of each specific depth|20|
 |--max-depth-motif|int |max depth in CpG-motif diagnosis|50|
-|--swap-strand|int |swap read counts on two strands or not|no|
+|--swap-strand|str |swap read counts on two strands or not|no|
 |--ploidy|int |ploidy of the genome|2|
 |-v/--version| |show program's version number and exit||
 |--save-svg| |save .svg figures or not, save both .png and .svg figures|yes|
+|-h/--help|  |show help message and exit||
