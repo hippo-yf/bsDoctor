@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Young Serif
+- Font Author: Copyright 2023 The Young Serif Project Authors (https://github.com/noirblancrouge/YoungSerif)
+- Font Source: https://fonts.gstatic.com/s/youngserif/v2/3qTpojO2nS2VtkB3KtkQZ2t61EcYaQ7F.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
