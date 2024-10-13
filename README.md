@@ -42,19 +42,24 @@ Why we need bsDoctor?
 
 with a downsampled arabidopsis WGBS data
 
-defaults for all chromosomes and all diagnosis modules:  
+*Reference genome (`-f genome.fa`) must be uncompressed or compressed with `bgzip`.*
+
+- defaults for all chromosomes and all diagnosis modules:
+  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
 
-a subset of chromosomes:  
+- a subset of chromosomes:
+
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr NC_003070.9,NC_003071.7  --mt NC_037304.1 --plastid NC_000932.1 -o output2`
 
-disable pan-gene diagnosis:  
+- disable pan-gene diagnosis:  
+
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz --mt NC_037304.1 --plastid NC_000932.1 -o output3 --diag-pangene no`
 
-disable MT, plastid, and pan-gene diagnosis:  
+- disable MT, plastid, and pan-gene diagnosis:
+
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
 
-*Reference genome (`-f genome.fa`) must be uncompressed or compressed with `bgzip`.*
 
 ## Installation and dependencies
 
