@@ -1,4 +1,7 @@
-# bsDoctor: Quality Diagnosis for Bisulfite-Seq Data
+# ![icon](report/assets/img/favicon-32x32.png) bsDoctor: Quality Diagnosis for Bisulfite-Seq Data
+
+Why we need bsDoctor?
+![workflow](report/assets/img/workflow.png)
 
 ## Examples
 
@@ -6,6 +9,18 @@
 - Human RRBS sample (high coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human-high-cov/
 - Human RRBS sample (low coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human/
 - Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
+
+## Features
+
+- define the **diagnostics** of bisulfite-seq data: **bias**, **error**, and **integrity**
+- **post-alignment** diagnosis, based-on bam file rather than sequencing fastq file
+- **versatile** functionalities centering on the diagnostics
+- **novel** and significant diagnosis of error, bias, strandness, and CpG motif compared with existing tools
+- **flexible** usage to enable/disable each module
+- **elaborate** html report for interactive exploration
+- pixel (`png`) and **vector (`svg`) figures** for re-edition
+- optimized sampling for accuracy-speed **balance**, ~0.5 hours for typical human RRBS sample, ~2 hours for typical human WGBS sample
+
 
 ## Functionalities
 
@@ -25,6 +40,8 @@
 
 ## Usages
 
+with a downsampled arabidopsis WGBS data
+
 defaults for all chromosomes and all diagnosis modules:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
 
@@ -37,7 +54,21 @@ disable pan-gene diagnosis:
 disable MT, plastid, and pan-gene diagnosis:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
 
-*Reference genome (`.fa` file) must be uncompressed or compressed with `bgzip`.*
+*Reference genome (`-f genome.fa`) must be uncompressed or compressed with `bgzip`.*
+
+## Installation and dependencies
+
+`git clone` or download the repository and run `bsDoctor.py` in any environment with the following dependencies.
+
+- python >= 3.12
+- numpy >= 2.1.2 
+- pysam >= 0.22.1 
+- jinja2 >= 3.1.4
+- matplotlib >= 3.9.2
+- scipy >= 1.14.1
+- tqdm >= 4.66.5
+
+Or use `uv sync` to create virtual environment and install dependencies. (recommended)
 
 ## Parameters
 
