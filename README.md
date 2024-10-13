@@ -49,13 +49,15 @@ Why we need bsDoctor?
 - scipy >= 1.14.1
 - tqdm >= 4.66.5
 
-Or use `uv sync` to create virtual environment and install dependencies. (recommended)
+Or use [`uv sync`](https://docs.astral.sh/uv/) to create virtual environment and install dependencies. (recommended)
 
 ## Usages
 
-with a downsampled arabidopsis WGBS sample (`examples/example.bam`)
+With a downsampled arabidopsis WGBS sample (`examples/example.bam`)
 
 *Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
+
+*specify the names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
 
 - defaults for all chromosomes and all diagnosis modules:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
@@ -69,14 +71,13 @@ with a downsampled arabidopsis WGBS sample (`examples/example.bam`)
 - disable MT, plastid, and pan-gene diagnosis:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
 
-
 ## Parameters
 
 |**parameter** | **type** | **description**| **defaults** |
 |  ----  | ----  | ----  | ----  |
 |-b/--bam|str |a .bam file|required|
-|-f/--fa|str |a .fa[.gz] file of reference genome|required, uncompressed or compressed with `bgzip`|
-|-g/--gtf|str |a .gtf[.gz] file||
+|-f/--fa|str |a .fa[.gz] file of reference genome, uncompressed or compressed with `bgzip`|required|
+|-g/--gtf|str |a .gtf[.gz] file|conditional|
 |-o/--report-dir|str |report directory|bsDoctor-report|
 |--chr|str |nuclear chromosomes to diagnose, separated by comma(,), such as "chr1,chr2,chr3"|all|
 |--mt|str |name of mitochondrial DNA|-|
@@ -106,6 +107,6 @@ with a downsampled arabidopsis WGBS sample (`examples/example.bam`)
 |--max-depth-motif|int |max depth in CpG-motif diagnosis|50|
 |--swap-strand|str |swap read counts on two strands or not|no|
 |--ploidy|int |ploidy of the genome|2|
-|-v/--version| |show program's version number and exit||
 |--save-svg| |save .svg figures or not, save both .png and .svg figures|yes|
+|-v/--version| |show program's version number and exit||
 |-h/--help|  |show help message and exit||
