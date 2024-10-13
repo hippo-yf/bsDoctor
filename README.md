@@ -21,7 +21,6 @@ Why we need bsDoctor?
 - pixel (`png`) and **vector (`svg`) figures** for re-edition
 - optimized sampling for accuracy-speed **balance**, ~0.5 hours for typical human RRBS sample, ~2 hours for typical human WGBS sample
 
-
 ## Functionalities
 
 - Summary
@@ -38,29 +37,6 @@ Why we need bsDoctor?
 - **RRBS motif**
 - Pan-gene DNAme level
 
-## Usages
-
-with a downsampled arabidopsis WGBS data
-
-*Reference genome (`-f genome.fa`) must be uncompressed or compressed with `bgzip`.*
-
-- defaults for all chromosomes and all diagnosis modules:
-  
-`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
-
-- a subset of chromosomes:
-
-`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr NC_003070.9,NC_003071.7  --mt NC_037304.1 --plastid NC_000932.1 -o output2`
-
-- disable pan-gene diagnosis:  
-
-`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz --mt NC_037304.1 --plastid NC_000932.1 -o output3 --diag-pangene no`
-
-- disable MT, plastid, and pan-gene diagnosis:
-
-`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
-
-
 ## Installation and dependencies
 
 `git clone` or download the repository and run `bsDoctor.py` in any environment with the following dependencies.
@@ -74,6 +50,25 @@ with a downsampled arabidopsis WGBS data
 - tqdm >= 4.66.5
 
 Or use `uv sync` to create virtual environment and install dependencies. (recommended)
+
+## Usages
+
+with a downsampled arabidopsis WGBS sample (`examples/example.bam`)
+
+*Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
+
+- defaults for all chromosomes and all diagnosis modules:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
+
+- a subset of chromosomes:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr NC_003070.9,NC_003071.7  --mt NC_037304.1 --plastid NC_000932.1 -o output2`
+
+- disable pan-gene diagnosis:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz --mt NC_037304.1 --plastid NC_000932.1 -o output3 --diag-pangene no`
+
+- disable MT, plastid, and pan-gene diagnosis:  
+`python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --mt NC_037304.1 --plastid NC_000932.1 --diag-mt no --diag-plastid no -o output4`
+
 
 ## Parameters
 
