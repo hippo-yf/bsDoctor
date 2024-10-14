@@ -1,7 +1,6 @@
 # ![icon](report/assets/img/favicon-32x32.png) bsDoctor: Quality Diagnosis for Bisulfite-Seq Data
 
-Why we need bsDoctor?
-![workflow](report/assets/img/workflow.png)
+![workflow](report/assets/img/workflow.svg)
 
 ## Examples
 
@@ -75,7 +74,7 @@ With a downsampled arabidopsis WGBS sample (`examples/example.bam`)
 
 |**parameter** | **type** | **description**| **defaults** |
 |  ----  | ----  | ----  | ----  |
-|-b/--bam|str |a .bam file|required|
+|-b/--bam|str |a .bam file, with index|required|
 |-f/--fa|str |a .fa[.gz] file of reference genome, uncompressed or compressed with `bgzip`|required|
 |-g/--gtf|str |a .gtf[.gz] file|conditional|
 |-o/--report-dir|str |report directory|bsDoctor-report|
