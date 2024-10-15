@@ -52,11 +52,11 @@ Or use [`uv sync`](https://docs.astral.sh/uv/) to create virtual environment and
 
 ## Usages
 
-With a downsampled arabidopsis WGBS sample (`examples/example.bam`)
-
 *Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
 
-*specify the names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
+*Specify the names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
+
+With a downsampled arabidopsis WGBS sample (`examples/example.bam`):
 
 - defaults for all chromosomes and all diagnosis modules:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
