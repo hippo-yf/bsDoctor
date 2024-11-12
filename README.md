@@ -1,6 +1,6 @@
 # ![icon](report/assets/img/favicon-32x32.png) bsDoctor: Quality Diagnosis for Bisulfite-Seq Data
 
-![workflow](report/assets/img/workflow.svg)
+![workflow](report/assets/img/figure1.png)
 
 ## Examples
 
