@@ -5,15 +5,15 @@
 ## Examples
 
 - Human WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-human/
-- Human RRBS sample (high coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human-high-cov/
-- Human RRBS sample (low coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human/
+- Human RRBS sample (high double-stranded coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human-high-cov/
+- Human RRBS sample (low double-stranded coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human/
 - Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
 
 ## Features
 
 - define the **diagnostics** of bisulfite-seq data: **bias**, **error**, and **integrity**
 - **post-alignment** diagnosis, based-on bam file rather than sequencing fastq file
-- **versatile** functionalities centering on the diagnostics
+- **versatile** by a lot of functionalities
 - **novel** and significant diagnosis of error, bias, strandness, and CpG motif compared with existing tools
 - **flexible** usage to enable/disable each module
 - **elaborate** html report for interactive exploration
@@ -48,13 +48,17 @@
 - scipy >= 1.14.1
 - tqdm >= 4.66.5
 
-Or use [`uv sync`](https://docs.astral.sh/uv/) to create virtual environment and install dependencies. (recommended)
+Or use [`uv sync`](https://docs.astral.sh/uv/) to create virtual environment and install dependencies with the following script. (recommended)  
+```shell
+cd bsDoctor
+uv sync
+```
 
 ## Usages
 
-*Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
+- *Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
 
-*Specify the names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
+- *Specify the contig names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
 
 With a downsampled arabidopsis WGBS sample (`examples/example.bam`):
 
@@ -74,7 +78,7 @@ With a downsampled arabidopsis WGBS sample (`examples/example.bam`):
 
 |**parameter** | **type** | **description**| **defaults** |
 |  ----  | ----  | ----  | ----  |
-|-b/--bam|str |a .bam file, with index|required|
+|-b/--bam|str |a .bam file, with **index file** ready|required|
 |-f/--fa|str |a .fa[.gz] file of reference genome, uncompressed or compressed with `bgzip`|required|
 |-g/--gtf|str |a .gtf[.gz] file|conditional|
 |-o/--report-dir|str |report directory|bsDoctor-report|
