@@ -48,7 +48,7 @@
 - scipy >= 1.14.1
 - tqdm >= 4.66.5
 
-Or use [`uv sync`](https://docs.astral.sh/uv/) to create virtual environment and install dependencies with the following script. (recommended)  
+Or use [`uv`](https://docs.astral.sh/uv/) to create virtual environment and install dependencies with the following script. (recommended)  
 ```shell
 cd bsDoctor
 uv sync
