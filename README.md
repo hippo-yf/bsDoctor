@@ -2,7 +2,7 @@
 
 ![workflow](report/assets/img/figure1.png)
 
-## Examples
+## Example Reports
 
 - Human WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-human/
 - Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
