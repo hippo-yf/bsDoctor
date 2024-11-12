@@ -5,9 +5,9 @@
 ## Examples
 
 - Human WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-human/
+- Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
 - Human RRBS sample (high double-stranded coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human-high-cov/
 - Human RRBS sample (low double-stranded coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human/
-- Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
 
 ## Features
 
