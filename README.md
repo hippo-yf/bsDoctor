@@ -4,6 +4,8 @@
 
 ## Example Reports
 
+*Due to the browsers' image loading strategy for large files, you may need to refresh the page to load several large images for the following online reports.*
+
 - Human WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-human/
 - Arabidopsis WGBS sample, https://hippo-yf.github.io/bsDoctor-wgbs-arabidopsis/  
 - Human RRBS sample (high double-stranded coverage), https://hippo-yf.github.io/bsDoctor-rrbs-human-high-cov/
