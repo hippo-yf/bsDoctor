@@ -58,11 +58,11 @@ uv sync
 
 ## Usages
 
+- *Alignment files (`.bam`) must be indexed.*
 - *Reference genome (`-f genome.fa`) must be uncompressed or compressed (`.gz`) with `bgzip`.*
-
 - *Specify the contig names of the mitochondrial (MT), plastid, and (lambda) control DNA if applicable.*
 
-With a downsampled arabidopsis WGBS sample (`examples/example.bam`):
+With a downsampled Arabidopsis WGBS sample (`examples/example.bam`):
 
 - defaults for all chromosomes and all diagnosis modules:  
 `python bsDoctor.py -b examples/example.bam -f examples/genome.fna.gz -g examples/genome.gtf.gz --chr all --mt NC_037304.1 --plastid NC_000932.1 -o output1`
@@ -112,6 +112,6 @@ With a downsampled arabidopsis WGBS sample (`examples/example.bam`):
 |--max-depth-motif|int |max depth in CpG-motif diagnosis|50|
 |--swap-strand|str |swap read counts on two strands or not|no|
 |--ploidy|int |ploidy of the genome|2|
-|--save-svg| |save .svg figures or not, save both .png and .svg figures|yes|
-|-v/--version| |show program's version number and exit||
-|-h/--help|  |show help message and exit||
+|--save-svg| str |save .svg figures or not, save both .png and .svg figures|yes|
+|-v/--version|flag |show program's version number and exit||
+|-h/--help|flag  |show help message and exit||
